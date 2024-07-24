@@ -16,7 +16,7 @@ public class ClientUI extends Application {
 	
     public static String ipAddress;
 
-
+//asdasdasdasdasddddddddddddddddddddddddddddddd
 	
 	//כלי עזר לשינוי צבע של הדפסות
     public static final String RESET = "\033[0m";  // Text Reset
