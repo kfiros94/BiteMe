@@ -151,11 +151,11 @@
             <Image url="@../../resources/biteMe.jpeg" />
          </image>
       </ImageView>
-      <TableView layoutX="379.0" layoutY="216.0" prefHeight="242.0" prefWidth="220.0">
-        <columns>
-          <TableColumn id="ipClientTable" prefWidth="125.5" text="Client ip" />
-          <TableColumn prefWidth="66.0" text="Status" />
-        </columns>
-      </TableView>
+ 	 <TableView fx:id="tableView" layoutX="379.0" layoutY="216.0" prefHeight="242.0" prefWidth="220.0">
+	     <columns>
+	         <TableColumn fx:id="ipCol" prefWidth="125.5" text="Client ip" />
+	         <TableColumn fx:id="statusCol" prefWidth="66.0" text="Status" />
+	     </columns>
+	 </TableView>
    </children>
 </AnchorPane>

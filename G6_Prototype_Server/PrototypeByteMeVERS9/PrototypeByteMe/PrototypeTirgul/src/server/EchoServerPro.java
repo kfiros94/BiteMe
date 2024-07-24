@@ -263,7 +263,7 @@ public class EchoServerPro extends AbstractServer
     {
         System.out.println("Server has stopped listening for connections.");
         client_info = new ArrayList<>();
-        Servercontroller.refreshTableView();
+ //       Servercontroller.refreshTableView(); // ברגע שהשרת מפסיק לעבוד, צריך לשלוח הודעה לכל הלקוחות שלו
     }
 
     
@@ -274,7 +274,7 @@ public class EchoServerPro extends AbstractServer
         ClientInfo temp = new ClientInfo(client.getInetAddress().getHostName(),
                 client.getInetAddress().getHostAddress(), "connected");
         client_info.add(temp);
-        Servercontroller.refreshTableView();
+        Servercontroller.refreshTableView(temp.getIp(),temp.getHost(),temp.getStatus());
     }
 
     
@@ -287,7 +287,7 @@ public class EchoServerPro extends AbstractServer
                 client.getInetAddress().getHostAddress(), "connected");
         client_info.remove(temp);
         System.out.print(temp);
-        Servercontroller.refreshTableView();
+ //       Servercontroller.refreshTableView(); // ברגע שלקוח מתנתק צריך להוריד אותו מהרשימת לקוחות מחוברים
     }
 
     
