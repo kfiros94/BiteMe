@@ -14,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -52,6 +53,12 @@ public class ServerPortFrameControllerPro implements Initializable
     @FXML
     private Label connection_Succ;
 
+    @FXML
+    private TableColumn ipCol;
+    
+    @FXML
+    private TableColumn statusCol;
+    
     private List<TextField> txtFields = new ArrayList<>();
 
     @FXML
@@ -62,6 +69,7 @@ public class ServerPortFrameControllerPro implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources) 
     {
+    	
         try 
         {
             String ipAddress = InetAddress.getLocalHost().getHostAddress();
