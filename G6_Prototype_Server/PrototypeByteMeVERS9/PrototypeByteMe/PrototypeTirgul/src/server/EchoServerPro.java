@@ -271,10 +271,10 @@ public class EchoServerPro extends AbstractServer
     @Override
     protected void clientConnected(ConnectionToClient client) 
     {
-        ClientInfo temp = new ClientInfo(client.getInetAddress().getHostName(),
-                client.getInetAddress().getHostAddress(), "connected");
-        client_info.add(temp);
-        Servercontroller.refreshTableView(temp.getIp(),temp.getHost(),temp.getStatus());
+        super.clientConnected(client);
+        String clientIP = client.getInetAddress().getHostAddress();
+        String status = "Connected";
+        Servercontroller.clientConnected(clientIP, status);
     }
 
     

@@ -46,6 +46,8 @@ public class ServerPortFrameControllerPro implements Initializable {
     private TableView<ClientInfo> tableView;
 
     private ObservableList<ClientInfo> list = FXCollections.observableArrayList();
+    
+    private EchoServerPro server;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -102,9 +104,10 @@ public class ServerPortFrameControllerPro implements Initializable {
 
         if (runServer(port, dbPassword)) {
             System.out.println("Server connection succeeded");
-            addClientInfo("192.168.0.3", "Connected1"); // Example usage
-            addClientInfo("192.168.0.4", "Connected2"); // Example usage
-            addClientInfo("192.168.0.5", "Connected3"); // Example usage
+//            addClientInfo("192.168.0.3", "Connected1"); // Example usage
+//            addClientInfo("192.168.0.4", "Connected2"); // Example usage
+//            addClientInfo("192.168.0.5", "Connected3"); // Example usage
+            list.clear();
            // sv.client_info.get(0).getIp();
           //  sv.client_info.get(0).getHost();
           //  sv.client_info.get(0).getStatus();
@@ -129,18 +132,18 @@ public class ServerPortFrameControllerPro implements Initializable {
             return false;
         }
 
-       EchoServerPro sv = new EchoServerPro(portNumber, this);
+       server = new EchoServerPro(portNumber, this);
       //   sv = new EchoServerPro(portNumber, this);
 
         
-        if (!sv.connectToDataBase(dbPassword)) {
+        if (!server.connectToDataBase(dbPassword)) {
             return false;
         }
 
         try {
             connection_Succ.setVisible(true);
             messageLabel.setVisible(false);
-            sv.listen();
+            server.listen();
             return true;
         } catch (Exception ex) {
             System.out.println("ERROR - Could not listen for clients!");
@@ -159,9 +162,9 @@ public class ServerPortFrameControllerPro implements Initializable {
     }
     
     
-    public void refreshTableView(String ip, String status,String a) 
+    public void clientConnected(String ip, String status) 
     {
-    	addClientInfo("asd","asd");
+    	addClientInfo(ip,status);
     }
     
     
