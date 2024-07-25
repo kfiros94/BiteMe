@@ -75,7 +75,6 @@ public class LoginPageController {
     
     
     
-    //bbbbbbbbbbbbbbb
     
     
     @FXML
@@ -89,21 +88,33 @@ public class LoginPageController {
 		((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary window
 		
 		Stage primaryStage = new Stage();
-		Pane root = loader.load(getClass().getResource("/Screens/Main.fxml").openStream());
+		Pane root = loader.load(getClass().getResource("/Screens/MainPages.fxml").openStream());
 
 		Scene scene = new Scene(root);			
 		//scene.getStylesheets().add(getClass().getResource("/gui/OrderForm.css").toExternalForm());
-		primaryStage.setTitle("Order_number Managment Tool");
+		primaryStage.setTitle("Page Home");
 
 		primaryStage.setScene(scene);		
 		primaryStage.show();
 			
 	}
     
-    //bbbbbbbbbbbbbbb
     
     
-    //ccccccccccc
+    //bbbbbbbbbbbbbb
+    
+    @FXML
+	public void Close(ActionEvent event) throws Exception 
+	{
+
+		System.out.println("exit Summary of an BiteMe");	
+		System.exit(0);//add for the method to actually close client window
+	
+	}
+    
+    
+    //bbbbbbbbbbbbb
+    
     
     
 	public void start(Stage primaryStage) throws Exception {	
@@ -111,14 +122,13 @@ public class LoginPageController {
 				
 		Scene scene = new Scene(root);
 		//scene.getStylesheets().add(getClass().getResource("/gui/SummaryOfExistingOrder.css").toExternalForm());
-		primaryStage.setTitle("Login Page with Snowflakes");
+		primaryStage.setTitle("Login Page");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
 	}
 	
     
-    //cccccccccccc
     
     
     
