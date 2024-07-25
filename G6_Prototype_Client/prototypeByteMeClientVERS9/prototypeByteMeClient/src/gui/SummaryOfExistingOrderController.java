@@ -243,17 +243,23 @@ public  class SummaryOfExistingOrderController
 				
 				System.out.println("test1: in"+GREEN+" Class SummaryOfExistingOrderController"+RESET+" Open the new window: "+RESET+RED+"Order_number Managment Tool"+RESET);//TTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 				Stage primaryStage = new Stage();
-				Pane root = loader.load(getClass().getResource("/gui/OrderForm.fxml").openStream());
-				
+				//Pane root = loader.load(getClass().getResource("/gui/OrderForm.fxml").openStream());
+				Pane root = loader.load(getClass().getResource("/gui/MainPagesClient.fxml").openStream());
+
 				
 				
 				
 				OrderFormController OrderFormController = loader.getController();		
 				OrderFormController.loadOrder(ChatClient.s1);
 			
+				//cccccccccccccc
+				//OrderFormController.
+				//cccccccc
+				
+				
 				Scene scene = new Scene(root);			
-				scene.getStylesheets().add(getClass().getResource("/gui/OrderForm.css").toExternalForm());
-				primaryStage.setTitle("Order_number Managment Tool");
+				//scene.getStylesheets().add(getClass().getResource("/gui/OrderForm.css").toExternalForm());
+				primaryStage.setTitle("Page Home");
 	
 				primaryStage.setScene(scene);		
 				primaryStage.show();
