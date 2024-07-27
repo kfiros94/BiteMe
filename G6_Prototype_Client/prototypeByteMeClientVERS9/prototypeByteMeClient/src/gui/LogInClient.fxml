@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LogInAnimaLetters.LoginPageController">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SummaryOfExistingOrderController">
     <children>
         <Pane fx:id="snowflakePane" layoutY="-35.0" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: rgba(223, 255, 255, 0.5); -fx-padding: 20; -fx-border-radius: 10;">
          <children>
@@ -22,7 +22,7 @@
                   <Image url="@../../resources/BiteMe-removebg-preview.png" />
                </image>
             </ImageView>
-            <Button fx:id="btClose" layoutX="624.0" layoutY="406.0" onAction="#Close" prefHeight="29.0" prefWidth="73.0" style="-fx-background-color: rgba(97, 56, 255, 0.8); -fx-padding: 1; -fx-border-radius: 10;" text="Close" textFill="WHITE">
+            <Button fx:id="btClose" layoutX="624.0" layoutY="406.0" onAction="#getExitBtn" prefHeight="29.0" prefWidth="73.0" style="-fx-background-color: rgba(97, 56, 255, 0.8); -fx-padding: 1; -fx-border-radius: 10;" text="Close" textFill="WHITE">
                <font>
                   <Font name="Agency FB Bold" size="18.0" />
                </font>
@@ -44,13 +44,13 @@
                <font>
                   <Font name="Agency FB Bold" size="18.0" />
                </font></Label>
-                <TextField fx:id="userField" prefHeight="31.0" prefWidth="174.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <TextField fx:id="Order_numbertxt" prefHeight="31.0" prefWidth="174.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="2">
                <font>
                   <Font name="Agency FB Bold" size="18.0" />
                </font></Label>
                 <PasswordField fx:id="passField" prefHeight="31.0" prefWidth="179.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Button fx:id="btLogIn" onAction="#LogIn" prefHeight="29.0" prefWidth="73.0" style="-fx-background-color: rgba(97, 56, 255, 0.8); -fx-padding: 1; -fx-border-radius: 10;" text="Login" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <Button fx:id="btLogIn" onAction="#Send" prefHeight="29.0" prefWidth="73.0" style="-fx-background-color: rgba(97, 56, 255, 0.8); -fx-padding: 1; -fx-border-radius: 10;" text="Login" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <font>
                   <Font name="Agency FB Bold" size="18.0" />
                </font></Button>
@@ -59,7 +59,7 @@
                   <Font name="Agency FB Bold" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="ipHostField" prefHeight="31.0" prefWidth="118.0" GridPane.columnIndex="1" />
+            <TextField fx:id="HostIP" prefHeight="31.0" prefWidth="118.0" GridPane.columnIndex="1" />
             </children>
         </GridPane>
     </children>
