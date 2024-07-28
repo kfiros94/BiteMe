@@ -9,31 +9,78 @@ import java.util.ArrayList;
 
 //import common.User;
 import logic.Order;
+import ocsf.server.AbstractServer;
+import ocsf.server.ConnectionToClient;
 import logic.ClientInfo;
 
-public class DBController {
+public class DBController extends AbstractServer{
 
     protected static Connection conn = null;
 
+    /*here we will define necessary controllers 
+     * for the Data-Base
+     * example: private DBUserController dbUser=new DBUserController();
+*/
+    public DBController(int port) {
+		super(port);
+	}
+    
+    
+    
     // Method to connect to the database
-    protected static boolean connectToDB(String password) {
+    public static String connectToDB(String ip, String port, String db_name, String db_user, String db_password) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
             System.out.println("Driver setup succeeded");
         } catch (Exception ex) {
             System.out.println("Driver setup failed: " + ex.getMessage());
-            return false;
+            return "Server Login Failed";
         }
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/bitemeprototype?serverTimezone=IST", "root", password);
+            conn = DriverManager.getConnection("jdbc:mysql://" + ip + "/" + db_name + "?serverTimezone=IST", db_user, db_password);//changed
             System.out.println("SQL connection succeeded");
-            return true;
+            return "SQL connection succeed";
         } catch (SQLException ex) {
             System.out.println("SQL connection failed: " + ex.getMessage());
-            return false;
+            return "SQLException: " + ex.getMessage();
         }
     }
+    
+    public static String disconnectDB()
+    {
+		try {
+			conn.close();
+			return "SQL Disconnected Successfuly";
+		} catch (Exception e) {
+			return "Couldn't disconnect from SQL";
+		}
+	}
+    
+    @Override
+	/**
+
+	   * This method handles any messages received from the client.
+	   *
+	   * @param msg The message received from the client.
+	   * @param client The connection from which the message originated.
+	   * @param 
+	   */
+	public void handleMessageFromClient(Object msg, ConnectionToClient client)
+    {
+	    System.out.println("Message received: " + msg + " from " + client); 
+	    
+	    //check what message was received
+    	
+    	
+    	
+    }
+    
+    
+    
+    
+    
+    
 
     protected static ArrayList<Order> showOrder() {
         System.out.println("in ShowOrder Function"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -83,6 +130,10 @@ public class DBController {
             return "failed to save";
         }
     }
+
+
+
+	
     
     
     
