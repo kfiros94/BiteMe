@@ -114,7 +114,7 @@ public class ChatClient extends AbstractClient
             ChatClient.user1.setUsername("-1");
         } else if (msg.equals("-2")) {
             // Incorrect password
-        	ChatClient.user1.setUsername("inf");// ערך זבל כדאי לקבל הודעת שגיאה על סיסמא ולא על שם משתמש
+        	ChatClient.user1.setUsername("inf");// ערך זבל כדאי לקבל הודעת שגיאה על סיסמא ולא על שם משתמש 
             ChatClient.user1.setPassword("-2");
 	    
         }else if (msg instanceof ArrayList) {
