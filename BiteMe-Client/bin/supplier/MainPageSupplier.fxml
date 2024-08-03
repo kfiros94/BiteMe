@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="supplier.MainPageSupplierController">
+    <children>
+        <BorderPane layoutX="6.0" prefHeight="500.0" prefWidth="800.0">
+            <top>
+                <HBox prefHeight="73.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+                    <!-- Add any top elements here if needed -->
+                </HBox>
+            </top>
+            <center>
+                <StackPane fx:id="contentArea" prefHeight="380.0" prefWidth="681.0" BorderPane.alignment="CENTER" />
+            </center>
+            <bottom>
+                <HBox prefHeight="47.0" prefWidth="650.0" BorderPane.alignment="CENTER">
+                    <!-- Add any bottom elements here if needed -->
+                </HBox>
+            </bottom>
+         <left>
+            <VBox alignment="TOP_CENTER" prefHeight="380.0" prefWidth="113.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="106.0" text="show Orders" />
+               </children>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+            </VBox>
+         </left>
+        </BorderPane>
+    </children>
+</AnchorPane>
