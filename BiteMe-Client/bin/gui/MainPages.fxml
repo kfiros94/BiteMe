@@ -8,11 +8,11 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<<<<<<<< HEAD:BiteMe-Client/bin/gui/MainPages.fxml
+<<<<<<<< HEAD:BiteMe-Client/src/gui/MainPages.fxml
 <AnchorPane prefHeight="393.0" prefWidth="637.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Screens.MainController">
 ========
 <AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainPagesClientController">
->>>>>>>> main:BiteMe-Client/bin/gui/MainPagesClient.fxml
+>>>>>>>> main:BiteMe-Client/src/gui/MainPagesClient.fxml
     <children>
         <BorderPane layoutX="6.0" prefHeight="500.0" prefWidth="800.0">
             <top>
@@ -40,7 +40,7 @@
                 <StackPane fx:id="contentArea" prefHeight="400.0" prefWidth="800.0" BorderPane.alignment="CENTER" />
          </center>
          <bottom>
-<<<<<<<< HEAD:BiteMe-Client/bin/gui/MainPages.fxml
+<<<<<<<< HEAD:BiteMe-Client/src/gui/MainPages.fxml
             <HBox prefHeight="55.0" prefWidth="617.0" BorderPane.alignment="CENTER">
                <children>
                   <Button fx:id="lbLogoutpageHome" mnemonicParsing="false" onAction="#LogOut" prefHeight="31.0" prefWidth="80.0" style="-fx-background-color: rgba(97, 56, 255, 0.8);" text="LogOut" textFill="WHITE">
@@ -52,7 +52,7 @@
                   <Button fx:id="lbLogoutpageHome" mnemonicParsing="false" onAction="#CloseButton" prefHeight="31.0" prefWidth="80.0" style="-fx-background-color: rgba(97, 56, 255, 0.8);" text="LogOut" textFill="WHITE">
                      <HBox.margin>
                         <Insets left="710.0" />
->>>>>>>> main:BiteMe-Client/bin/gui/MainPagesClient.fxml
+>>>>>>>> main:BiteMe-Client/src/gui/MainPagesClient.fxml
                      </HBox.margin>
                      <font>
                         <Font name="Agency FB Bold" size="18.0" />
