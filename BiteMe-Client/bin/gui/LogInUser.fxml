@@ -22,19 +22,19 @@
                   <Image url="@../../resources/BiteMe-removebg-preview.png" />
                </image>
             </ImageView>
-<<<<<<< HEAD:ForGUIexperimentsVers1/ForGUIexperiments/bin/LogInAnimaLetters/LoginPage.fxml
+<<<<<<< HEAD:ForGUIexperimentsVers1/ForGUIexperiments/src/LogInAnimaLetters/LoginPage.fxml
             <Button fx:id="btClose" layoutX="624.0" layoutY="406.0" onAction="#Close" prefHeight="29.0" prefWidth="73.0" style="-fx-background-color: rgba(97, 56, 255, 0.8); -fx-padding: 1; -fx-border-radius: 10;" text="Close" textFill="WHITE">
 =======
             <Button fx:id="btClose" layoutX="624.0" layoutY="406.0" onAction="#getExitBtn" prefHeight="29.0" prefWidth="73.0" style="-fx-background-color: rgba(97, 56, 255, 0.8); -fx-padding: 1; -fx-border-radius: 10;" text="Close" textFill="WHITE">
->>>>>>> main:BiteMe-Client/bin/gui/LogInUser.fxml
+>>>>>>> main:BiteMe-Client/src/gui/LogInUser.fxml
                <font>
                   <Font name="Agency FB Bold" size="18.0" />
                </font>
             </Button>
-<<<<<<< HEAD:ForGUIexperimentsVers1/ForGUIexperiments/bin/LogInAnimaLetters/LoginPage.fxml
+<<<<<<< HEAD:ForGUIexperimentsVers1/ForGUIexperiments/src/LogInAnimaLetters/LoginPage.fxml
 =======
             <Label fx:id="messageLabel" layoutX="383.0" layoutY="368.0" text="" />
->>>>>>> main:BiteMe-Client/bin/gui/LogInUser.fxml
+>>>>>>> main:BiteMe-Client/src/gui/LogInUser.fxml
          </children></Pane>
         <GridPane layoutX="260.0" layoutY="143.0" prefHeight="171.0" prefWidth="313.0" style="-fx-background-color: rgba(255, 255, 255, 0.8); -fx-padding: 20; -fx-border-radius: 10;">
             <columnConstraints>
@@ -52,21 +52,21 @@
                <font>
                   <Font name="Agency FB Bold" size="18.0" />
                </font></Label>
-<<<<<<< HEAD:ForGUIexperimentsVers1/ForGUIexperiments/bin/LogInAnimaLetters/LoginPage.fxml
+<<<<<<< HEAD:ForGUIexperimentsVers1/ForGUIexperiments/src/LogInAnimaLetters/LoginPage.fxml
                 <TextField fx:id="userField" prefHeight="31.0" prefWidth="174.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 =======
                 <TextField fx:id="user_nametxt" prefHeight="31.0" prefWidth="174.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
->>>>>>> main:BiteMe-Client/bin/gui/LogInUser.fxml
+>>>>>>> main:BiteMe-Client/src/gui/LogInUser.fxml
                 <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="2">
                <font>
                   <Font name="Agency FB Bold" size="18.0" />
                </font></Label>
                 <PasswordField fx:id="passField" prefHeight="31.0" prefWidth="179.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-<<<<<<< HEAD:ForGUIexperimentsVers1/ForGUIexperiments/bin/LogInAnimaLetters/LoginPage.fxml
+<<<<<<< HEAD:ForGUIexperimentsVers1/ForGUIexperiments/src/LogInAnimaLetters/LoginPage.fxml
                 <Button fx:id="btLogIn" onAction="#LogIn" prefHeight="29.0" prefWidth="73.0" style="-fx-background-color: rgba(97, 56, 255, 0.8); -fx-padding: 1; -fx-border-radius: 10;" text="Login" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3">
 =======
                 <Button fx:id="btLogIn" onAction="#Send" prefHeight="29.0" prefWidth="73.0" style="-fx-background-color: rgba(97, 56, 255, 0.8); -fx-padding: 1; -fx-border-radius: 10;" text="Login" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3">
->>>>>>> main:BiteMe-Client/bin/gui/LogInUser.fxml
+>>>>>>> main:BiteMe-Client/src/gui/LogInUser.fxml
                <font>
                   <Font name="Agency FB Bold" size="18.0" />
                </font></Button>
@@ -75,11 +75,11 @@
                   <Font name="Agency FB Bold" size="18.0" />
                </font>
             </Label>
-<<<<<<< HEAD:ForGUIexperimentsVers1/ForGUIexperiments/bin/LogInAnimaLetters/LoginPage.fxml
+<<<<<<< HEAD:ForGUIexperimentsVers1/ForGUIexperiments/src/LogInAnimaLetters/LoginPage.fxml
             <TextField fx:id="ipHostField" prefHeight="31.0" prefWidth="118.0" GridPane.columnIndex="1" />
 =======
             <TextField fx:id="HostIP" prefHeight="31.0" prefWidth="118.0" GridPane.columnIndex="1" />
->>>>>>> main:BiteMe-Client/bin/gui/LogInUser.fxml
+>>>>>>> main:BiteMe-Client/src/gui/LogInUser.fxml
             </children>
         </GridPane>
     </children>
