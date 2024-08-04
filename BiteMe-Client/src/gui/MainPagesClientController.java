@@ -66,13 +66,7 @@ public class MainPagesClientController {
     private TextField txtOrder_list_number;
     @FXML
     private TextField txtOrder_address;
-<<<<<<< HEAD:G6_Prototype_Client/prototypeByteMeClientVERS9/prototypeByteMeClient/src/gui/OrderFormController.java
-
-    
-    
-=======
   
->>>>>>> main:BiteMe-Client/src/gui/MainPagesClientController.java
     @FXML
     private TextField txtiDRestaurant1;
     @FXML
@@ -83,126 +77,9 @@ public class MainPagesClientController {
     private TextField txtOrder_list_number1;
     @FXML
     private TextField txtOrder_address1;
-<<<<<<< HEAD:G6_Prototype_Client/prototypeByteMeClientVERS9/prototypeByteMeClient/src/gui/OrderFormController.java
-    
-    
+       
     @FXML
     private Button btnClose;
-    
-    
-    
-    
-    //aaaaaaaaaaaaaaaaaaaaaaaa
-    @FXML
-    private StackPane contentArea;
-
-    
-    /*
-    @FXML
-    public void initialize() 
-    {
-        showView1();  // Show the default view on startup
-    }
-    */
-    
-    
-    /*
-    @FXML
-    private void showView1() 
-    {
-
-        loadView("View1.fxml");
-        
-        
-        //ccccccc
-
-        
-        this.txtiDRestaurant1.setText(s.getRestaurant());
-        this.txtIdOrder_number1.setText(String.valueOf(s.getOrderNumber()));
-        this.txtTotal_price1.setText(String.valueOf(s.getTotalPrice()));    
-        this.txtOrder_list_number1.setText(String.valueOf(s.getOrderListNumber())); 
-        this.txtOrder_address1.setText(String.valueOf(s.getOrderAddress()));
-         
-        //ccccccccc
-        
-    
-    }
-     */
-    
-    
-    
-    //gggggggggggggggggggggggg
-    
-    @FXML
-    private void showView1() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("View1.fxml"));
-        try {
-            Node view = loader.load();
-            contentArea.getChildren().setAll(view);
-
-            // Set the data after loading the view
-            txtiDRestaurant1 = (TextField) loader.getNamespace().get("txtiDRestaurant1");
-            txtIdOrder_number1 = (TextField) loader.getNamespace().get("txtIdOrder_number1");
-            txtTotal_price1 = (TextField) loader.getNamespace().get("txtTotal_price1");
-            txtOrder_list_number1 = (TextField) loader.getNamespace().get("txtOrder_list_number1");
-            txtOrder_address1 = (TextField) loader.getNamespace().get("txtOrder_address1");
-
-            //שלב מקדים לפני טענית הערכים לשדות
-            
-            txtiDRestaurant1.setText(s.getRestaurant());
-            txtIdOrder_number1.setText(String.valueOf(s.getOrderNumber()));
-            txtTotal_price1.setText(String.valueOf(s.getTotalPrice()));
-            txtOrder_list_number1.setText(String.valueOf(s.getOrderListNumber()));
-            txtOrder_address1.setText(String.valueOf(s.getOrderAddress()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    //gggggggggggggggggggggggggg
-    
-    
-    
-    
-=======
-       
->>>>>>> main:BiteMe-Client/src/gui/MainPagesClientController.java
-    @FXML
-    private void showView2() 
-    {
-        loadView("View2.fxml");
-    }
-    
-    @FXML
-    private void showView3() 
-    {
-        loadView("View3.fxml");
-    }
-
-    private void loadView(String fxmlFile) 
-    {
-        try 
-        {
-           // Node view = FXMLLoader.load(getClass().getResource(fxmlFile));
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-            Node view = loader.load();
-        	
-            
-            contentArea.getChildren().setAll(view);
-        } 
-        catch (IOException e) 
-        {
-            e.printStackTrace();
-        }
-    }
-    
-    
-    //aaaaaaaaaaaaaaaaa
-    
-    
-    
-    
-    
     
     @FXML
     private StackPane contentArea;
@@ -313,8 +190,6 @@ public class MainPagesClientController {
     
     
     
-<<<<<<< HEAD:G6_Prototype_Client/prototypeByteMeClientVERS9/prototypeByteMeClient/src/gui/OrderFormController.java
-=======
     //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     
     public void loadUserClient(User UserClient) 
@@ -327,7 +202,6 @@ public class MainPagesClientController {
 
     }
     //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
->>>>>>> main:BiteMe-Client/src/gui/MainPagesClientController.java
     
   
     
@@ -342,20 +216,11 @@ public class MainPagesClientController {
         ChatClient.user1 = new User(0, null, null, null, null, null, null, false, 0);// מאפס את המשתמש בשביל הניסיון התחברות הבא בתור
 
         try {
-<<<<<<< HEAD:G6_Prototype_Client/prototypeByteMeClientVERS9/prototypeByteMeClient/src/gui/OrderFormController.java
-         // FXMLLoader loader = new FXMLLoader(getClass().getResource("SummaryOfExistingOrder.fxml"));
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/LogInClient.fxml"));
-=======
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/LogInUser.fxml"));
->>>>>>> main:BiteMe-Client/src/gui/MainPagesClientController.java
 
             Parent root = loader.load();
 
             Scene scene = new Scene(root);
-<<<<<<< HEAD:G6_Prototype_Client/prototypeByteMeClientVERS9/prototypeByteMeClient/src/gui/OrderFormController.java
-    		//scene.getStylesheets().add(getClass().getResource("/gui/SummaryOfExistingOrder.css").toExternalForm());
-=======
->>>>>>> main:BiteMe-Client/src/gui/MainPagesClientController.java
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setTitle("Log-In BiteMe");
 
@@ -426,16 +291,4 @@ public class MainPagesClientController {
      */
     
     
-<<<<<<< HEAD:G6_Prototype_Client/prototypeByteMeClientVERS9/prototypeByteMeClient/src/gui/OrderFormController.java
-    /*
-    @Override
-    public void initialize(URL arg0, ResourceBundle arg1) {    
-        setFacultyComboBox();        
-    }
-    */
-    
-    
-    
-=======
->>>>>>> main:BiteMe-Client/src/gui/MainPagesClientController.java
 }
