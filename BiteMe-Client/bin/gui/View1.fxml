@@ -5,11 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<<<<<<< HEAD:G6_Prototype_Client/prototypeByteMeClientVERS9/prototypeByteMeClient/src/gui/View1.fxml
-<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.OrderFormController">
-=======
 <VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainPagesClientController">
->>>>>>> main:BiteMe-Client/src/gui/View1.fxml
    <children>
       <AnchorPane prefHeight="400.0" prefWidth="800.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);">
          <children>
