@@ -7,10 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-//import common.User;
-import logic.Order;
-import logic.ClientInfo;
-import logic.User;
+import entities.ClientInfo;
+import entities.Order;
+import entities.User;
 
 
 public class DBController {

@@ -6,10 +6,8 @@ package client;
 
 import ocsf.client.*;
 import client.*;
+import entities.*;
 import common.ChatIF;
-import logic.ClientInfo;
-import logic.Order;
-import logic.User;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -78,7 +76,8 @@ public class ChatClient extends AbstractClient
   //כאן מקבלים חזרה הודעה מהשרת
   //הופכים את הדגל לשקר בשביל לצאת מהמתנה פעילה
   //ואז מעדכנים את הנתונים במסך של ההזמנה של הלקוח
-  public void handleMessageFromServer(Object msg) {
+  public void handleMessageFromServer(Object msg) 
+  {
 	    // Update the awaitResponse flag
 	    awaitResponse = false;
 
@@ -86,119 +85,95 @@ public class ChatClient extends AbstractClient
 	    System.out.println("-->test5: in " + GREEN + "Class ChatClient extends AbstractClient" + RESET + BLUE + " func --handleMessageFromServer--" + RESET + " The server sent a response to the client");
 
 	    System.out.println("Message received from server: " + msg);
-
-	    if (msg instanceof String) 
-	    {
-	        String message = (String) msg;
-	        if (message.equals("order")) 
-	        {
-	            // Handle the "order" message
-	            System.out.println("Received 'order' from server");
-
-	            // Additional handling for 'order' message if needed
-	            return; // Early return if we only handle the "order" message
-	        }
-	    } 
-	    /*
-	    if (msg instanceof ArrayList) {
-	        // Handle the ArrayList message, assuming it's an ArrayList<Order>
-	        ArrayList<Order> orders = (ArrayList<Order>) msg;
-	        System.out.println("Received order list from server: " + orders);
-
-	        // Additional handling for order list if needed
-	        return; // Early return if we handle the order list
-	    }*/
 	    
-	    if (msg.equals("-1")) {
-            // User not found
-            ChatClient.user1.setUsername("-1");
-        } else if (msg.equals("-2")) {
-            // Incorrect password
-        	ChatClient.user1.setUsername("inf");// ערך זבל כדאי לקבל הודעת שגיאה על סיסמא ולא על שם משתמש
-            ChatClient.user1.setPassword("-2");
+	    BiteOptions answer = (BiteOptions) msg;
 	    
-        }else if (msg instanceof ArrayList) {
-	        // Handle the ArrayList message, assuming it's an ArrayList<Order>
-	        ArrayList<User> users = (ArrayList<User>) msg;
-	        System.out.println("Received order list from server: " + users);
+	    System.out.println("answe received from server: " + answer);
 
-	        // Additional handling for order list if needed
-	        return; // Early return if we handle the order list
-	    }
+	    
+	    //UUUUUUUUUUUUUUUUUUUUU
+		try
+		{
+			switch(answer.getOption())
+			{
+			
+			case LOGIN:		
+				System.out.println("Client-Test6: We entered the LOGIN case " );
+			
+				
+				User user= new User();
+				
+				if(!answer.getData().toString().equals("-1"))//אם חזר אובייקט משתמש מהשרת רק אז נשמור את זה לוקלית בלקוח
+				{
+			         user = User.fromString(answer.getData().toString());
+					System.out.println("answer User From server:"+user);
+				}
+				
+				
+				if(answer.getData().toString().equals("-1"))
+				{
+		            // User not found
+		            ChatClient.user1.setUsername("-1");
+				}
+				
+				
+				else if(user.getPassword().equals("-2"))
+				{
+
+		            // Incorrect password
+		        	ChatClient.user1.setUsername("inf");// ערך זבל כדאי לקבל הודעת שגיאה על סיסמא ולא על שם משתמש
+		            ChatClient.user1.setPassword("-2");
+					System.out.println("user1 with wrong Password:"+ChatClient.user1);
+
+				}
+				
+				
+				//במקרה והשם משתמש וסיסמה נכונים, אז אנחנו רוצים לטעון את השדות של המשתמש שחזר מהשרת לתוך המשתמש1 שעובד עם החלונות הגרפים של המשתמש
+				else if(!user.getPassword().equals("-2"))
+				{
+
+		            ChatClient.user1.setUserId(user.getUserId());
+		            ChatClient.user1.setUsername(user.getUsername());
+		            ChatClient.user1.setPassword(user.getPassword());
+		            ChatClient.user1.setEmail(user.getEmail());
+		            ChatClient.user1.setPhoneNumber(user.getPhoneNumber());
+		            ChatClient.user1.setPermission(user.getPermission());
+		            ChatClient.user1.setBranch(user.getBranch());
+		            ChatClient.user1.setHasDiscountCode(user.isHasDiscountCode());
+		            ChatClient.user1.setLoggedIn(user.getLoggedIn());
+
+					System.out.println("user1 all Fileds we get from Server:"+ChatClient.user1);
+
+		            
+				}
+			    else 
+			    {
+			        System.out.println("Error: Unexpected server response format.");
+			    }
+				
+				break;
+				
+
+				
+			   case LOGOUT:
+					System.out.println("Client-Test6: We entered the LOGOUT case " );
+
+					break;
+
+				
+				
+			}
+		}
+		//זה שייך לסוויץ-קייס הראשי
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		//UUUUUUUUUUUUUUUUUUUUUUUU
 	    
 
-	    // Convert the message to a string
-	    String st = msg.toString();
-	    System.out.println("-->test5: answer From Server: " + st);
-
-	    // Remove the surrounding brackets and split by comma
-	    //String trimmed = st.replaceAll("^\\[\\[|\\]\\]$", ""); // Remove the outer brackets
-	    String trimmed = st.replaceAll("^\\[|\\]$", ""); // Remove the outer brackets
-	    String[] result = trimmed.split(",\\s*"); // Split by comma and optional whitespace
-
-	    System.out.println("-->test5: print resultList: " + Arrays.toString(result));
-
-	    // Ensure the array has the expected number of elements before accessing them
-	    /*
-	    if (result.length >= 1) {
-	        try {
-	            // Save the first string from the result array to the restaurant field of s1
-	          //  s1.setRestaurant(result[0].trim());
-
-	            // For demonstration, let's print out the first string
-	            System.out.println("-->test5: restaurant: " + result[0]);
-
-	            // Continue updating other fields if needed
-	             s1.setRestaurant(result[0].trim());
-	             s1.setOrderNumber(Integer.parseInt(result[1].trim()));
-	             s1.setTotalPrice(Float.parseFloat(result[2].trim()));
-	             s1.setOrderListNumber(Integer.parseInt(result[3].trim()));
-	             s1.setOrderAddress(result[4].trim());
-	            
-	            // s1.setClientInfo(new ClientInfo(result[3].trim(), result[4].trim(), result[5].trim()));
-	        }
-	        catch (NumberFormatException e) {
-	            System.out.println("Error parsing number from server response: " + e.getMessage());
-	        }
-	        */
-	    if (st.startsWith("User{") && st.endsWith("}")) {
-	        try {
-	            // Remove the surrounding "User{" and "}"
-	            String userDetails = st.substring(5, st.length() - 1);
-	            String[] userFields = userDetails.split(", ");
-
-	            // Extract fields
-	            int userId = Integer.parseInt(userFields[0].split("=")[1].trim());
-	            String username = userFields[1].split("=")[1].trim().replace("'", "");
-	            String password = userFields[2].split("=")[1].trim().replace("'", "");
-	            String email = userFields[3].split("=")[1].trim().replace("'", "");
-	            String phoneNumber = userFields[4].split("=")[1].trim().replace("'", "");
-	            String permission = userFields[5].split("=")[1].trim().replace("'", "");
-	            String branch = userFields[6].split("=")[1].trim().replace("'", "");
-	            boolean hasDiscountCode = Boolean.parseBoolean(userFields[7].split("=")[1].trim());
-	            int loggedIn = Integer.parseInt(userFields[8].split("=")[1].trim());
-
-	            // Update the user object
-	            ChatClient.user1.setUserId(userId);
-	            ChatClient.user1.setUsername(username);
-	            ChatClient.user1.setPassword(password);
-	            ChatClient.user1.setEmail(email);
-	            ChatClient.user1.setPhoneNumber(phoneNumber);
-	            ChatClient.user1.setPermission(permission);
-	            ChatClient.user1.setBranch(branch);
-	            ChatClient.user1.setHasDiscountCode(hasDiscountCode);
-	            ChatClient.user1.setLoggedIn(loggedIn);
-
-	            // Print user details
-	            System.out.println("-->test5: User Details: " + ChatClient.user1);
-
-	        } catch (Exception e) {
-	            System.out.println("Error parsing user from server response: " + e.getMessage());
-	            e.printStackTrace();
-	        }
-	    } else {
-	        System.out.println("Error: Unexpected server response format.");
-	    }
+	    
+	    
 	}
  
   /**
@@ -207,20 +182,23 @@ public class ChatClient extends AbstractClient
    * @param id The message from the UI.    
    */
   
-  public void handleMessageFromClientUI(List<String> list)  
+  public void handleMessageFromClientUI(Object list)  
   {
     try
     {
     	
-    	System.out.println("test4: in "+GREEN+"Class ChatClient extends AbstractClient"+RESET+BLUE+" func --handleMessageFromClientUI--"+RESET+" Receives the message from the client's screen and manages the event against the server");//TTTTTTTTTTTTTTTTTTTTTTTT
+    	//System.out.println("Option data + option" + (BiteOptions)list);//TTTTTTTTTTTTTTTTTTTTTTTT
+    	System.out.println("Option data + option" + list);//TTTTTTTTTTTTTTTTTTTTTTTT
 
+    	
+    	
     	//מתחבר לשרת
     	openConnection();//in order to send more than one message
        //משתנה סטטי שעוזר לנו להבין אם הזרת החזיר לנו תשובה
     	awaitResponse = true;
        	System.out.println("test4: try to send");
        	
-        System.out.println("pring Size of Msg of Client:"+list.size());
+        //System.out.println("pring Size of Msg of Client:"+list.size());
         
 
        	
@@ -261,5 +239,16 @@ public class ChatClient extends AbstractClient
     catch(IOException e) {}
     System.exit(0);
   }
+  
+  
+  //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  @Override
+  protected void connectionEstablished() 
+  {
+     	System.out.println("testAAA: The connection between the server and the client was successful ");
+
+  }
+  
+  
 }
 //End of ChatClient class

@@ -13,6 +13,9 @@ import client.ChatClient;
 import client.ClientController;
 import client.ClientUI;
 import common.ChatIF;
+import entities.BiteOptions;
+import entities.Order;
+import entities.User;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
@@ -24,7 +27,7 @@ import javafx.scene.Parent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.Label; 
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -32,7 +35,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import logic.Order;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -155,6 +158,7 @@ public class LogInUserController {
 	 * @param event The action event triggered by the user interaction.
 	 * @throws Exception if an error occurs during the FXML loading process.
 	 */
+	@SuppressWarnings("null")
 	public void Send(ActionEvent event) throws Exception {
 		ClientUI.chat.setMyhost(HostIP.getText());
 
@@ -170,14 +174,27 @@ public class LogInUserController {
 			System.out.println("You must enter username and password");
 			messageLabel.setText("You must enter username and password");
 			messageLabel.setVisible(true);
-		} else {
-			List<String> list = new ArrayList<>();
-			list.add(username);
-			list.add(userpassword);
+		} 
+		else 
+		{
+			//List<String> list = new ArrayList<>();
+   		    //list.add(username);
+			//list.add(userpassword);
+			
+			//aaaaaaaaaaaaaaaaaaaaa
+		    User user = new User(0,username,userpassword,null,null,null,null,false,0);//kkkkkkk
+			//BiteOptions option = new BiteOptions(user, BiteOptions.Option.LOGIN);//kkkkkkk
+			//BiteOptions option = new BiteOptions("noam", BiteOptions.Option.LOGIN);//kkkkkkk
+			BiteOptions option = new BiteOptions(user.toString(), BiteOptions.Option.LOGIN);//kkkkkkk
 
 			System.out.println("test1: in" + GREEN + " Class SummaryOfExistingOrderController" + RESET
 					+ " login details we send TO " + RESET + BLUE + "func --accept--" + RESET);
-			ClientUI.chat.accept(list);
+
+			//ClientUI.chat.accept(list);
+			System.out.println("Kaki Gdollllllllllll");
+			ClientUI.chat.accept(option);//kkkkkkk
+			//aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+			
 			System.out.println("test1: in" + GREEN + " Class SummaryOfExistingOrderController" + RESET
 					+ " There is an active standby at " + RESET + BLUE + "func --accept--" + RESET
 					+ "until a message returns from the server (return message)");

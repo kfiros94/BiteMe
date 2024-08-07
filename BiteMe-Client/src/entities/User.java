@@ -1,10 +1,13 @@
-package logic;
+package entities;
 
 import java.io.Serializable;
 
-public class User implements Serializable {
-    
-	private int userId;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+
+public class User implements Serializable{
+    private int userId;
     private String username;
     private String password;
     private String email;
@@ -13,10 +16,13 @@ public class User implements Serializable {
     private String branch;
     private boolean hasDiscountCode;
     private int loggedIn;
-
+    private ClientInfo cl;
     
-    public User() {
+    public User()
+    {
+    	
     }
+
 
     // Constructor
     public User(int userId, String username, String password, String email, String phoneNumber, String permission, String branch, boolean hasDiscountCode, int loggedIn) {
@@ -119,4 +125,35 @@ public class User implements Serializable {
                 ", loggedIn=" + loggedIn +
                 '}';
     }
+    
+    
+    //bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+    
+ // Static method to create a User from a toString output
+    public static User fromString(String toStringOutput) {
+        Pattern pattern = Pattern.compile("User\\{userId=(\\d+), username='(.*?)', password='(.*?)', email='(.*?)', phoneNumber='(.*?)', permission='(.*?)', branch='(.*?)', hasDiscountCode=(true|false), loggedIn=(\\d+)\\}");
+        Matcher matcher = pattern.matcher(toStringOutput);
+
+        if (matcher.find()) {
+            int userId = Integer.parseInt(matcher.group(1));
+            String username = matcher.group(2).equals("null") ? null : matcher.group(2);
+            String password = matcher.group(3).equals("null") ? null : matcher.group(3);
+            String email = matcher.group(4).equals("null") ? null : matcher.group(4);
+            String phoneNumber = matcher.group(5).equals("null") ? null : matcher.group(5);
+            String permission = matcher.group(6).equals("null") ? null : matcher.group(6);
+            String branch = matcher.group(7).equals("null") ? null : matcher.group(7);
+            boolean hasDiscountCode = Boolean.parseBoolean(matcher.group(8));
+            int loggedIn = Integer.parseInt(matcher.group(9));
+
+            return new User(userId, username, password, email, phoneNumber, permission, branch, hasDiscountCode, loggedIn);
+        } else {
+            throw new IllegalArgumentException("Invalid toString output: " + toStringOutput);
+        }
+    }
+    
+    //bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+    
+    
+    
+    
 }

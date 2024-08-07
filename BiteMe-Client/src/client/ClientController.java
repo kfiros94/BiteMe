@@ -3,10 +3,12 @@
 // license found at www.lloseng.com 
 package client;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import client.*;
 import common.ChatIF;
+import entities.BiteOptions;
 
 
 /**
@@ -85,10 +87,10 @@ public class ClientController implements ChatIF
    * This method waits for input from the console.  Once it is 
    * received, it sends it to the client's message handler.
    */
-  public void accept(List<String> list) 
+  public void accept(Object object) 
   {
 	System.out.println("test3: in "+GREEN+"Class ClientController"+RESET+BLUE+" func --accept--"+RESET+" Call to"+BLUE+" func --handleMessageFromClientUI--"+RESET);//TTTTTTTTTTTTTTTTTTTTTTTT
-	  client.handleMessageFromClientUI(list);
+	client.handleMessageFromClientUI(object);
 	 // client.setHost("DF");
 
   }

@@ -15,13 +15,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import logic.ClientInfo;
 import server.EchoServerPro;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import entities.ClientInfo;
 
 public class ServerPortFrameControllerPro implements Initializable {
     //private EchoServerPro ev;
