@@ -2,14 +2,14 @@ package client;
 import javafx.application.Application;
 
 import javafx.stage.Stage;
-import logic.ClientInfo;
-import logic.Order;
 
 import java.net.InetAddress;
 import java.util.Vector;
 import gui.LogInUserController;
 import gui.MainPagesClientController;
 import client.ClientController;
+import entities.ClientInfo;
+import entities.Order;
 
 public class ClientUI extends Application {
 	public static ClientController chat; //only one instance

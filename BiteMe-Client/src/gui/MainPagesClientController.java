@@ -9,6 +9,10 @@ import java.util.ResourceBundle;
 
 import client.ChatClient;
 import client.ClientUI;
+import entities.BiteOptions;
+import entities.ClientInfo;
+import entities.Order;
+import entities.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,9 +30,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import logic.ClientInfo;
-import logic.Order;
-import logic.User;
 
 
 // implements Initializable 
@@ -208,14 +209,14 @@ public class MainPagesClientController {
     @FXML
     private void CloseButton(ActionEvent event) {
     	
-    	// Send logout request to server with the user's ID
-    	int usertologout=ChatClient.user1.getUserId();
-        List<String> logoutRequest = Arrays.asList("logoutrequest", String.valueOf(usertologout));
-        ClientUI.chat.accept(logoutRequest);
+		BiteOptions option = new BiteOptions(ChatClient.user1.toString(), BiteOptions.Option.LOGOUT);//kkkkkkk
+	    ClientUI.chat.accept(option);
+
         
         ChatClient.user1 = new User(0, null, null, null, null, null, null, false, 0);// מאפס את המשתמש בשביל הניסיון התחברות הבא בתור
 
-        try {
+        try 
+        {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/LogInUser.fxml"));
 
             Parent root = loader.load();
@@ -226,7 +227,9 @@ public class MainPagesClientController {
 
             stage.setScene(scene);
             stage.show();
-        } catch (IOException e) {
+        } 
+        catch (IOException e) 
+        {
             e.printStackTrace();
         }
     }
