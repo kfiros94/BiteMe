@@ -6,6 +6,7 @@ import java.util.List;
 
 import client.ChatClient;
 import client.ClientUI;
+import entities.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import logic.User;
 
 public class MainPageSupplierController {
 
