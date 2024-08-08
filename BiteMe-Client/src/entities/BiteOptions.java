@@ -18,9 +18,9 @@ import entities.BiteOptions.Option;
  * 
  * @author Kfir Amoyal
  * @author Israel Ohayon
- * @author Yaniv shatil
+ * @author Yaniv Shatil
  * @author Noam Furmann
- * @author Omri Hyat
+ * @author Omri Heit
  * @author Eithan Zerbel
  */
 
@@ -39,40 +39,42 @@ public class BiteOptions implements Serializable{
 		SIMULTANEOUS_VIEW_PAST_QUARTERLY_REPORT_CEO, GENERATE_NEW_REPORTS_FOR_CEO, IMPORT_NEW_USERS;//We may add more options
 	}
 	
-	private Object data;
-	private Option option;
+	private Object data; // Data associated with the option
+	private Option option; // Specific option for the operation
 	
-	public BiteOptions()
-	{
-
+	// Default constructor
+	public BiteOptions() {
 	}
 	
-	
-	public BiteOptions(Object data, Option option)
-	{
+	// Constructor with parameters
+	public BiteOptions(Object data, Option option) {
 		this.data = data;
 		this.option = option;
 	}
 	
+	// Getter for data
 	public Object getData() {
 		return data;
 	}
 	
+	// Setter for data
 	public void setData(Object data) {
 		this.data = data;
 	}
 	
+	// Getter for option
 	public Option getOption() {
 		return option;
 	}
 	
+	// Setter for option
 	public void setOption(Option option) {
 		this.option = option;
 	}
 	
+	// Override toString method to return a string representation of the object
 	@Override
-	public String toString() 
-	{
+	public String toString() {
 		return String.format("[%s, %s]", data, option);
 	}
 }
