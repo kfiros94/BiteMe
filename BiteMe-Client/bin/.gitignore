@@ -1,9 +1,3 @@
-<<<<<<< HEAD
 /gui/
-=======
-/client/
 /entities/
-/gui/
-/logic/
-/supplier/
->>>>>>> main
+/client/

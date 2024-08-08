@@ -182,7 +182,7 @@ public class LogInUserController {
 			//list.add(userpassword);
 			
 			//aaaaaaaaaaaaaaaaaaaaa
-		    User user = new User(0,username,userpassword,null,null,null,null,false,0);//kkkkkkk
+		    User user = new User(0,username,userpassword,null,null,null,null,false,0,null);//kkkkkkk
 			//BiteOptions option = new BiteOptions(user, BiteOptions.Option.LOGIN);//kkkkkkk
 			//BiteOptions option = new BiteOptions("noam", BiteOptions.Option.LOGIN);//kkkkkkk
 			BiteOptions option = new BiteOptions(user.toString(), BiteOptions.Option.LOGIN);//kkkkkkk
@@ -238,6 +238,9 @@ public class LogInUserController {
 						MainPagesClientController MainPagesClientController = loader.getController();
 						MainPagesClientController.loadOrder(ChatClient.s1);// פונקציית עזר אחרי שאנחנו יוצרים מופע של קונטרולר,אנחנו מעדכנים נתונים לשדה של הזמנה,וככה נעשה כל פעם רק בצורה אחרת
 						MainPagesClientController.loadUserClient(ChatClient.user1);// בצאט-קליינט כשחוזרת הודעה מהשרת אז נגדיר שדות סטטיק שיהיה אפשר לטעון אותם לכאן
+						MainPagesClientController.initialize(ChatClient.user1.getUsername(), ChatClient.user1.getaccountStatus(), ChatClient.user1.getBranch());
+						primaryStage.setTitle("User-Portal");
+
 						break;
 					case "admin":
 						System.out.println("User type: Admin");
@@ -248,7 +251,7 @@ public class LogInUserController {
 					if(root!=null) {
 						
 						Scene scene = new Scene(root);
-						primaryStage.setTitle("Page Home");
+						//primaryStage.setTitle("Page Home");
 
 						primaryStage.setScene(scene);
 						primaryStage.show();
@@ -266,93 +269,6 @@ public class LogInUserController {
 
 
 
-	// זה עוד מהאב טיפוס יכול להיות שנוכל להשתמש בזה במחלקות אחרות.
-	/// isreal send method to serch for order
-	/*
-	 * public void Send(ActionEvent event) throws Exception {
-	 * 
-	 * ClientUI.chat.setMyhost(HostIP.getText());//עדכון ההוסט של הלקוח בצורה ידנית
-	 * מהמסך
-	 * 
-	 * 
-	 * String Order_number; FXMLLoader loader = new FXMLLoader();
-	 * 
-	 * Order_number=getOrder_numbertxt(); System.out.println("test1: in"
-	 * +GREEN+" Class SummaryOfExistingOrderController"
-	 * +RESET+"The customer enters a number on the "+RESET+
-	 * RED+"Order_numbertxt screen"+RESET);//TTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-	 * 
-	 * 
-	 * System.out.println("if in msg have only NUMBER: "+Order_number.matches("\\d+"
-	 * ));
-	 * 
-	 * if( !(Order_number.matches("\\d+")) || (Order_number.trim().isEmpty())) //אם
-	 * במסך הראשון הלקוח מכניס משהו שהוא לא מספר טהור או לא רושם כלום {
-	 * 
-	 * System.out.println("You must enter an order number");
-	 * 
-	 * messageLabel.setText("You must enter an order number");
-	 * messageLabel.setVisible(true); } else {
-	 * 
-	 * 
-	 * List<String> list=new ArrayList<>(); list.add(Order_number);
-	 * 
-	 * System.out.println("test1: in"
-	 * +GREEN+" Class SummaryOfExistingOrderController"
-	 * +RESET+" number of Order we send TO "+RESET+BLUE+"func --accept--"+RESET);//
-	 * TTTTTTTTTTTTTTTTTTTTTTTTTTTTT ClientUI.chat.accept(list);
-	 * System.out.println("test1: in"
-	 * +GREEN+" Class SummaryOfExistingOrderController"
-	 * +RESET+" There is an active standby at "+RESET+BLUE+"func --accept--"
-	 * +RESET+"until a message returns from the server (return message)");//
-	 * TTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-	 * 
-	 * // String a=ClientUI.chat.MyipHost;
-	 * //ClientUI.chat.setMyhost(HostIP.getText());
-	 * 
-	 * //אנחנו מגיעים לכאן לאחר שהשרת החזיר תשובה ללקוח והלקוח יצא מהמתנה פעילה
-	 * //ניתן ערך של 1- במידה ומספר הזמנה שהקליד המשתמש לא קיים במסד נתונים //
-	 * if(String.valueOf(ChatClient.s1.getOrderNumber()).equals("-1"))
-	 * if(ChatClient.s1.getRestaurant().equals("-1")) {
-	 * System.out.println("Order_number Not Found");
-	 * 
-	 * messageLabel.setText("Order_number Not Found");
-	 * messageLabel.setVisible(true);
-	 * 
-	 * } else { System.out.println("Order_number Found");
-	 * 
-	 * System.out.println("test1: in"
-	 * +GREEN+" Class SummaryOfExistingOrderController"
-	 * +RESET+" The server returned that there is an order, we will hide this window "
-	 * +RESET+RED+"Summary Of Existing Order"+RESET);//TTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-	 * ((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary
-	 * window
-	 * 
-	 * System.out.println("test1: in"
-	 * +GREEN+" Class SummaryOfExistingOrderController"
-	 * +RESET+" Open the new window: "+RESET+RED+"Order_number Managment Tool"+RESET
-	 * );//TTTTTTTTTTTTTTTTTTTTTTTTTTTTT Stage primaryStage = new Stage(); //Pane
-	 * root =
-	 * loader.load(getClass().getResource("/gui/OrderForm.fxml").openStream()); Pane
-	 * root =
-	 * loader.load(getClass().getResource("/gui/MainPagesClient.fxml").openStream())
-	 * ;
-	 * 
-	 * 
-	 * 
-	 * 
-	 * MainPagesClientController MainPagesClientController = loader.getController();
-	 * MainPagesClientController.loadOrder(ChatClient.s1);
-	 * 
-	 * //cccccccccccccc //MainPagesClientController. //cccccccc
-	 * 
-	 * 
-	 * Scene scene = new Scene(root);
-	 * //scene.getStylesheets().add(getClass().getResource("/gui/OrderForm.css").
-	 * toExternalForm()); primaryStage.setTitle("Page Home");
-	 * 
-	 * primaryStage.setScene(scene); primaryStage.show(); } } }
-	 */
 
 	public void start(Stage primaryStage) throws Exception {
 		// Parent root =

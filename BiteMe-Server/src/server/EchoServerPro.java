@@ -8,6 +8,7 @@ import java.util.List;
 import entities.BiteOptions;
 import entities.ClientInfo;
 import entities.Order;
+import entities.Restaurant;
 import entities.User;
 //import common.User;
 import guiPro.ServerPortFrameControllerPro;
@@ -54,6 +55,7 @@ public class EchoServerPro extends AbstractServer
 		BiteOptions answer= new BiteOptions();
 		ArrayList<Order> costumer_all_orders = new ArrayList<Order>();
 		User user;
+		Restaurant restaurant;
 		try
 		{
 			switch(request.getOption())
@@ -147,6 +149,19 @@ public class EchoServerPro extends AbstractServer
 		        
 				break;
 
+			   case SELECT_RESTAURANT:
+					System.out.println("Eco-Test2: We entered the SELECT_RESTAURANT case " );
+					restaurant = Restaurant.fromString(request.getData().toString());//ממיר את המחרוזת למופע של לקוח 
+			        System.out.println("Eco-Test2: Print audit Extract a field from the instance of the object: "+restaurant.getName());
+					ArrayList<Restaurant> restaurants = DBController.showRestaurants();//מושך את כל המשתמשים מהמסד נתונים למערך משתמשים
+					System.out.println("Restaurant received from DB: " + restaurants.toString());
+
+					answer.setData(restaurants.toString());
+					answer.setOption(BiteOptions.Option.SELECT_RESTAURANT);
+					client.sendToClient(answer);
+					
+					
+					break;
 
 				
 			}
@@ -166,10 +181,12 @@ public class EchoServerPro extends AbstractServer
 		
 		
 		
-		System.out.println("\ntest2: Message received: " + msg + " from " + client);
+		//System.out.println("\ntest2: Message received: " + msg + " from " + client);
 		int flagOrederFound = 0;
 		int idexMsg = 0;
 
+		
+		
 		if (msg instanceof List)
 		{
 			List<?> list = (List<?>) msg;
@@ -277,6 +294,8 @@ public class EchoServerPro extends AbstractServer
 			}
 		}
 	}
+	
+	
 	
 	
 	

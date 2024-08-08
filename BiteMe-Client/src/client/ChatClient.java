@@ -7,10 +7,9 @@ package client;
 import ocsf.client.*;
 import client.*;
 import entities.*;
+import gui.RestaurantSelectionController;
+import javafx.fxml.FXMLLoader;
 import common.ChatIF;
-import entities.ClientInfo;
-import entities.Order;
-import entities.User;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -44,7 +43,9 @@ public class ChatClient extends AbstractClient
    */
   ChatIF clientUI; 
   public static Order  s1 = new Order("chackkk",0,0,0,null,new ClientInfo(null,null,null));
-  public static User user1 = new User(0,null,null,null,null,null,null,false,0);
+  public static User user1 = new User(0,null,null,null,null,null,null,false,0,null);
+  public static ArrayList<Restaurant> restaurants = new  ArrayList<Restaurant>();
+
   
   //משתנה שעוזר להבין אם חזרה הודעה מהשרת ללקוח
   public static boolean awaitResponse = false;
@@ -144,6 +145,8 @@ public class ChatClient extends AbstractClient
 		            ChatClient.user1.setBranch(user.getBranch());
 		            ChatClient.user1.setHasDiscountCode(user.isHasDiscountCode());
 		            ChatClient.user1.setLoggedIn(user.getLoggedIn());
+		            ChatClient.user1.setaccountStatus(user.getaccountStatus());
+
 
 					System.out.println("user1 all Fileds we get from Server:"+ChatClient.user1);
 
@@ -164,6 +167,24 @@ public class ChatClient extends AbstractClient
 					break;
 
 				
+					
+			   case SELECT_RESTAURANT:
+					System.out.println("Client-Test6: We entered the SELECT_RESTAURANT case " );
+					restaurants = Restaurant.fromStringArray(answer.getData().toString());
+					
+					System.out.println("CcaaaaClient-Test6: We entered the SELECT_RESTAURANT case"+restaurants.get(0) );
+					System.out.println("CcaaaaClient-Test6: We entered the SELECT_RESTAURANT case"+restaurants.get(1) );
+
+		           // FXMLLoader loader = new FXMLLoader();
+					//RestaurantSelectionController RestaurantSelectionController = loader.getController();
+					//loadRestaurant(restaurants);
+
+
+				   
+				   
+					break;
+
+				   
 				
 			}
 		}
