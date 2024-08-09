@@ -12,6 +12,10 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFx"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-8.0.13.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>
+<<<<<<< HEAD
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JasonClient"/>
+=======
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/orgJsonClient"/>
+>>>>>>> 12d814d919b138029f23dcdfac3bcee3b204632a
 	<classpathentry kind="output" path="bin"/>
 </classpath>

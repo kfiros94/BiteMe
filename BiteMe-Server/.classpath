@@ -13,7 +13,11 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javafx"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFx"/>
+<<<<<<< HEAD
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JarJASON"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JasonServer"/>
+=======
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/orgJSONServer"/>
+>>>>>>> 12d814d919b138029f23dcdfac3bcee3b204632a
 	<classpathentry kind="output" path="bin"/>
 </classpath>
