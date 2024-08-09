@@ -2,6 +2,9 @@ package gui;
 
 import java.io.IOException;
 
+import client.ChatClient;
+import client.ClientUI;
+import entities.BiteOptions;
 import entities.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -99,7 +102,6 @@ public class StartOrderController
     @FXML
     private void handleNextButtonAction(ActionEvent event) 
     {
-        // Logic for next button
         System.out.println("Next button clicked");
 
         String username = usernameField.getText();
@@ -126,20 +128,13 @@ public class StartOrderController
             incorrectPasswordLabel.setVisible(false);
         }
 
-        if (isUsernameValid && isPasswordValid) 
+        if (isUsernameValid && isPasswordValid && UserCustomer != null) 
         {
-            // Proceed to the next step
-            System.out.println("Valid credentials. Proceeding to the next step.");
-            
-            
-            
             FXMLLoader loader = new FXMLLoader();
             Pane root = null;
             Stage primaryStage = new Stage();
             try {
-                // Load the FXML file
                 loader.setLocation(getClass().getResource("/gui/RestaurantSelection.fxml"));
-
                 root = loader.load();
                 
                 // Hide the current window
@@ -148,27 +143,22 @@ public class StartOrderController
                 // Set the new stage
                 Scene scene = new Scene(root);
                 primaryStage.setScene(scene);
-                
-    			primaryStage.setTitle("User-Portal -> New Order -> Select Restaurant");
+                primaryStage.setTitle("User-Portal -> New Order -> Select Restaurant");
 
-                
-                RestaurantSelectionController RestaurantSelectionController = loader.getController();
-                RestaurantSelectionController.loadUserCustomer(UserCustomer);
-                
+                RestaurantSelectionController restaurantSelectionController = loader.getController();
+                restaurantSelectionController.loadUserCustomer(UserCustomer);
+
+                // Show the new stage
                 primaryStage.show();
 
-
-                // Uncomment and use if needed
-            } 
-            catch (IOException e) 
-            {
-                // Print the stack trace and show an error dialog
+            } catch (IOException e) {
                 e.printStackTrace();
-                showAlert("Error", "Could not load the Start Order page.");
+                showAlert("Error", "Could not load the Restaurant Selection page.");
             }
-			
-            
-            
+        }
+        else if (UserCustomer == null)
+        {
+            showAlert("Error", "User information is not loaded properly.");
         }
     }
 
