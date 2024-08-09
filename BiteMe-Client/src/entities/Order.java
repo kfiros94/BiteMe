@@ -15,7 +15,7 @@ public class Order implements Serializable
 	private int Order_list_number;
 	private String Order_address;
 	private ClientInfo cl;
-	 private Map<String, Object> orderList; // New field as Map
+	private Map<String, Object> orderList; // New field as Map
 	
 	/**
 	 * @param restaurant

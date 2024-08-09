@@ -63,6 +63,39 @@ public class DBController {
         System.out.println("Test 5"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
         return orders;
     }
+    /**
+     * TODO: 
+     * 1)update returned value 
+     * @param order
+     * @return
+     */
+    protected static ArrayList<Order> getOrderManagmentInfo(Order order) {
+        System.out.println("in getOrderManagmentInfo Function"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+        ArrayList<Order> orders = new ArrayList<>();
+
+        try {
+            String query = "SELECT * FROM restaurant_orders"; // Enclose table name in backticks
+            java.sql.Statement stmt = conn.createStatement();
+            ResultSet ordersFromTable = stmt.executeQuery(query);
+            System.out.println("Test 2"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+
+            while (ordersFromTable.next()) {
+                System.out.println("Test 3"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+                String restaurantName = ordersFromTable.getString("restaurant");
+                int orderNumber = ordersFromTable.getInt("Order_number");
+                float totalPrice = ordersFromTable.getFloat("Total_price");
+                int orderListNumber = ordersFromTable.getInt("Order_list_number");
+                String orderAddress = ordersFromTable.getString("Order_address");
+                System.out.println("Test 4"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+                orders.add(new Order(restaurantName, orderNumber, totalPrice, orderListNumber, orderAddress));
+            }
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println("Error returning order details: " + e.getMessage());
+        }
+        System.out.println("Test 5"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+        return orders;
+    }
     
     //return users table
     protected static ArrayList<User> showusers() {
