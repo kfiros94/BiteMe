@@ -15,6 +15,10 @@ import guiPro.ServerPortFrameControllerPro;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+
 public class EchoServerPro extends AbstractServer 
 {
 
@@ -155,10 +159,13 @@ public class EchoServerPro extends AbstractServer
 				    System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + branch.toString() );
 
 				    ArrayList<Restaurant> restaurants;
-				    if ("ALL".equals(branch)) {
+				    if ("ALL".equals(branch)) 
+				    {
 				        restaurants = DBController.showAllRestaurants();
-				    } else {
-				        restaurants = DBController.showRestaurants(branch);
+				    } 
+				    else 
+				    {
+				        restaurants = DBController.showRestaurants(branch);//זה מביא מסעדות לפי מיקום סניף ספציפי
 				    }
 				    System.out.println("Restaurants fetched from DB: " + restaurants);
 				    answer.setData(restaurants.toString());
@@ -166,6 +173,41 @@ public class EchoServerPro extends AbstractServer
 				    client.sendToClient(answer);
 				    System.out.println("Server sent response: " + answer);
 				    break;
+				    
+				    
+				    
+				    
+			   case TEST_JSON:
+				   
+
+				   //AAAAAAAAAAAAAAAAAAA
+				   int orderId = 1; // Replace with the order ID you want to retrieve
+		            JSONArray orderJsonArray = DBController.getOrderWithJsonField(orderId);
+		            if (orderJsonArray != null) 
+		            {
+		                System.out.println("Order JSON Array: " + orderJsonArray.toString(4));
+		                
+		                // Example: iterate over the JSON array
+		                for (int i = 0; i < orderJsonArray.length(); i++) 
+		                {
+		                    JSONObject item = orderJsonArray.getJSONObject(i);
+		                    int itemId = item.getInt("item_id");
+		                    int quantity = item.getInt("quantity");
+		                    JSONArray changes = item.getJSONArray("changes");
+		                    System.out.println("Item ID: " + itemId);
+		                    System.out.println("Quantity: " + quantity);
+		                    System.out.println("Changes: " + changes.toString());
+				   
+		                }
+		            }
+				   //AAAAAAAAAAAAAAAAAA
+				   
+				   
+				   
+				   
+				   
+				    break;
+
 			}
 			
 			

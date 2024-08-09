@@ -125,37 +125,71 @@ public class RestaurantSelectionController
     
     
 
+    
+    
     @FXML
     private void handleNextButtonAction(ActionEvent event) 
     {
         // Logic for next button
         System.out.println("Next button clicked");
         
-        
+        /*
         //HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
-		BiteOptions option = new BiteOptions(restaurant.toString(), BiteOptions.Option.SELECT_RESTAURANT);//kkkkkkk
+        System.out.println("print Restaurnttttt:"+restaurant.toString());
+
+		BiteOptions option = new BiteOptions(restaurant.toString(), BiteOptions.Option.TEST_JSON);//kkkkkkk
 
 		ClientUI.chat.accept(option);
 
         //HHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+        */
         
         
-
-        String selectedRestaurant = restaurantComboBox.getValue();
-        String selectedBranch = branchComboBox.getValue();
-
-        if (selectedRestaurant == null || selectedBranch == null) 
+        
+        //aaaaaaaaaaaaaaaaaaaa
+        FXMLLoader loader = new FXMLLoader();
+        Pane root = null;
+        Stage primaryStage = new Stage();
+        try 
         {
-            System.out.println("Please select both a restaurant and a branch.");
-            // Optionally, display an alert to the user
-            return;
-        }
+            // Load the FXML file
+            loader.setLocation(getClass().getResource("/gui/SelectFromRestMenu.fxml"));
 
-        // Proceed to the next step
-        System.out.println("Selected Restaurant: " + selectedRestaurant);
-        System.out.println("Selected Branch: " + selectedBranch);
-        // Add your navigation logic here
+            root = loader.load();
+            
+            // Hide the current window
+            ((Node) event.getSource()).getScene().getWindow().hide();
+
+            // Set the new stage
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+			primaryStage.setTitle("User-Portal -> New Order -> Select Restaurant -> Select Menu Items");
+
+            
+			SelectFromRestMenuController SelectFromRestMenuController = loader.getController();
+           // StartOrderController.loadUserCustomer(UserCustomer);
+
+            // Uncomment and use if needed
+        } 
+        catch (IOException e) 
+        {
+            // Print the stack trace and show an error dialog
+            e.printStackTrace();
+            showAlert("Error", "Could not load the Start Order page.");
+        }
+        
+        //aaaaaaaaaaaaaaaaaaaaaa
+        
+        
+        
+        
+ 
     }
+    
+    
+    
+    
     
 
     private void loadRestaurants() 
@@ -175,13 +209,17 @@ public class RestaurantSelectionController
     private void loadBranches() 
     {
         branchComboBox.getItems().clear();
-        branchComboBox.getItems().addAll("North", "South", "East", "West", "Central"); // Add all possible branches
+        branchComboBox.getItems().addAll("North", "South", "Central"); // Add all possible branches
         if (UserCustomer != null) {
             branchComboBox.setValue(UserCustomer.getBranch()); // Set the user's branch as default
         }
     }
     
-    
+
+    //זאת מתודת עזר שקוראים לה מהקונטרולר הקודם לאחר יצירת מופע של הקונטרולר הזה של בחירת מסעדה
+    //מה שקורה כאן זה 2 דברים במקביל שזה ממש טוב לנו
+    //טוענים מידע מהקונטרולר של התחלת הזמנה לשדה משתמש של הקונטרולר הזה 
+    //וגם אנחנו מבצעים פנייה לשרת לבקש את כל המסעדות שיש במסד נתונים כהכנה לעבודה עם הדף הנוכחי
     public void loadUserCustomer(User UserClient) 
     {
         this.UserCustomer = UserClient;
@@ -189,7 +227,7 @@ public class RestaurantSelectionController
 
         // Fetch restaurants from server for all branches
         BiteOptions option = new BiteOptions("ALL", BiteOptions.Option.SELECT_RESTAURANT);
-        ClientUI.chat.accept(option);
+        ClientUI.chat.accept(option);// המתנה פעילה עד לתשובה מהשרת
 
         Platform.runLater(() -> {
             loadBranches();
@@ -205,12 +243,15 @@ public class RestaurantSelectionController
 
     }
     
-    public void updateRestaurantList() {
+    public void updateRestaurantList() 
+    {
         Platform.runLater(() -> {
             loadRestaurants();
         });
     }
-    private void updateRestaurantsForSelectedBranch() {
+    
+    private void updateRestaurantsForSelectedBranch() 
+    {
         String selectedBranch = branchComboBox.getValue();
         restaurantComboBox.getItems().clear();
         if (selectedBranch != null && ChatClient.restaurants != null) {
@@ -223,7 +264,9 @@ public class RestaurantSelectionController
         // Clear the selected restaurant when branch changes
         restaurantComboBox.setValue(null);
     }
-    private void handleRestaurantSelection() {
+    
+    private void handleRestaurantSelection() 
+    {
         String selectedRestaurant = restaurantComboBox.getValue();
         if (selectedRestaurant != null) {
             // Do something with the selected restaurant

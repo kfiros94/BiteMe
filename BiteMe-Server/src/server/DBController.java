@@ -12,32 +12,46 @@ import entities.Order;
 import entities.Restaurant;
 import entities.User;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+
+
+
 
 public class DBController {
 
     protected static Connection conn = null;
 
     // Method to connect to the database
-    protected static boolean connectToDB(String password) {
-        try {
+    protected static boolean connectToDB(String password) 
+    {
+        try 
+        {
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
             System.out.println("Driver setup succeeded");
-        } catch (Exception ex) {
+        } 
+        catch (Exception ex) 
+        {
             System.out.println("Driver setup failed: " + ex.getMessage());
             return false;
         }
 
-        try {
+        try 
+        {
             conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/bitemedb?serverTimezone=IST", "root", password);
             System.out.println("SQL connection succeeded");
             return true;
-        } catch (SQLException ex) {
+        } 
+        catch (SQLException ex) 
+        {
             System.out.println("SQL connection failed: " + ex.getMessage());
             return false;
         }
     }
 
-    protected static ArrayList<Order> showOrder() {
+    protected static ArrayList<Order> showOrder() 
+    {
         System.out.println("in ShowOrder Function"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
         ArrayList<Order> orders = new ArrayList<>();
 
@@ -210,6 +224,43 @@ public class DBController {
         }
     }
 
+    
+    
+    
+    
+    //LLLLLLLLLLLLLLLLLLLLLLLLLL
+    
+    // Method to retrieve a specific order with a JSON field
+    protected static JSONArray getOrderWithJsonField(int orderId)
+    {
+        JSONArray orderDetails = null;
+
+        String query = "SELECT order_list FROM restaurant_orders WHERE Order_number = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) 
+        {
+            stmt.setInt(1, orderId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) 
+            {
+                String jsonOrderList = rs.getString("order_list");
+                orderDetails = new JSONArray(jsonOrderList); // Parse the JSON array
+            }
+
+            stmt.close();
+        } 
+        catch (SQLException e) 
+        {
+            System.out.println("Error retrieving order details: " + e.getMessage());
+        }
+
+        return orderDetails;
+    }
+    
+    //LLLLLLLLLLLLLLLLLLLLLLLLLLL
+    
+    
     
     
   

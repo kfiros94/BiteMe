@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-/client/
-/common/
-/entities/
 /gui/
-/supplier/
-=======
-/gui/
-/entities/
 /client/
->>>>>>> israelBranch
+/entities/

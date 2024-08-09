@@ -89,7 +89,8 @@ public class StartOrderController
 
     }
     
-    private void showAlert(String title, String message) {
+    private void showAlert(String title, String message) 
+    {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setContentText(message);
@@ -100,7 +101,7 @@ public class StartOrderController
 
     
     @FXML
-    private void handleNextButtonAction(ActionEvent event) 
+    private void StartOrderhandleNextButtonAction(ActionEvent event) 
     {
         System.out.println("Next button clicked");
 
