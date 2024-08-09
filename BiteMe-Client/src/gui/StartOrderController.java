@@ -148,13 +148,15 @@ public class StartOrderController
                 // Set the new stage
                 Scene scene = new Scene(root);
                 primaryStage.setScene(scene);
-                primaryStage.show();
                 
     			primaryStage.setTitle("User-Portal -> New Order -> Select Restaurant");
 
                 
                 RestaurantSelectionController RestaurantSelectionController = loader.getController();
                 RestaurantSelectionController.loadUserCustomer(UserCustomer);
+                
+                primaryStage.show();
+
 
                 // Uncomment and use if needed
             } 
