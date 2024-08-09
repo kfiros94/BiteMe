@@ -203,9 +203,6 @@ public class MainPagesClientController {
 
     }
     //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-    
-  
-    
     @FXML
     private void CloseButton(ActionEvent event) {
     	

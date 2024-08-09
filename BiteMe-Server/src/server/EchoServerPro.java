@@ -144,9 +144,10 @@ public class EchoServerPro extends AbstractServer
 
 		        int userId = user.getUserId();
 		        handleLogoutRequest(userId, client);
-		        
 				break;
-
+				
+			case RETRIEVE_ORDER_LIST:
+			//TODO////////////////////////////////	
 
 				
 			}

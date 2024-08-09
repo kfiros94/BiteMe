@@ -1,6 +1,10 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Map;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.lang.reflect.Type;
 
 public class Order implements Serializable
 {
@@ -11,7 +15,7 @@ public class Order implements Serializable
 	private int Order_list_number;
 	private String Order_address;
 	private ClientInfo cl;
-
+	 private Map<String, Object> orderList; // New field as Map
 	
 	/**
 	 * @param restaurant
@@ -19,8 +23,10 @@ public class Order implements Serializable
 	 * @param Total_price
 	 * @param Order_list_number
 	 * @param Order_address
+	 * @param orderList
 	 */
-	public Order(String restaurant, int Order_number, float Total_price, int Order_list_number, String Order_address ,ClientInfo c) 
+	public Order(String restaurant, int Order_number, float Total_price, int Order_list_number,
+		String Order_address ,ClientInfo c, Map<String, Object> orderList) 
 	{
 		super();
 		this.restaurant = restaurant;
@@ -29,6 +35,7 @@ public class Order implements Serializable
 		this.Order_list_number = Order_list_number;
 		this.Order_address = Order_address;
 		this.cl= c;
+		this.orderList = orderList;
 	}
 
 	
@@ -154,11 +161,20 @@ public class Order implements Serializable
 	}
 	*/
 	
-	@Override
-	public String toString() 
-	{
-		return String.format("[%s,%d,%.2f,%d,%s]", restaurant, Order_number, Total_price, Order_list_number, Order_address);
-	}
+	public Map<String, Object> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(Map<String, Object> orderList) {
+        this.orderList = orderList;
+    }
+	
+	
+
+    @Override
+    public String toString() {
+        return String.format("[%s, %d, %.2f, %d, %s, %s]", restaurant, Order_number, Total_price, Order_list_number, Order_address);
+    }
 
 	
 	/*

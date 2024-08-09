@@ -40,7 +40,7 @@ public class ChatClient extends AbstractClient
    * the display method in the client.
    */
   ChatIF clientUI; 
-  public static Order  s1 = new Order("chackkk",0,0,0,null,new ClientInfo(null,null,null));
+  public static Order  s1 = new Order("chackkk",0,0,0,null,new ClientInfo(null,null,null), null);
   public static User user1 = new User(0,null,null,null,null,null,null,false,0);
   
   //משתנה שעוזר להבין אם חזרה הודעה מהשרת ללקוח
@@ -159,7 +159,9 @@ public class ChatClient extends AbstractClient
 					System.out.println("Client-Test6: We entered the LOGOUT case " );
 
 					break;
-
+					
+			   case RETRIEVE_ORDER_LIST:
+					//TODO////////////////////////////////	
 				
 				
 			}
@@ -190,8 +192,6 @@ public class ChatClient extends AbstractClient
     	//System.out.println("Option data + option" + (BiteOptions)list);//TTTTTTTTTTTTTTTTTTTTTTTT
     	System.out.println("Option data + option" + list);//TTTTTTTTTTTTTTTTTTTTTTTT
 
-    	
-    	
     	//מתחבר לשרת
     	openConnection();//in order to send more than one message
        //משתנה סטטי שעוזר לנו להבין אם הזרת החזיר לנו תשובה
@@ -199,9 +199,6 @@ public class ChatClient extends AbstractClient
        	System.out.println("test4: try to send");
        	
         //System.out.println("pring Size of Msg of Client:"+list.size());
-        
-
-       	
     	sendToServer(list);
        	System.out.println("test4: print list to msg server:"+list);
 
