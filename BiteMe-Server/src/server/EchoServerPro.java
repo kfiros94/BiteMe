@@ -150,20 +150,20 @@ public class EchoServerPro extends AbstractServer
 				break;
 
 			   case SELECT_RESTAURANT:
-					System.out.println("Eco-Test2: We entered the SELECT_RESTAURANT case " );
-					restaurant = Restaurant.fromString(request.getData().toString());//ממיר את המחרוזת למופע של לקוח 
-			        System.out.println("Eco-Test2: Print audit Extract a field from the instance of the object: "+restaurant.getName());
-					ArrayList<Restaurant> restaurants = DBController.showRestaurants();//מושך את כל המשתמשים מהמסד נתונים למערך משתמשים
-					System.out.println("Restaurant received from DB: " + restaurants.toString());
-
-					answer.setData(restaurants.toString());
-					answer.setOption(BiteOptions.Option.SELECT_RESTAURANT);
-					client.sendToClient(answer);
-					
-					
-					break;
-
-				
+				    System.out.println("Server handling SELECT_RESTAURANT request");
+				    String branch = (String) request.getData();
+				    ArrayList<Restaurant> restaurants;
+				    if ("ALL".equals(branch)) {
+				        restaurants = DBController.showAllRestaurants();
+				    } else {
+				        restaurants = DBController.showRestaurants(branch);
+				    }
+				    System.out.println("Restaurants fetched from DB: " + restaurants);
+				    answer.setData(restaurants.toString());
+				    answer.setOption(BiteOptions.Option.SELECT_RESTAURANT);
+				    client.sendToClient(answer);
+				    System.out.println("Server sent response: " + answer);
+				    break;
 			}
 			
 			

@@ -111,35 +111,31 @@ public class DBController {
     //KKKKKKKKKKKKKKKKKKKKKK
 
     // New method to return restaurants table
-    protected static ArrayList<Restaurant> showRestaurants() 
+    protected static ArrayList<Restaurant> showRestaurants(String branch) 
     {
-        System.out.println("in ShowRestaurants Function");
+        System.out.println("in ShowRestaurants Function for branch: " + branch);
         ArrayList<Restaurant> restaurants = new ArrayList<>();
 
-        try 
-        {
-            String query = "SELECT * FROM restaurants";
-            java.sql.Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+        try {
+            String query = "SELECT * FROM restaurants WHERE branch = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, branch);
+            ResultSet rs = stmt.executeQuery();
             System.out.println("Query executed successfully");
 
-            while (rs.next()) 
-            {
+            while (rs.next()) {
                 System.out.println("Processing restaurant record");
                 int restaurantID = rs.getInt("restaurant_id");
                 String name = rs.getString("name");
                 String address = rs.getString("address");
                 String phoneNumber = rs.getString("phone_number");
-                String branch = rs.getString("branch");
                 int supplierID = rs.getInt("supplierID");
 
                 // Add the restaurant to the list
                 restaurants.add(new Restaurant(restaurantID, name, address, phoneNumber, branch, supplierID));
             }
             stmt.close();
-        } 
-        catch (SQLException e) 
-        {
+        } catch (SQLException e) {
             System.out.println("Error retrieving restaurant details: " + e.getMessage());
         }
         System.out.println("Returning list of restaurants");
@@ -149,7 +145,34 @@ public class DBController {
     
     //KKKKKKKKKKKKKKKKKKKK
     
-    
+    protected static ArrayList<Restaurant> showAllRestaurants() {
+        System.out.println("in ShowAllRestaurants Function");
+        ArrayList<Restaurant> restaurants = new ArrayList<>();
+
+        try {
+            String query = "SELECT * FROM restaurants";
+            java.sql.Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            System.out.println("Query executed successfully");
+
+            while (rs.next()) {
+                System.out.println("Processing restaurant record");
+                int restaurantID = rs.getInt("restaurant_id");
+                String name = rs.getString("name");
+                String address = rs.getString("address");
+                String phoneNumber = rs.getString("phone_number");
+                String branch = rs.getString("branch");
+                int supplierID = rs.getInt("supplierID");
+
+                restaurants.add(new Restaurant(restaurantID, name, address, phoneNumber, branch, supplierID));
+            }
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println("Error retrieving restaurant details: " + e.getMessage());
+        }
+        System.out.println("Returning list of all restaurants");
+        return restaurants;
+    }
     
   
     

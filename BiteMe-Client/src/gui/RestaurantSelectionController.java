@@ -9,6 +9,7 @@ import client.ChatClient;
 import entities.User;
 import entities.BiteOptions;
 import entities.Restaurant;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -49,9 +50,23 @@ public class RestaurantSelectionController
     @FXML
     private void initialize() 
     {
-        // Initialize any logic here if necessary
-        loadRestaurants();
-        restaurantComboBox.setOnAction(e -> loadBranches());
+        branchComboBox.setOnAction(e -> updateRestaurantsForSelectedBranch());
+        restaurantComboBox.setOnAction(e -> handleRestaurantSelection());
+    }
+    //SpongeBob
+    
+    private void loadRestaurantsForBranch() {
+        String selectedBranch = branchComboBox.getValue();
+        restaurantComboBox.getItems().clear();
+        if (selectedBranch != null && ChatClient.restaurants != null && !ChatClient.restaurants.isEmpty()) {
+            for (Restaurant restaurant : ChatClient.restaurants) {
+                if (restaurant.getBranch().equals(selectedBranch)) {
+                    restaurantComboBox.getItems().add(restaurant.getName());
+                }
+            }
+        } else {
+            System.out.println("No restaurants available or restaurants not loaded yet.");
+        }
     }
 
     @FXML
@@ -143,50 +158,24 @@ public class RestaurantSelectionController
 
     private void loadRestaurants() 
     {
-        System.out.println("AAAAXXXXSelected Restaurant: XXXXXXX ");
-
-       //Replace with actual data loading logic
-      // restaurantComboBox.getItems().addAll("Restaurant A", "Restaurant B", "Restaurant C");
-     //  restaurantComboBox.getItems().addAll(ChatClient.restaurants.get(0).getName());
-
-    	//restaurantComboBox.getItems().clear(); // Clear any existing items
-        
-       // restaurantslocal=ChatClient.restaurants;
-        restaurantslocal.addAll(ChatClient.restaurants);
-        
-    	int i = 0;
-    	
-        System.out.println("BBBBBXXXXSelected Restaurant: " + ChatClient.restaurants.toString());
-
-    	
-        for ( i = 0; i < ChatClient.restaurants.size(); i++) 
-        {
-            String restaurantName = ChatClient.restaurants.get(i).getName();
-            System.out.println("AAAAXXXXSelected Restaurant: " + restaurantName);
-            restaurantComboBox.getItems().add(restaurantName);
+    	restaurantComboBox.getItems().clear();
+        if (ChatClient.restaurants != null && !ChatClient.restaurants.isEmpty()) {
+            for (Restaurant restaurant : ChatClient.restaurants) {
+                restaurantComboBox.getItems().add(restaurant.getName());
+            }
+        } else {
+            System.out.println("No restaurants available or restaurants not loaded yet.");
         }
-        
-     //  restaurantslocal.addAll(ChatClient.restaurants);
+         //Kfir
     }
 
     
     private void loadBranches() 
     {
-        // Clear previous branches
         branchComboBox.getItems().clear();
-
-        // Replace with actual data loading logic
-        if ("Restaurant A".equals(restaurantComboBox.getValue())) 
-        {
-            branchComboBox.getItems().addAll("Branch A1", "Branch A2");
-        } 
-        else if ("Restaurant B".equals(restaurantComboBox.getValue())) 
-        {
-            branchComboBox.getItems().addAll("Branch B1", "Branch B2");
-        } 
-        else if ("Restaurant C".equals(restaurantComboBox.getValue())) 
-        {
-            branchComboBox.getItems().addAll("Branch C1", "Branch C2");
+        branchComboBox.getItems().addAll("North", "South", "East", "West", "Central"); // Add all possible branches
+        if (UserCustomer != null) {
+            branchComboBox.setValue(UserCustomer.getBranch()); // Set the user's branch as default
         }
     }
     
@@ -194,8 +183,16 @@ public class RestaurantSelectionController
     public void loadUserCustomer(User UserClient) 
     {
         this.UserCustomer = UserClient;
-		System.out.println("cccccccccccccccccccccccccccccccccccccc"+ this.UserCustomer.toString());
+        System.out.println("Loading user customer: " + this.UserCustomer.toString());
 
+        // Fetch restaurants from server for all branches
+        BiteOptions option = new BiteOptions("ALL", BiteOptions.Option.SELECT_RESTAURANT);
+        ClientUI.chat.accept(option);
+
+        Platform.runLater(() -> {
+            loadBranches();
+            updateRestaurantsForSelectedBranch();
+        });
     }
     
     
@@ -206,7 +203,30 @@ public class RestaurantSelectionController
 
     }
     
-    
-    
+    public void updateRestaurantList() {
+        Platform.runLater(() -> {
+            loadRestaurants();
+        });
+    }
+    private void updateRestaurantsForSelectedBranch() {
+        String selectedBranch = branchComboBox.getValue();
+        restaurantComboBox.getItems().clear();
+        if (selectedBranch != null && ChatClient.restaurants != null) {
+            for (Restaurant restaurant : ChatClient.restaurants) {
+                if (restaurant.getBranch().equals(selectedBranch)) {
+                    restaurantComboBox.getItems().add(restaurant.getName());
+                }
+            }
+        }
+        // Clear the selected restaurant when branch changes
+        restaurantComboBox.setValue(null);
+    }
+    private void handleRestaurantSelection() {
+        String selectedRestaurant = restaurantComboBox.getValue();
+        if (selectedRestaurant != null) {
+            // Do something with the selected restaurant
+            System.out.println("Selected restaurant: " + selectedRestaurant);
+        }
+    }
     
 }

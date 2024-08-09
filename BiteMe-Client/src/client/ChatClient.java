@@ -8,6 +8,7 @@ import ocsf.client.*;
 import client.*;
 import entities.*;
 import gui.RestaurantSelectionController;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import common.ChatIF;
 
@@ -82,13 +83,15 @@ public class ChatClient extends AbstractClient
   //ואז מעדכנים את הנתונים במסך של ההזמנה של הלקוח
   public void handleMessageFromServer(Object msg) 
   {
-	    // Update the awaitResponse flag
-	    awaitResponse = false;
+	    
 
 	    // Printing a message with colors
 	    System.out.println("-->test5: in " + GREEN + "Class ChatClient extends AbstractClient" + RESET + BLUE + " func --handleMessageFromServer--" + RESET + " The server sent a response to the client");
 
 	    System.out.println("Message received from server: " + msg);
+	   
+	    // Update the awaitResponse flag
+	    awaitResponse = false;
 	    
 	    BiteOptions answer = (BiteOptions) msg;
 	    
@@ -169,22 +172,13 @@ public class ChatClient extends AbstractClient
 				
 					
 			   case SELECT_RESTAURANT:
-					System.out.println("Client-Test6: We entered the SELECT_RESTAURANT case " );
-					restaurants = Restaurant.fromStringArray(answer.getData().toString());
-					
-					System.out.println("CcaaaaClient-Test6: We entered the SELECT_RESTAURANT case"+restaurants.get(0) );
-					System.out.println("CcaaaaClient-Test6: We entered the SELECT_RESTAURANT case"+restaurants.get(1) );
-
-		           // FXMLLoader loader = new FXMLLoader();
-					//RestaurantSelectionController RestaurantSelectionController = loader.getController();
-					//loadRestaurant(restaurants);
-
-
-				   
-				   
-					break;
-
-				   
+				   System.out.println("Client received SELECT_RESTAURANT response");
+		            restaurants = Restaurant.fromStringArray(answer.getData().toString());
+		            System.out.println("Number of restaurants loaded: " + restaurants.size());
+		            for (Restaurant r : restaurants) {
+		                System.out.println("Loaded restaurant: " + r.getName());
+		            }
+		            break;
 				
 			}
 		}
@@ -208,46 +202,32 @@ public class ChatClient extends AbstractClient
   
   public void handleMessageFromClientUI(Object list)  
   {
-    try
-    {
-    	
-    	//System.out.println("Option data + option" + (BiteOptions)list);//TTTTTTTTTTTTTTTTTTTTTTTT
-    	System.out.println("Option data + option" + list);//TTTTTTTTTTTTTTTTTTTTTTTT
-
-    	
-    	
-    	//מתחבר לשרת
-    	openConnection();//in order to send more than one message
-       //משתנה סטטי שעוזר לנו להבין אם הזרת החזיר לנו תשובה
-    	awaitResponse = true;
-       	System.out.println("test4: try to send");
-       	
-        //System.out.println("pring Size of Msg of Client:"+list.size());
-        
-
-       	
-    	sendToServer(list);
-       	System.out.println("test4: print list to msg server:"+list);
-
-		// wait for response
-       	//כל עוד השרת לא החזיר תשובה הלקוח בהמתנה פעילה
-		while (awaitResponse)
-		{
-			try {
-				Thread.sleep(100);
-		       	System.out.println("test4: i wait for Response from server ");
-
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-    }
-    catch(IOException e)
-    {
-    	e.printStackTrace();
-      clientUI.display("Could not send message to server: Terminating client."+ e);
-      quit();
-    }
+	  try {
+	        System.out.println("Sending message to server: " + list);
+	        openConnection();
+	        awaitResponse = true;
+	        sendToServer(list);
+	        
+	        // Add a timeout mechanism
+	        long startTime = System.currentTimeMillis();
+	        long timeout = 10000; // 10 seconds timeout
+	        while (awaitResponse) {
+	            if (System.currentTimeMillis() - startTime > timeout) {
+	                System.out.println("Server response timed out");
+	                awaitResponse = false;
+	                break;
+	            }
+	            try {
+	                Thread.sleep(100);
+	            } catch (InterruptedException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    } catch(IOException e) {
+	        e.printStackTrace();
+	        clientUI.display("Could not send message to server: Terminating client."+ e);
+	        quit();
+	    }
   }
 
   
