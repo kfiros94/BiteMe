@@ -54,7 +54,7 @@ public class RestaurantSelectionController
         restaurantComboBox.setOnAction(e -> handleRestaurantSelection());
     }
     //SpongeBob
-    
+    /*
     private void loadRestaurantsForBranch() {
         String selectedBranch = branchComboBox.getValue();
         restaurantComboBox.getItems().clear();
@@ -68,6 +68,7 @@ public class RestaurantSelectionController
             System.out.println("No restaurants available or restaurants not loaded yet.");
         }
     }
+    */
 
     @FXML
     private void handleBackButtonAction(ActionEvent event) 
@@ -155,6 +156,7 @@ public class RestaurantSelectionController
         System.out.println("Selected Branch: " + selectedBranch);
         // Add your navigation logic here
     }
+    
 
     private void loadRestaurants() 
     {

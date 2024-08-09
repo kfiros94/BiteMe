@@ -152,6 +152,8 @@ public class EchoServerPro extends AbstractServer
 			   case SELECT_RESTAURANT:
 				    System.out.println("Server handling SELECT_RESTAURANT request");
 				    String branch = (String) request.getData();
+				    System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + branch.toString() );
+
 				    ArrayList<Restaurant> restaurants;
 				    if ("ALL".equals(branch)) {
 				        restaurants = DBController.showAllRestaurants();
