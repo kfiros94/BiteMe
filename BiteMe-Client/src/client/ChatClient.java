@@ -175,7 +175,8 @@ public class ChatClient extends AbstractClient
 				   System.out.println("Client received SELECT_RESTAURANT response");
 		            restaurants = Restaurant.fromStringArray(answer.getData().toString());
 		            System.out.println("Number of restaurants loaded: " + restaurants.size());
-		            for (Restaurant r : restaurants) {
+		            for (Restaurant r : restaurants) 
+		            {
 		                System.out.println("Loaded restaurant: " + r.getName());
 		            }
 		            break;
@@ -211,15 +212,22 @@ public class ChatClient extends AbstractClient
 	        // Add a timeout mechanism
 	        long startTime = System.currentTimeMillis();
 	        long timeout = 10000; // 10 seconds timeout
-	        while (awaitResponse) {
-	            if (System.currentTimeMillis() - startTime > timeout) {
+	        while (awaitResponse) 
+	        {
+                System.out.println("Test4: I am waiting for a reply from the server");
+
+	            if (System.currentTimeMillis() - startTime > timeout) 
+	            {
 	                System.out.println("Server response timed out");
 	                awaitResponse = false;
 	                break;
 	            }
-	            try {
+	            try 
+	            {
 	                Thread.sleep(100);
-	            } catch (InterruptedException e) {
+	            } 
+	            catch (InterruptedException e) 
+	            {
 	                e.printStackTrace();
 	            }
 	        }

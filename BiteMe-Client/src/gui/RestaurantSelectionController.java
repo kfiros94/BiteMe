@@ -175,7 +175,7 @@ public class RestaurantSelectionController
     private void loadBranches() 
     {
         branchComboBox.getItems().clear();
-        branchComboBox.getItems().addAll("North", "South", "East", "West", "Central"); // Add all possible branches
+        branchComboBox.getItems().addAll("North", "South", "Central"); // Add all possible branches
         if (UserCustomer != null) {
             branchComboBox.setValue(UserCustomer.getBranch()); // Set the user's branch as default
         }
