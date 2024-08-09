@@ -1,4 +1,9 @@
 /entities/
+<<<<<<< HEAD
 /guiPro/
 /mainApp/
 /server/
+=======
+/server/
+/guiPro/
+>>>>>>> israelBranch

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import entities.ClientInfo;
 import entities.Order;
+import entities.Restaurant;
 import entities.User;
 
 
@@ -27,7 +28,7 @@ public class DBController {
         }
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/bitemeapp?serverTimezone=IST", "root", password);
+            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/bitemedb?serverTimezone=IST", "root", password);
             System.out.println("SQL connection succeeded");
             return true;
         } catch (SQLException ex) {
@@ -87,9 +88,11 @@ public class DBController {
                 String branch = usersFromTable.getString("branch");
                 boolean hasDiscountCode = usersFromTable.getBoolean("has_discount_code");
                 int loggedIn = usersFromTable.getInt("logged_in");
+                String accountStatus = usersFromTable.getString("account_status");
+
 
                 System.out.println("Test 4"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-                users.add(new User(userId, username, password, email, phoneNumber, permission, branch, hasDiscountCode, loggedIn));
+                users.add(new User(userId, username, password, email, phoneNumber, permission, branch, hasDiscountCode, loggedIn,accountStatus));
             }
 
             stmt.close();
@@ -100,6 +103,52 @@ public class DBController {
         return users;
     }
 
+    
+    
+    
+    
+    
+    //KKKKKKKKKKKKKKKKKKKKKK
+
+    // New method to return restaurants table
+    protected static ArrayList<Restaurant> showRestaurants() 
+    {
+        System.out.println("in ShowRestaurants Function");
+        ArrayList<Restaurant> restaurants = new ArrayList<>();
+
+        try 
+        {
+            String query = "SELECT * FROM restaurants";
+            java.sql.Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            System.out.println("Query executed successfully");
+
+            while (rs.next()) 
+            {
+                System.out.println("Processing restaurant record");
+                int restaurantID = rs.getInt("restaurant_id");
+                String name = rs.getString("name");
+                String address = rs.getString("address");
+                String phoneNumber = rs.getString("phone_number");
+                String branch = rs.getString("branch");
+                int supplierID = rs.getInt("supplierID");
+
+                // Add the restaurant to the list
+                restaurants.add(new Restaurant(restaurantID, name, address, phoneNumber, branch, supplierID));
+            }
+            stmt.close();
+        } 
+        catch (SQLException e) 
+        {
+            System.out.println("Error retrieving restaurant details: " + e.getMessage());
+        }
+        System.out.println("Returning list of restaurants");
+        return restaurants;
+    }
+
+    
+    //KKKKKKKKKKKKKKKKKKKK
+    
     
     
   
