@@ -1,3 +1,4 @@
+
 package server;
 
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.util.List;
 import entities.BiteOptions;
 import entities.ClientInfo;
 import entities.Order;
+import entities.Restaurant;
 import entities.User;
 //import common.User;
 import guiPro.ServerPortFrameControllerPro;
@@ -54,6 +56,7 @@ public class EchoServerPro extends AbstractServer
 		BiteOptions answer= new BiteOptions();
 		ArrayList<Order> costumer_all_orders = new ArrayList<Order>();
 		User user;
+		Restaurant restaurant;
 		try
 		{
 			switch(request.getOption())
@@ -144,12 +147,26 @@ public class EchoServerPro extends AbstractServer
 
 		        int userId = user.getUserId();
 		        handleLogoutRequest(userId, client);
+		        
 				break;
-				
-			case RETRIEVE_ORDER_LIST:
-			//TODO////////////////////////////////	
 
-				
+			   case SELECT_RESTAURANT:
+				    System.out.println("Server handling SELECT_RESTAURANT request");
+				    String branch = (String) request.getData();
+				    System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + branch.toString() );
+
+				    ArrayList<Restaurant> restaurants;
+				    if ("ALL".equals(branch)) {
+				        restaurants = DBController.showAllRestaurants();
+				    } else {
+				        restaurants = DBController.showRestaurants(branch);
+				    }
+				    System.out.println("Restaurants fetched from DB: " + restaurants);
+				    answer.setData(restaurants.toString());
+				    answer.setOption(BiteOptions.Option.SELECT_RESTAURANT);
+				    client.sendToClient(answer);
+				    System.out.println("Server sent response: " + answer);
+				    break;
 			}
 			
 			
@@ -167,10 +184,12 @@ public class EchoServerPro extends AbstractServer
 		
 		
 		
-		System.out.println("\ntest2: Message received: " + msg + " from " + client);
+		//System.out.println("\ntest2: Message received: " + msg + " from " + client);
 		int flagOrederFound = 0;
 		int idexMsg = 0;
 
+		
+		
 		if (msg instanceof List)
 		{
 			List<?> list = (List<?>) msg;
@@ -278,6 +297,8 @@ public class EchoServerPro extends AbstractServer
 			}
 		}
 	}
+	
+	
 	
 	
 	
