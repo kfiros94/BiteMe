@@ -41,12 +41,12 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="103.0" prefHeight="400.0" prefWidth="1000.0">
                <children>
-                  <TableView fx:id="menuTableView" prefHeight="400.0" prefWidth="460.0">
+                  <TableView fx:id="menuTableView" prefHeight="400.0" prefWidth="492.0">
                     <columns>
-                      <TableColumn fx:id="categoryColumn" prefWidth="120.0" text="Category" />
-                      <TableColumn fx:id="nameColumn" prefWidth="140.0" text="Name" />
-                      <TableColumn fx:id="changesColumn" prefWidth="143.0" text="Changes" />
-                      <TableColumn fx:id="priceColumn" prefWidth="57.0" text="Price" />
+                      <TableColumn fx:id="categoryColumn" prefWidth="82.0" text="Category" />
+                      <TableColumn fx:id="nameColumn" prefWidth="71.0" text="Name" />
+                      <TableColumn fx:id="changesColumn" prefWidth="291.0" text="Changes" />
+                      <TableColumn fx:id="priceColumn" prefWidth="47.0" text="Price" />
                     </columns>
                      <HBox.margin>
                         <Insets left="10.0" />
@@ -54,12 +54,12 @@
                   </TableView>
                   <TableView fx:id="cartTableView" prefHeight="400.0" prefWidth="460.0">
                     <columns>
-                      <TableColumn fx:id="cartItemNameColumn" prefWidth="160.0" text="Item Name" />
-                      <TableColumn fx:id="cartChangesColumn" prefWidth="240.0" text="Changes" />
+                      <TableColumn fx:id="cartItemNameColumn" prefWidth="100.0" text="Item Name" />
+                      <TableColumn fx:id="cartChangesColumn" prefWidth="300.0" text="Changes" />
                       <TableColumn fx:id="cartPriceColumn" prefWidth="60.0" text="Price" />
                     </columns>
                      <HBox.margin>
-                        <Insets left="60.0" />
+                        <Insets left="30.0" />
                      </HBox.margin>
                   </TableView>
                </children>
