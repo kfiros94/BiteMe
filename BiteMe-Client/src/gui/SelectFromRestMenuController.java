@@ -259,10 +259,49 @@ public class SelectFromRestMenuController {
     
 
     @FXML
-    private void handleNext() {
-        // Add logic to proceed to the next screen
+    private void handleNext(ActionEvent event) 
+    {
+
+        FXMLLoader loader = new FXMLLoader();
+        Pane root = null;
+        Stage primaryStage = new Stage();
+        try 
+        {
+            // Load the FXML file
+            loader.setLocation(getClass().getResource("/gui/SupplyConfiguration.fxml"));
+
+            root = loader.load();
+            
+            // Hide the current window
+            ((Node) event.getSource()).getScene().getWindow().hide();
+
+            // Set the new stage
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+			primaryStage.setTitle("User-Portal -> New Order -> Select Restaurant -> Select Menu Items -> Supply Configuration");
+
+            
+			SupplyConfigurationController SupplyConfigurationController = loader.getController();
+			//SelectFromRestMenuController.loadRestaurant(restaurantslocal);
+
+            // Uncomment and use if needed
+        } 
+        catch (IOException e) 
+        {
+            // Print the stack trace and show an error dialog
+            e.printStackTrace();
+            showAlert("Error", "Could not load the Start Order page.");
+        }
+    
+    
+    
     }
 
+    
+    
+    
+    
     private void loadMenuItems() {
         // Convert the ArrayList to an ObservableList and set it to the TableView
         menuItemsList = FXCollections.observableArrayList(menuItemsArrayList);
