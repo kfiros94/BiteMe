@@ -133,20 +133,20 @@ public class RestaurantSelectionController
         // Logic for next button
         System.out.println("Next button clicked");
         
-        /*
+        
+        
         //HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
         System.out.println("print Restaurnttttt:"+restaurant.toString());
 
-		BiteOptions option = new BiteOptions(restaurant.toString(), BiteOptions.Option.TEST_JSON);//kkkkkkk
+		BiteOptions option = new BiteOptions(restaurant.toString(), BiteOptions.Option.GET_SELECTED_REST_MENU);//kkkkkkk
 
 		ClientUI.chat.accept(option);
 
         //HHHHHHHHHHHHHHHHHHHHHHHHHHHHH
-        */
         
         
+
         
-        //aaaaaaaaaaaaaaaaaaaa
         FXMLLoader loader = new FXMLLoader();
         Pane root = null;
         Stage primaryStage = new Stage();
@@ -168,7 +168,7 @@ public class RestaurantSelectionController
 
             
 			SelectFromRestMenuController SelectFromRestMenuController = loader.getController();
-           // StartOrderController.loadUserCustomer(UserCustomer);
+			SelectFromRestMenuController.loadRestaurant(restaurantslocal);
 
             // Uncomment and use if needed
         } 
@@ -178,12 +178,7 @@ public class RestaurantSelectionController
             e.printStackTrace();
             showAlert("Error", "Could not load the Start Order page.");
         }
-        
-        //aaaaaaaaaaaaaaaaaaaaaa
-        
-        
-        
-        
+
  
     }
     
@@ -229,6 +224,8 @@ public class RestaurantSelectionController
         BiteOptions option = new BiteOptions("ALL", BiteOptions.Option.SELECT_RESTAURANT);
         ClientUI.chat.accept(option);// המתנה פעילה עד לתשובה מהשרת
 
+        restaurantslocal.addAll(0, ChatClient.restaurants);
+        
         Platform.runLater(() -> {
             loadBranches();
             updateRestaurantsForSelectedBranch();
@@ -271,7 +268,44 @@ public class RestaurantSelectionController
         if (selectedRestaurant != null) {
             // Do something with the selected restaurant
             System.out.println("Selected restaurant: " + selectedRestaurant);
+            
+            restaurant.setName(selectedRestaurant);
+            
+			for (Restaurant restaurantToFind : ChatClient.restaurants) 
+			{
+				if(restaurant.getName().equals(restaurantToFind.getName()))
+				{
+					restaurant.setRestaurantID(restaurantToFind.getRestaurantID());
+				}
+			}
+            
         }
     }
+    
+    
+    
+    
+    
+    //UUUUUUUUUUUUUUUUUUUUUU
+    
+    public void reloadRestaurantsAndSetBranch() {
+        // Fetch restaurants from server for all branches
+        BiteOptions option = new BiteOptions("ALL", BiteOptions.Option.SELECT_RESTAURANT);
+        ClientUI.chat.accept(option);
+
+        restaurantslocal.clear();
+        restaurantslocal.addAll(ChatClient.restaurants);
+        
+        Platform.runLater(() -> {
+            loadBranches();
+            updateRestaurantsForSelectedBranch();
+            if (UserCustomer != null) {
+                branchComboBox.setValue(UserCustomer.getBranch());
+            }
+        });
+    }
+    
+    //UUUUUUUUUUUUUUUUUUUUU
+    
     
 }

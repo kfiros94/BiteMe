@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import entities.ClientInfo;
+import entities.MenuItems;
 import entities.Order;
 import entities.Restaurant;
 import entities.User;
@@ -227,8 +228,54 @@ public class DBController {
     
     
     
+    //LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
+    protected static ArrayList<MenuItems> getMenuItems() 
+    {
+        System.out.println("Retrieving all menu items from the database");
+        ArrayList<MenuItems> menuItemsList = new ArrayList<>();
+
+        String query = "SELECT item_id, restaurant_id, name, description, price, category, possible_changes FROM menuitems";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int itemId = rs.getInt("item_id");
+                int restaurantId = rs.getInt("restaurant_id");
+                String name = rs.getString("name");
+                String description = rs.getString("description");
+                double price = rs.getDouble("price");
+                String category = rs.getString("category");
+
+                // Parsing the JSON field 'possible_changes' into an ArrayList<String>
+                String possibleChangesJson = rs.getString("possible_changes");
+                ArrayList<String> possibleChangesList = new ArrayList<>();
+                JSONArray jsonArray = new JSONArray(possibleChangesJson);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    possibleChangesList.add(jsonArray.getString(i));
+                }
+
+                // Creating a MenuItems object and adding it to the list
+                MenuItems menuItem = new MenuItems(itemId, restaurantId, name, description, price, category, possibleChangesList);
+                menuItemsList.add(menuItem);
+            }
+
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println("Error retrieving menu items: " + e.getMessage());
+        }
+
+        return menuItemsList;
+    }
+
     
-    //LLLLLLLLLLLLLLLLLLLLLLLLLL
+    //LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
+    
+    
+    
+    
+    
+
     
     // Method to retrieve a specific order with a JSON field
     protected static JSONArray getOrderWithJsonField(int orderId)
@@ -258,7 +305,7 @@ public class DBController {
         return orderDetails;
     }
     
-    //LLLLLLLLLLLLLLLLLLLLLLLLLLL
+
     
     
     

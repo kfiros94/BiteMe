@@ -3,10 +3,12 @@ package server;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import entities.BiteOptions;
 import entities.ClientInfo;
+import entities.MenuItems;
 import entities.Order;
 import entities.Restaurant;
 import entities.User;
@@ -59,6 +61,7 @@ public class EchoServerPro extends AbstractServer
 		BiteOptions answer= new BiteOptions();
 		ArrayList<Order> costumer_all_orders = new ArrayList<Order>();
 		User user;
+		MenuItems menuItem;
 		Restaurant restaurant;
 		try
 		{
@@ -177,6 +180,75 @@ public class EchoServerPro extends AbstractServer
 				    
 				    
 				    
+			   case GET_SELECTED_REST_MENU:
+				   
+				    System.out.println("Server handling GET_SELECTED_REST_MENU request");
+
+				   
+				    restaurant = Restaurant.fromString(request.getData().toString());
+			        System.out.println("Eco-Test1: Print a check to see that we were able to convert the string to a user objec: "+restaurant);
+			        System.out.println("Eco-Test1: Print audit Extract a field from the instance of the object: "+restaurant.getName());
+
+
+					ArrayList<MenuItems> menuItems = DBController.getMenuItems();//מושך את כל המשתמשים מהמסד נתונים למערך משתמשים
+					System.out.println("MenuItems received from DB: " + menuItems.toString());
+				   
+					
+					//RRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+					
+					boolean MenuItemsnameFound = false;
+					try
+					{
+						
+						Iterator<MenuItems> iterator = menuItems.iterator();
+						while (iterator.hasNext()) 
+						{
+						    MenuItems menuItemToFind = iterator.next();
+						    if (menuItemToFind.getRestaurant_id() == restaurant.getRestaurantID()) 
+						    {
+						        MenuItemsnameFound = true;
+						    } 
+						    else 
+						    {
+						        iterator.remove();  // Safely remove the item using the iterator
+						    }
+						}
+
+						
+						answer.setData(menuItems.toString());
+						answer.setOption(BiteOptions.Option.GET_SELECTED_REST_MENU);
+						client.sendToClient(answer);
+						
+						
+						
+
+						if (!MenuItemsnameFound) 
+						{
+							System.out.println("MenuItems not found For Restaurant: " + restaurant.getName());
+							//client.sendToClient("-1");
+							
+							answer.setData("not found items");
+							answer.setOption(BiteOptions.Option.GET_SELECTED_REST_MENU);
+							client.sendToClient(answer);
+							
+						}
+						
+					}
+					//זה שייך למקרה של לוג-אין
+					catch (IOException e) 
+					{
+						e.printStackTrace();
+					}
+					
+					//RRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+					
+					
+				    
+				   
+				    break;
+
+				   
+				   
 			   case TEST_JSON:
 				   
 

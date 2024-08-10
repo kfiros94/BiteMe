@@ -46,6 +46,7 @@ public class ChatClient extends AbstractClient
   public static Order  s1 = new Order("chackkk",0,0,0,null,new ClientInfo(null,null,null));
   public static User user1 = new User(0,null,null,null,null,null,null,false,0,null);
   public static ArrayList<Restaurant> restaurants = new  ArrayList<Restaurant>();
+  public static ArrayList<MenuItems> menuItems = new  ArrayList<MenuItems>();
 
   
   //משתנה שעוזר להבין אם חזרה הודעה מהשרת ללקוח
@@ -180,6 +181,23 @@ public class ChatClient extends AbstractClient
 		                System.out.println("Loaded restaurant: " + r.getName());
 		            }
 		            break;
+		            
+		            
+		            
+		            
+			   case GET_SELECTED_REST_MENU:
+				   
+				   System.out.println("Client received SELECT_RESTAURANT response");
+				   menuItems = MenuItems.fromStringArray(answer.getData().toString());
+		            System.out.println("Number of items of restaurant loaded: " + menuItems.size());
+		            System.out.println("The items of restaurant loaded: " + menuItems);
+
+				   
+				   
+		            break;
+
+				   
+				   
 				
 			}
 		}
