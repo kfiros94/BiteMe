@@ -29,7 +29,7 @@ import java.util.List;
 public class ChatClient extends AbstractClient
 {
 	
-	//כלי עזר לשינוי צבע של הדפסות
+	// Utility for changing print colors
     public static final String RESET = "\033[0m";  // Text Reset
     public static final String GREEN = "\033[0;32m";   // GREEN
     public static final String RED = "\033[0;31m";     // RED
@@ -46,7 +46,7 @@ public class ChatClient extends AbstractClient
   public static Order  s1 = new Order("chackkk",0,0,0,null,new ClientInfo(null,null,null));
   public static User user1 = new User(0,null,null,null,null,null,null,false,0);
   
-  //משתנה שעוזר להבין אם חזרה הודעה מהשרת ללקוח
+  // Variable that helps understand if a message has returned from the server to the client
   public static boolean awaitResponse = false;
 
   //Constructors ****************************************************
@@ -62,7 +62,7 @@ public class ChatClient extends AbstractClient
   public ChatClient(String host, int port, ChatIF clientUI) 
     throws IOException 
   {
-    super(host, port); //Call the superclass constructor
+    super(host, port); // Call the superclass constructor
     this.clientUI = clientUI;
     //openConnection();
   }
@@ -75,10 +75,10 @@ public class ChatClient extends AbstractClient
    * @param msg The message from the server.
    */
 
-  ///////////מימוש של ישראל מגדיר הזמנה ולא לקוח
-  //כאן מקבלים חזרה הודעה מהשרת
-  //הופכים את הדגל לשקר בשביל לצאת מהמתנה פעילה
-  //ואז מעדכנים את הנתונים במסך של ההזמנה של הלקוח
+ // Defines an order and not a client
+ // Here a message is received back from the server
+ // The flag is set to false in order to exit active waiting
+ // Then the client's order screen is updated
   public void handleMessageFromServer(Object msg) 
   {
 	    // Update the awaitResponse flag
@@ -92,9 +92,7 @@ public class ChatClient extends AbstractClient
 	    BiteOptions answer = (BiteOptions) msg;
 	    
 	    System.out.println("answe received from server: " + answer);
-
 	    
-	    //UUUUUUUUUUUUUUUUUUUUU
 		try
 		{
 			switch(answer.getOption())
@@ -103,38 +101,34 @@ public class ChatClient extends AbstractClient
 			case LOGIN:		
 				System.out.println("Client-Test6: We entered the LOGIN case " );
 			
-				
 				User user= new User();
 				
-				if(!answer.getData().toString().equals("-1"))//אם חזר אובייקט משתמש מהשרת רק אז נשמור את זה לוקלית בלקוח
+		        // If a user object is returned from the server, only then save it locally on the client
+				if(!answer.getData().toString().equals("-1"))
 				{
 			         user = User.fromString(answer.getData().toString());
 					System.out.println("answer User From server:"+user);
-				}
-				
+				}				
 				
 				if(answer.getData().toString().equals("-1"))
 				{
 		            // User not found
 		            ChatClient.user1.setUsername("-1");
-				}
-				
+				}				
 				
 				else if(user.getPassword().equals("-2"))
 				{
 
 		            // Incorrect password
-		        	ChatClient.user1.setUsername("inf");// ערך זבל כדאי לקבל הודעת שגיאה על סיסמא ולא על שם משתמש
+		        	ChatClient.user1.setUsername("inf"); // Placeholder value to receive a password error message instead of a username error
 		            ChatClient.user1.setPassword("-2");
 					System.out.println("user1 with wrong Password:"+ChatClient.user1);
 
-				}
+				}				
 				
-				
-				//במקרה והשם משתמש וסיסמה נכונים, אז אנחנו רוצים לטעון את השדות של המשתמש שחזר מהשרת לתוך המשתמש1 שעובד עם החלונות הגרפים של המשתמש
+				// In case the username and password are correct, we want to load the fields of the user returned from the server into user1, which is used with the user's graphical windows				
 				else if(!user.getPassword().equals("-2"))
 				{
-
 		            ChatClient.user1.setUserId(user.getUserId());
 		            ChatClient.user1.setUsername(user.getUsername());
 		            ChatClient.user1.setPassword(user.getPassword());
@@ -145,38 +139,26 @@ public class ChatClient extends AbstractClient
 		            ChatClient.user1.setHasDiscountCode(user.isHasDiscountCode());
 		            ChatClient.user1.setLoggedIn(user.getLoggedIn());
 
-					System.out.println("user1 all Fileds we get from Server:"+ChatClient.user1);
-
-		            
+					System.out.println("user1 all Fileds we get from Server:"+ChatClient.user1); 
 				}
 			    else 
 			    {
 			        System.out.println("Error: Unexpected server response format.");
-			    }
-				
+			    }				
 				break;
 				
 
 				
 			   case LOGOUT:
 					System.out.println("Client-Test6: We entered the LOGOUT case " );
-
-					break;
-
-				
-				
+					break;	
 			}
 		}
-		//זה שייך לסוויץ-קייס הראשי
+
 		catch (Exception e) 
 		{
 			e.printStackTrace();
-		}
-		//UUUUUUUUUUUUUUUUUUUUUUUU
-	    
-
-	    
-	    
+		}	    
 	}
  
   /**
@@ -184,32 +166,25 @@ public class ChatClient extends AbstractClient
    *
    * @param id The message from the UI.    
    */
-  
   public void handleMessageFromClientUI(Object list)  
   {
     try
-    {
-    	
-    	//System.out.println("Option data + option" + (BiteOptions)list);//TTTTTTTTTTTTTTTTTTTTTTTT
-    	System.out.println("Option data + option" + list);//TTTTTTTTTTTTTTTTTTTTTTTT
+    {	
+    	//System.out.println("Option data + option" + (BiteOptions)list);
+    	System.out.println("Option data + option" + list);
 
-    	
-    	
-    	//מתחבר לשרת
-    	openConnection();//in order to send more than one message
-       //משתנה סטטי שעוזר לנו להבין אם הזרת החזיר לנו תשובה
-    	awaitResponse = true;
+    	// Connects to the server
+    	openConnection();// In order to send more than one message  
+    	awaitResponse = true; // Static variable that helps us understand if the server has returned a response
        	System.out.println("test4: try to send");
        	
-        //System.out.println("pring Size of Msg of Client:"+list.size());
-        
-
+        //System.out.println("print Size of Msg of Client:"+list.size());
        	
     	sendToServer(list);
        	System.out.println("test4: print list to msg server:"+list);
 
 		// wait for response
-       	//כל עוד השרת לא החזיר תשובה הלקוח בהמתנה פעילה
+       	// As long as the server has not returned a response, the client is in active waiting
 		while (awaitResponse)
 		{
 			try {
@@ -244,14 +219,10 @@ public class ChatClient extends AbstractClient
   }
   
   
-  //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
   @Override
   protected void connectionEstablished() 
   {
      	System.out.println("testAAA: The connection between the server and the client was successful ");
 
-  }
-  
-  
+  }  
 }
-//End of ChatClient class

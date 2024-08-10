@@ -25,13 +25,10 @@ public class ClientController implements ChatIF
 {
 	
 	
-	//כלי עזר לשינוי צבע של הדפסות
     public static final String RESET = "\033[0m";  // Text Reset
     public static final String GREEN = "\033[0;32m";   // GREEN
     public static final String RED = "\033[0;31m";     // RED
     public static final String BLUE = "\033[0;34m";    // BLUE
-
-	//כלי עזר לשינוי צבע של הדפסות
 	
     public static String MyipHost;
 	
@@ -74,7 +71,7 @@ public class ClientController implements ChatIF
 
   public void setMyhost(String Myhost) 
   {
-	System.out.println("test3 CCCCChange my HHHOst");//TTTTTTTTTTTTTTTTTTTTTTTT
+	System.out.println("test3 CCCCChange my HHHOst");
 	  client.setHost(Myhost);
 
   }
@@ -89,7 +86,7 @@ public class ClientController implements ChatIF
    */
   public void accept(Object object) 
   {
-	System.out.println("test3: in "+GREEN+"Class ClientController"+RESET+BLUE+" func --accept--"+RESET+" Call to"+BLUE+" func --handleMessageFromClientUI--"+RESET);//TTTTTTTTTTTTTTTTTTTTTTTT
+	System.out.println("test3: in "+GREEN+"Class ClientController"+RESET+BLUE+" func --accept--"+RESET+" Call to"+BLUE+" func --handleMessageFromClientUI--"+RESET);
 	client.handleMessageFromClientUI(object);
 	 // client.setHost("DF");
 
@@ -107,4 +104,3 @@ public class ClientController implements ChatIF
     System.out.println("> " + message);
   }
 }
-//End of ConsoleChat class

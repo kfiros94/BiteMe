@@ -11,10 +11,11 @@ import java.util.regex.Pattern;
  * @author Kfir Amoyal
  * @author Israel Ohayon
  * @author Yaniv Shatil
- * @author Noam Furmann
+ * @author Noam Furman
  * @author Omri Heit
  * @author Eithan Zerbel
  */
+
 public class User implements Serializable {
     private int userId;
     private String username;

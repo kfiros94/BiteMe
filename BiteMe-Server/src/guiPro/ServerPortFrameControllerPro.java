@@ -24,6 +24,18 @@ import java.util.ResourceBundle;
 
 import entities.ClientInfo;
 
+/**
+ * Controller class for the ServerPortFrame GUI.
+ * Handles the initialization of the GUI components and server connection logic.
+ * 
+ * @author Kfir Amoyal
+ * @author Israel Ohayon
+ * @author Yaniv Shatil
+ * @author Noam Furman
+ * @author Omri Heit
+ * @author Eithan Zerbel
+ */
+
 public class ServerPortFrameControllerPro implements Initializable {
     //private EchoServerPro ev;
    // private  EchoServerPro sv;
@@ -50,6 +62,13 @@ public class ServerPortFrameControllerPro implements Initializable {
     
     private EchoServerPro server;
 
+    /**
+     * Initializes the controller class. This method is automatically called
+     * after the FXML file has been loaded.
+     *
+     * @param location  The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resources The resources used to localize the root object, or null if the root object was not localized.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -70,6 +89,12 @@ public class ServerPortFrameControllerPro implements Initializable {
         tableView.setItems(list);
     }
 
+    /**
+     * Starts the server GUI by loading the corresponding FXML file.
+     *
+     * @param primaryStage The primary stage for this application.
+     * @throws Exception if an error occurs during FXML loading.
+     */
     public void start(Stage primaryStage) throws Exception {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/guiPro/ServerGui.fxml"));
@@ -84,14 +109,31 @@ public class ServerPortFrameControllerPro implements Initializable {
         }
     }
 
+    /**
+     * Retrieves the port number from the PortTxt TextField.
+     *
+     * @return The port number as a String.
+     */
     private String getPort() {
         return PortTxt.getText();
     }
 
+    /**
+     * Retrieves the database password from the DBPasswordTxt TextField.
+     *
+     * @return The database password as a String.
+     */
     private String getDBPassword() {
         return DBPasswordTxt.getText();
     }
 
+    /**
+     * Handles the action event when the server start button is clicked.
+     * It validates the input fields and attempts to start the server.
+     *
+     * @param event The ActionEvent triggered by the button click.
+     * @throws Exception if an error occurs during server startup.
+     */
     @FXML
     void serveStartAction(ActionEvent event) throws Exception {
         String port = getPort();
@@ -123,6 +165,13 @@ public class ServerPortFrameControllerPro implements Initializable {
         }
     }
 
+    /**
+     * Runs the server with the provided port and database password.
+     *
+     * @param port       The port number as a String.
+     * @param dbPassword The database password as a String.
+     * @return True if the server starts successfully, false otherwise.
+     */
     public boolean runServer(String port, String dbPassword) {
         int portNumber = 0;
 
@@ -152,21 +201,36 @@ public class ServerPortFrameControllerPro implements Initializable {
         }
     }
 
+    /**
+     * Handles the action event when the close button is clicked.
+     * It closes the application.
+     *
+     * @param event The ActionEvent triggered by the button click.
+     */
     @FXML
     private void closeAction(ActionEvent event) {
         System.out.println("Closing application");
         System.exit(0);
     }
 
+    /**
+     * Adds client information to the table view.
+     *
+     * @param ip     The IP address of the client.
+     * @param status The connection status of the client.
+     */
     public void addClientInfo(String ip, String status) {
         list.add(new ClientInfo("localhost", ip, status)); // Example host as "localhost"
     }
     
-    
+    /**
+     * Updates the table view with a new client connection.
+     *
+     * @param ip     The IP address of the connected client.
+     * @param status The connection status of the client.
+     */
     public void clientConnected(String ip, String status) 
     {
     	addClientInfo(ip,status);
-    }
-    
-    
+    }    
 }

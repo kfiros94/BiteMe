@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author Kfir Amoyal
  * @author Israel Ohayon
  * @author Yaniv Shatil
- * @author Noam Furmann
+ * @author Noam Furman
  * @author Omri Heit
  * @author Eithan Zerbel
  */
