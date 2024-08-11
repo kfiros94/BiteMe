@@ -44,6 +44,8 @@ public class MainPagesClientController
 	private Label lbMyStatus;
 	@FXML
 	private Label lbMybranch;
+	@FXML
+	private ImageView imageView;
 	
     private Order s;//זה שדה של הקונטרולר שדרך הדף לוג-אין יוצרים מופע של המחלקה ומעדכנים את השדה דרך מתודה שהגדרנו כאן
      private User UserClient;
@@ -56,6 +58,7 @@ public class MainPagesClientController
      
  	public void initialize(String userName, String accountStatus , String branch)
  	{
+ 		
  		lbUserName.setText(userName);
  		lbMyStatus.setText(accountStatus);
  		lbMybranch.setText(branch);
@@ -136,7 +139,7 @@ public class MainPagesClientController
     
     
     @FXML
-    private void CloseButton(ActionEvent event) 
+    private void CloseButton(ActionEvent event) throws IOException 
     {
     	
 		BiteOptions option = new BiteOptions(ChatClient.user1.toString(), BiteOptions.Option.LOGOUT);//kkkkkkk

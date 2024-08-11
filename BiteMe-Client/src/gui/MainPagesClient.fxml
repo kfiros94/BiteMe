@@ -8,54 +8,52 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainPagesClientController">
+<AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainPagesClientController">
     <children>
-      <VBox layoutX="6.0" prefHeight="500.0" prefWidth="800.0">
+      <VBox layoutX="3.0" prefHeight="633.0" prefWidth="943.0">
          <children>
-            <Label prefHeight="53.0" prefWidth="203.0" text="LogoBiteMe">
-               <font>
-                  <Font size="36.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="300.0" />
-               </VBox.margin>
-            </Label>
-            <Label id="UserPortal" prefHeight="35.0" prefWidth="134.0" text="User Portal">
-               <font>
-                  <Font size="24.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="340.0" />
-               </VBox.margin>
-            </Label>
-            <HBox prefHeight="26.0" prefWidth="800.0">
+            <HBox prefHeight="72.0" prefWidth="946.0">
                <children>
-                  <Label id="Welcome " prefHeight="21.0" prefWidth="75.0" text="Welcome ">
+                  <Label id="Welcome " prefHeight="31.0" prefWidth="127.0" text="Welcome " textFill="#893cbf">
                      <HBox.margin>
-                        <Insets left="340.0" />
+                        <Insets left="470.0" top="40.0" />
                      </HBox.margin>
+                     <font>
+                        <Font name="Berlin Sans FB Demi Bold" size="27.0" />
+                     </font>
                   </Label>
-                  <Label id="UserName" fx:id="lbUserName" prefHeight="21.0" prefWidth="86.0" text="UserName">
+                  <Label id="UserName" fx:id="lbUserName" prefHeight="25.0" prefWidth="116.0" text="UserName">
                      <HBox.margin>
-                        <Insets />
+                        <Insets top="45.0" />
                      </HBox.margin>
+                     <font>
+                        <Font name="Berlin Sans FB" size="21.0" />
+                     </font>
                   </Label>
                </children>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
             </HBox>
+            <Label id="UserPortal" alignment="CENTER" prefHeight="48.0" prefWidth="946.0" text="User Portal">
+               <font>
+                  <Font name="Aharoni Bold" size="36.0" />
+               </font>
+            </Label>
             <HBox layoutX="10.0" layoutY="98.0" prefHeight="26.0" prefWidth="800.0">
                <children>
-                  <Label id="AccountStatus" prefHeight="21.0" prefWidth="115.0" text="Account Status:">
+                  <Label id="AccountStatus" prefHeight="27.0" prefWidth="131.0" text="Account Status:">
                      <HBox.margin>
-                        <Insets left="340.0" />
+                        <Insets left="370.0" />
                      </HBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
                   </Label>
                   <Label id="MyStatus" fx:id="lbMyStatus" prefHeight="21.0" prefWidth="86.0" text="MyStatus">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
                   </Label>
                </children>
                <VBox.margin>
@@ -64,34 +62,40 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="124.0" prefHeight="26.0" prefWidth="800.0">
                <children>
-                  <Label id="Yourhomebranch" prefHeight="21.0" prefWidth="139.0" text="Your home branch:">
+                  <Label id="Yourhomebranch" prefHeight="27.0" prefWidth="152.0" text="Your home branch:">
                      <HBox.margin>
-                        <Insets left="340.0" />
+                        <Insets left="370.0" />
                      </HBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
                   </Label>
-                  <Label id="Mybranch" fx:id="lbMybranch" prefHeight="21.0" prefWidth="86.0" text="Mybranch">
+                  <Label id="Mybranch" fx:id="lbMybranch" prefHeight="27.0" prefWidth="87.0" text="Mybranch">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
                   </Label>
                </children>
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
             </HBox>
-            <Button id="StartOrder" mnemonicParsing="false" onAction="#StartOrder" prefHeight="31.0" prefWidth="154.0" text="Start Order">
+            <Button id="StartOrder" mnemonicParsing="false" onAction="#StartOrder" prefHeight="63.0" prefWidth="165.0" text="Start Order">
                <VBox.margin>
-                  <Insets left="340.0" top="20.0" />
+                  <Insets left="390.0" top="20.0" />
                </VBox.margin>
             </Button>
-                  <Button id="OrderInProgress" mnemonicParsing="false" onAction="#OrderInProgress" prefHeight="31.0" prefWidth="152.0" text="Order In Progress">
+                  <Button id="OrderInProgress" mnemonicParsing="false" onAction="#OrderInProgress" prefHeight="70.0" prefWidth="165.0" text="Order In Progress">
                <VBox.margin>
-                  <Insets left="340.0" top="20.0" />
+                  <Insets left="390.0" top="20.0" />
                </VBox.margin>
                   </Button>
-                  <Button id="ViewOrderHistory" mnemonicParsing="false" onAction="#ViewOrderHistory" prefHeight="31.0" prefWidth="150.0" text="View Order History">
+                  <Button id="ViewOrderHistory" mnemonicParsing="false" onAction="#ViewOrderHistory" prefHeight="74.0" prefWidth="168.0" text="View Order History">
                <VBox.margin>
-                  <Insets left="340.0" top="20.0" />
+                  <Insets left="390.0" top="20.0" />
                </VBox.margin>
                   </Button>
             <Button id="LogOut" mnemonicParsing="false" onAction="#CloseButton" prefHeight="31.0" prefWidth="80.0" style="-fx-background-color: rgba(97, 56, 255, 0.8);" text="LogOut" textFill="WHITE">
@@ -99,7 +103,7 @@
                   <Font name="Agency FB Bold" size="18.0" />
                </font>
                <VBox.margin>
-                  <Insets left="360.0" top="100.0" />
+                  <Insets bottom="20.0" left="420.0" top="100.0" />
                </VBox.margin>
             </Button>
          </children>
