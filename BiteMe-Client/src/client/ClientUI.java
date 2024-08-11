@@ -40,9 +40,5 @@ public class ClientUI extends Application {
 		LogInUserController aFrame = new LogInUserController(); // create OrderFrame
 		 
 		aFrame.start(primaryStage);
-		
-		
 	}
-	
-	
 }

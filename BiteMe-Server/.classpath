@@ -14,5 +14,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFx"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX22"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jsonServer"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

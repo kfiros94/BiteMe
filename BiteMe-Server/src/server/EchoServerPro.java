@@ -8,6 +8,7 @@ import java.util.List;
 
 import entities.BiteOptions;
 import entities.ClientInfo;
+import entities.MenuItem;
 import entities.Order;
 import entities.Restaurant;
 import entities.User;
@@ -53,7 +54,7 @@ public class EchoServerPro extends AbstractServer
 		System.out.println("\ntest2: Message received: " + msg + " from " + client);
 
 		BiteOptions request = (BiteOptions) msg;
-		BiteOptions answer= new BiteOptions();
+		BiteOptions answer = new BiteOptions();
 		ArrayList<Order> costumer_all_orders = new ArrayList<Order>();
 		User user;
 		Restaurant restaurant;
@@ -167,6 +168,104 @@ public class EchoServerPro extends AbstractServer
 				    client.sendToClient(answer);
 				    System.out.println("Server sent response: " + answer);
 				    break;
+				    
+				/////////////////NOAM////////////////////////////////////////////////////
+			   case LOGIN_RESTAURANT:
+					//Restaurant receivedRestaurant = (Restaurant) request;
+					restaurant = new Restaurant();
+					restaurant = Restaurant.fromString(request.getData().toString());
+					//System.out.println(ANSI_BROWN + "Eco-Test:" + ANSI_RESET + "We entered the " + ANSI_BOLD + "LOGIN_RESTAURANT" + ANSI_RESET);
+
+		            System.out.println("Eco-Test: we enterd LOGIN_RESTAURANT" );
+		            try
+		            {
+		            	BiteOptions DBanser= new BiteOptions();
+		            	DBanser=DBController.getRestaurantBySupplierId(restaurant.getSupplierID());
+		                if (DBanser != null) {
+		                	System.out.println("DB returend: "+DBanser);
+		                	//restaurantFromDB=(Restaurant) Dbandwer.getData().fromString();
+		                   // System.out.println("Restaurant found: " + restaurantFromDB);
+		                    client.sendToClient(DBanser);
+		                } 
+		                else 
+		                {
+		                    System.out.println("No restaurant found for supplier ID: " + restaurant.getSupplierID());
+		                    client.sendToClient(null);
+		                }
+		            }
+		            catch (IOException e) {
+		                e.printStackTrace();
+		            }
+		            break;
+		            
+				case SHOW_MENU_RESTAURANT:
+					  System.out.println("Eco-Test: we enterd SHOW_MENU_RESTAURANT" );
+					  MenuItem menuItemRequest=MenuItem.fromString(request.getData().toString());
+					  ////
+					  //MenuItem menuItemRequest = (MenuItem) msg;
+			            try {
+			                //List<MenuItem> menuItems = DBController.getMenuItemsByRestaurantId(menuItemRequest.getRestaurantItamId());
+			                BiteOptions menuItems= DBController.getMenuItemsByRestaurantId(menuItemRequest.getRestaurantItamId());
+			                System.out.println("-->: Fetched menu items from database: " + menuItems);
+			                client.sendToClient(menuItems);
+			                System.out.println("-->: Sent menu items to client");
+			            } catch (SQLException e) {
+			                e.printStackTrace();
+			                System.out.println("-->: Failed to fetch menu items from database");
+			            } catch (IOException e) {
+			                e.printStackTrace();
+			                System.out.println("-->: Failed to send menu items to client");
+			            }
+		                break;
+
+				case DELETE_ITEM_MENU:
+					  MenuItem ItemDeleteRequest=MenuItem.fromString(request.getData().toString());
+						System.out.println("Eco-Test: we entered DELETE_ITEM_MENU: "+ItemDeleteRequest);
+						/*
+					if (request.getData() != null) {
+						System.out.println(request.getData());
+	                    MenuItem ItemDeleteRequest = MenuItem.fromString(request.getData().toString());
+	                    int iddelte=ItemDeleteRequest.getItemId();
+	                    */
+	                    //System.out.println(iddelte);
+	                    BiteOptions ItemDeleted = DBController.removeMenuItem(ItemDeleteRequest);
+		                System.out.println("-->: Fetched menu items from database: " + ItemDeleted);
+		                client.sendToClient(ItemDeleted);
+	                   
+		                
+	                    /*if (result) {
+	                        System.out.println("Menu item removed successfully.");
+	                    } else {
+	                        System.out.println("Failed to remove menu item.");
+	                    }
+	                } else {
+	                    System.out.println("Error: Received null data for DELETE_ITEM_MENU.");
+	                }*/
+					
+	                break;
+	                
+				case UPDATE_MENU:
+					System.out.println("Eco-Test: we entered UPDATE_MENU: "+request.getData());
+					BiteOptions NewOrUpdatedItem =DBController.saveOrUpdateMenuItem(request);
+					System.out.println("-->: Fetched menu items from database: " + NewOrUpdatedItem);
+	                client.sendToClient(NewOrUpdatedItem);
+				
+	            ////////////////////NOAM/////////////////////////////////////////////////////////////////
+	                
+			   case RETRIEVE_MANAGE_ORDER_LIST:
+				/*
+		         * BiteOptions request = (BiteOptions) msg;
+				 * BiteOptions answer = new BiteOptions();
+				 */
+				System.out.println("Server received RETRIEVE_MANAGE_ORDER_LIST resquest");
+				Order order = (Order) request.getData();
+				ArrayList<Order> orders = DBController.getOrderManagementInfo(order);
+				System.out.println("Order Management fetched from DB");
+				answer.setData(orders);
+				answer.setOption(BiteOptions.Option.RETRIEVE_MANAGE_ORDER_LIST);
+				client.sendToClient(answer);
+				System.out.println("Server sent response: " + answer);
+				break;
 			}
 			
 			

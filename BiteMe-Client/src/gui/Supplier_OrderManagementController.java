@@ -1,189 +1,264 @@
 package gui;
 
 import javafx.fxml.FXML;
-
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import client.ChatClient;
-import client.ClientUI;
-import entities.BiteOptions;
-import entities.ClientInfo;
-import entities.Order;
-import entities.User;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
-
+import javafx.event.ActionEvent;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import javafx.application.Platform;
+import entities.BiteOptions;
+import entities.Order;
+import entities.Restaurant;
+import entities.User;
+import client.ChatClient;
+import client.ClientUI; // Assume this is your client connection class
+
+import java.awt.Label;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Supplier_OrderManagementController {
+	
+	/////CHANGE NOAM//////
+	final String ANSI_RESET = "\u001B[0m";
+	final String ANSI_PURPLE = "\u001B[35m";
+	/////////////////////
+    // FXML injected fields
+   
+	//// TABLE ELEMENTS ////
+	@FXML
+    private TableView<Order> tableView;
+
     @FXML
-    private Button btnBack;
+    private TableColumn<Order, String> orderNumberColumn;
+
+    @FXML
+    private TableColumn<Order, String> typeColumn;
+    
+    @FXML
+    private TableColumn<Order, String> itemsColumn;
+    
+    @FXML
+    private TableColumn<Order, String> orderReceivedColumn; //CHANGE is needed
+
+    @FXML
+    private TableColumn<Order, String> phoneNumberColumn;
+
+    @FXML
+    private TableColumn<Order, String> statusColumn;
+    
+    //// TEXT AND LABEL ELEMENTS ////////
+
+    @FXML
+    private TextField searchField;
+    
+    @FXML
+    private Label msgLabel;
+    
+    //// BURRON ELEMENTS ////
     
     @FXML
     private Button btnSearch;
     
     @FXML
-    private TableView<Order> tableView;
+    private Button btnBack;
     
     @FXML
-    private TableColumn<Order, String> orderNumberColumn;
+    private Button btnRefresh;
     
     @FXML
-    private TableColumn<Order, String> typeColumn;
+    private Button btnConfirm;
     
     @FXML
-    private TableColumn<Order, String> orderEtaColumn;
+    private Button btnDeny;
     
     @FXML
-    private TableColumn<Order, String> phoneNumberColumn;
+    private Button btnDeliver;
     
-    @FXML
-    private TableColumn<Order, String> statusColumn;
     
-    @FXML
-    private TextField searchField;
-    
-    @FXML
-    private Label titleLabel;
-    
-    private ObservableList<Order> orderList = FXCollections.observableArrayList();
+    //// OTHER ELEMENTS ////
 
+    @FXML
+    private ImageView BiteMeLogo;
+
+    
+
+    
+
+    // ObservableList to hold the orders data
+    private ObservableList<Order> orders = FXCollections.observableArrayList();
+    
+    private User cSupplier;
+    private Restaurant cRestaurant;
+    
+    private ArrayList<Order> orderslocal = new ArrayList<Order>();
+    
     @FXML
     public void initialize() {
-        // Initialize the table columns
+        // Initialize table columns with cell value factories
         orderNumberColumn.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        orderEtaColumn.setCellValueFactory(new PropertyValueFactory<>("orderEta"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<>("deliveryType"));
+        //CHANGE is needed
+        orderReceivedColumn.setCellValueFactory(new PropertyValueFactory<>("placingOrderDate")); 
         phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-        
-        // Load data into the table (example data, replace with actual data loading logic)
-        orderList.addAll(
-            new Order("123", "Type1", "2024-08-10", "123-456-7890", "Pending"),
-            new Order("124", "Type2", "2024-08-12", "123-456-7891", "Completed")
-        );
-        
-        tableView.setItems(orderList);
+
+        // Set up search button action
+        btnSearch.setOnAction(event -> handleSearch());
+
+        // Set up refresh button action
+        btnRefresh.setOnAction(event -> handleRefresh());
+
+        // Load initial data
+        loadOrders();
     }
     
-    private String getOrderNumber() {
-        return searchField.getText();
-    }
     
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         try {
+            // Load the FXML file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/Supplier_OrderManagement.fxml"));
             Parent root = loader.load();
+
+            // Get the controller
+            gui.Supplier_OrderManagementController controller = loader.getController();
+
+            // Create the scene
             Scene scene = new Scene(root);
-            primaryStage.setTitle("Order Manager");
+
+            // Set the scene to the stage
             primaryStage.setScene(scene);
+            primaryStage.setTitle("Order Management");
+
+            // Show the stage
             primaryStage.show();
-        } catch (Exception e) {
+
+        } catch(Exception e) {
             e.printStackTrace();
-            System.out.println("Error loading FXML file.");
         }
-        
+    }
+
+    /**
+     * Loads orders from the server
+     */
+    private void loadOrders() {
+    	
         Order order = new Order();
-        BiteOptions option = new BiteOptions(order , BiteOptions.Option.RETRIEVE_ORDER_LIST);//kkkkkkk
-        ClientUI.chat.accept(option);
+        //Sets the current Restaurant details inside order for data parsing.
+        order.setRestaurantName(cRestaurant.getName());
+        order.setRestaurantID(cRestaurant.getRestaurantID());
+        // Create a request to get orders from the server
+        BiteOptions request = new BiteOptions(order, BiteOptions.Option.RETRIEVE_MANAGE_ORDER_LIST);
+
+        // Send request to server
+        ClientUI.chat.accept(request);
+        orderslocal.addAll(ChatClient.receivedOrders);
+        handleServerResponse(orderslocal);
     }
     
+    /**
+     * Gets the restaurant's details from the previous page.
+     * @param cRestaurant
+     * @param cSupplier
+     */
+    
+    
+    public void setRestaurantInfo(Restaurant cRestaurant, User cSupplier) {
+    	this.cRestaurant = cRestaurant;
+    	this.cSupplier = cSupplier;
+    }
+    
+    /**
+     * Handles the response from the server
+     * @param response The response object from the server
+     */
+    public void handleServerResponse(ArrayList<Order> response) {
+    	
+    	if(response.isEmpty()||response == null) {
+    		orders.clear();
+    		tableView.setItems(orders);
+    		System.out.println("No Orders for this Restaurants!");
+    	}
+    	else {
+    		Platform.runLater(() -> {
+                orders.clear();
+                orders.addAll(response);
+                tableView.setItems(orders);
+            });
+    	}
+    	
+    }
+
+    /**
+     * Searches for orders based on the search term
+     */
     @FXML
-    public void backButton(ActionEvent event) {
-        // Handle logout action
-        System.out.println("Logout button clicked");
-        // Add your logout handling code here
+    private void handleSearch() {
+        String searchTerm = searchField.getText().trim();
+        if (!searchTerm.isEmpty()) {
+            try {
+                int searchOrderNumber = Integer.parseInt(searchTerm);
+                // Filter the orders list based on the search term
+                ObservableList<Order> filteredList = orders.filtered(order -> 
+                    order.getOrderNumber() == searchOrderNumber);
+                tableView.setItems(filteredList);
+            } catch (NumberFormatException e) {
+                // Handle the case where the input is not a valid number
+                System.out.println("Invalid order number format");
+            }
+        } else {
+            // If search field is empty, show all orders
+            tableView.setItems(orders);
+            System.out.println("Please write an order number before searching ");
+        }
     }
-    
+
+    /**
+     * Refreshes the orders list by reloading from the server
+     * Activates by the push of the "Refresh" Button.
+     */
     @FXML
-    private void getSearchButton(ActionEvent event) {
-    	//TODO//
+    private void handleRefresh() {
+        loadOrders();
     }
-    
-    // Order class for table data
-    public static class Order {
-        private String orderNumber;
-        private String type;
-        private String orderEta;
-        private String phoneNumber;
-        private String status;
-        
-        public Order() {
-        	
-        }
-        public Order(String orderNumber, String type, String orderEta, String phoneNumber, String status) {
-            this.orderNumber = orderNumber;
-            this.type = type;
-            this.orderEta = orderEta;
-            this.phoneNumber = phoneNumber;
-            this.status = status;
-        }
 
-        public String getOrderNumber() {
-            return orderNumber;
-        }
+    /**
+     * Handles the back button action
+     * @param event The action event
+     */
+    @FXML
+    private void handleBack(ActionEvent event) {
+        try {
+            // Load the FXML file for the Main Page Supplier
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/supplier/MainPageSupplier.fxml"));
+            Parent root = loader.load();
 
-        public void setOrderNumber(String orderNumber) {
-            this.orderNumber = orderNumber;
-        }
+            // Get the current stage from the event
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            
+            // Set the new scene with the Main Page Supplier
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Main Page - Supplier");
 
-        public String getType() {
-            return type;
+            // Show the stage
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getOrderEta() {
-            return orderEta;
-        }
-
-        public void setOrderEta(String orderEta) {
-            this.orderEta = orderEta;
-        }
-
-        public String getPhoneNumber() {
-            return phoneNumber;
-        }
-
-        public void setPhoneNumber(String phoneNumber) {
-            this.phoneNumber = phoneNumber;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
+        System.out.println("Back button clicked");
     }
 }
