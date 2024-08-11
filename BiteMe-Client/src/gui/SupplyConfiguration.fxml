@@ -16,19 +16,22 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SupplyConfigurationController">
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SupplyConfigurationController">
    <children>
       <VBox prefHeight="151.0" prefWidth="1001.0">
          <children>
-            <Label alignment="CENTER" prefHeight="40.0" prefWidth="1000.0" text="Create New Order">
+            <Label alignment="CENTER" prefHeight="26.0" prefWidth="1000.0" text="Create New Order">
                <font>
-                  <Font name="System Bold" size="24.0" />
+                  <Font name="System Bold" size="37.0" />
                </font>
             </Label>
             <Label alignment="CENTER" prefHeight="30.0" prefWidth="1000.0" text="Supply Configuration">
                <font>
-                  <Font name="Agency FB" size="24.0" />
+                  <Font name="Agency FB" size="27.0" />
                </font>
+               <VBox.margin>
+                  <Insets top="-8.0" />
+               </VBox.margin>
             </Label>
             <HBox prefHeight="38.0" prefWidth="1000.0">
                <children>
@@ -122,7 +125,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="deliveryFeeLabel" layoutX="672.0" layoutY="398.0" prefHeight="27.0" prefWidth="42.0" text="25.0">
+      <Label fx:id="deliveryFeeLabel" layoutX="663.0" layoutY="398.0" prefHeight="27.0" prefWidth="51.0" text="25.0">
          <font>
             <Font size="18.0" />
          </font>
@@ -142,19 +145,20 @@
          </effect></Button>
       <Button layoutX="22.0" layoutY="746.0" mnemonicParsing="false" onAction="#handleBackButtonAction" prefHeight="40.0" prefWidth="80.0" text="⬅ Back" />
       <Line endX="-11.0" endY="475.0" layoutX="12.0" layoutY="-38.0" startX="990.0" startY="469.0" />
-      <TableView layoutX="2.0" layoutY="438.0" prefHeight="263.0" prefWidth="1000.0">
-        <columns>
-          <TableColumn prefWidth="114.0" text="Item Name" />
-          <TableColumn prefWidth="811.0" text="Changes" />
-            <TableColumn prefWidth="74.0" text="Price" />
-        </columns>
-      </TableView>
+		<TableView fx:id="orderItemsTable" layoutX="2.0" layoutY="438.0" prefHeight="263.0" prefWidth="1000.0">
+		  <columns>
+		    <TableColumn fx:id="itemNameColumn" prefWidth="114.0" text="Item Name" />
+		    <TableColumn fx:id="changesColumn" prefWidth="811.0" text="Changes" />
+		    <TableColumn fx:id="priceColumn" prefWidth="74.0" text="Price" />
+		  </columns>
+		</TableView>
       <Label layoutX="806.0" layoutY="711.0" text="Total Price:">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="904.0" layoutY="711.0" text="0.00" />
+      <Label fx:id="totalPriceLabel" layoutX="904.0" layoutY="711.0" text="0.00" />
       <Label layoutX="949.0" layoutY="711.0" text="💲" />
+      <Label fx:id="timeNotSpecError" alignment="CENTER" layoutX="415.0" layoutY="746.0" prefHeight="7.0" prefWidth="174.0" text="You must specify a supply time" textFill="#e41010" visible="false" />
    </children>
 </AnchorPane>

@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -65,6 +66,7 @@ public class SelectFromRestMenuController {
 
     @FXML
     private Button nextButton;
+    
 
     private ObservableList<MenuItems> menuItemsList;
     private ObservableList<CartItem> cartItems;
@@ -247,11 +249,11 @@ public class SelectFromRestMenuController {
     //LLLLLLLLLLLLLLLLLLLL
     
     
-    private void showAlert(String title, String message) 
-    {
+    private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
-        alert.setContentText(message);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
         alert.showAndWait();
     }
     
@@ -261,7 +263,7 @@ public class SelectFromRestMenuController {
     @FXML
     private void handleNext(ActionEvent event) 
     {
-
+    	/*
         FXMLLoader loader = new FXMLLoader();
         Pane root = null;
         Stage primaryStage = new Stage();
@@ -294,12 +296,46 @@ public class SelectFromRestMenuController {
             showAlert("Error", "Could not load the Start Order page.");
         }
     
-    
-    
+    */
+    	
+    	//kkkkkkkkkkkkkkkkkkkkkk
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SupplyConfiguration.fxml"));
+            Parent root = loader.load();
+
+            SupplyConfigurationController supplyConfigurationController = loader.getController();
+            supplyConfigurationController.initData(cartItems);
+            supplyConfigurationController.setPreviousController(this);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Could not load the Supply Configuration page.");
+        }
     }
+    	//kkkkkkkkkkkkkkkkkkkkkkk
+    
+    
 
     
+    public void restoreState(SelectFromRestMenuController previousState) {
+        this.cartItems = previousState.cartItems;
+        this.menuItemsList = previousState.menuItemsList;
+        // Restore any other necessary state
+
+        // Refresh the UI
+        refreshUI();
+    }
     
+    private void refreshUI() {
+        // Update TableViews, labels, or any other UI elements
+        menuTableView.setItems(menuItemsList);
+        cartTableView.setItems(cartItems);
+        updateTotalPrice();
+    }
     
     
     private void loadMenuItems() {
@@ -403,6 +439,11 @@ public class SelectFromRestMenuController {
 
     }
     
+    //KKKKKKKKKKKKKKKKKKKKKKK
+    public ObservableList<CartItem> getCartItems() {
+        return cartItems;
+    }
+    //KKKKKKKKKKKKKKKKKKKKKKK
     
 
     
