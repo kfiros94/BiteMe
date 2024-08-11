@@ -9,7 +9,7 @@ import java.util.List;
 import entities.BiteOptions;
 import entities.ClientInfo;
 import entities.MenuItems;
-import entities.Order;
+import entities.RestaurantOrders;
 import entities.Restaurant;
 import entities.User;
 //import common.User;
@@ -59,7 +59,7 @@ public class EchoServerPro extends AbstractServer
 
 		BiteOptions request = (BiteOptions) msg;
 		BiteOptions answer= new BiteOptions();
-		ArrayList<Order> costumer_all_orders = new ArrayList<Order>();
+		ArrayList<RestaurantOrders> costumer_all_orders = new ArrayList<RestaurantOrders>();
 		User user;
 		MenuItems menuItem;
 		Restaurant restaurant;
@@ -248,6 +248,83 @@ public class EchoServerPro extends AbstractServer
 				    break;
 
 				   
+				    
+				    
+			   case BACK_HOME_CUSTOMER_PAGE:
+				   
+				   
+					System.out.println("Eco-Test1: We entered the BACK_HOME_CUSTOMER_PAGE case " );
+
+					System.out.println("\ntest666666666: Message received: " + request.getData() + " from " + client);
+
+					//כאן אנחנו לוקחים את המחרוזת בשדה ה-דאטה של מחלקת ביט-אופציות וממירים למופע חדש של המחלקה המתאימה לה לפי שדה הפקודה לוג-אין שבה איתה יחד
+			        user = User.fromString(request.getData().toString());
+			        System.out.println("Eco-Test1: Print a check to see that we were able to convert the string to a user objec: "+user);
+
+
+					ArrayList<User> users2 = DBController.showusers();//מושך את כל המשתמשים מהמסד נתונים למערך משתמשים
+					System.out.println("Users received from DB: " + users2.toString());
+				   
+				   //aaaaaaaaaaaaa
+					
+					boolean usernameFound2 = false;
+					try
+					{
+						
+						for (User userToFind : users2) 
+						{
+							if (userToFind.getUserId() == user.getUserId()) 
+							//if (userToFind.getUsername().equals(usernameToCompare)) 
+							{
+								usernameFound = true;
+								
+									System.out.println("SQLUserFound: " + userToFind.getUsername());
+									
+									answer.setData(userToFind.toString());
+									answer.setOption(BiteOptions.Option.BACK_HOME_CUSTOMER_PAGE);
+									client.sendToClient(answer);
+									System.out.println("Eco-Test1- answer To Client in case LOGIN: " + answer);
+
+									return;
+							}
+						}
+
+						if (!usernameFound2) 
+						{
+							System.out.println("Username not found: " + user.getUsername());
+							//client.sendToClient("-1");
+							
+							answer.setData("-1");
+							answer.setOption(BiteOptions.Option.BACK_HOME_CUSTOMER_PAGE);
+							client.sendToClient(answer);
+							
+						}
+						
+					}
+					//זה שייך למקרה של לוג-אין
+					catch (IOException e) 
+					{
+						e.printStackTrace();
+					}
+					break;
+					
+					//aaaaaaaaaaa
+				   
+				   
+
+				   
+				    
+				    
+				//לאחר לחיצה על כפתור להמשיך לתשלום בחלון של קונפיגורציית אספקה אנחנו רוצים לשמור את ההזמנה של הלקוח בטבלה של הזמנות מסעדה     
+			   case CREATE_ORDER:    
+				   
+				   
+				   
+				   
+				   
+				   break;
+				    
+				    
 				   
 			   case TEST_JSON:
 				   
@@ -296,7 +373,7 @@ public class EchoServerPro extends AbstractServer
 		
 		
 		
-		
+	/*
 		//System.out.println("\ntest2: Message received: " + msg + " from " + client);
 		int flagOrederFound = 0;
 		int idexMsg = 0;
@@ -317,7 +394,7 @@ public class EchoServerPro extends AbstractServer
 					// Handle order retrieval
 					try 
 					{
-						ArrayList<Order> orders = DBController.showOrder();
+						ArrayList<RestaurantOrders> orders = DBController.showOrder();
 						System.out.println("Orders received from DB: " + orders.toString());
 
 						// Try parsing the order number to compare
@@ -327,7 +404,7 @@ public class EchoServerPro extends AbstractServer
 							int orderNumberToCompare = Integer.parseInt((String) list.get(idexMsg));
 							System.out.println("Order number to compare: " + orderNumberToCompare);
 
-							for (Order order : orders) 
+							for (RestaurantOrders order : orders) 
 							{
 								if (order.getOrderNumber() == orderNumberToCompare) 
 								{
@@ -409,6 +486,12 @@ public class EchoServerPro extends AbstractServer
 				}
 			}
 		}
+	
+	*/
+	
+	
+	
+	
 	}
 	
 	
@@ -442,14 +525,14 @@ public class EchoServerPro extends AbstractServer
     
     //1aaaaaaaaaaaaaaaaaaa
     //אין שימוש למתודה הזאת אבל היא תבנית עיצוב להמרה לאובייקטים אולי לעתיד נשתמש בה
-	private ArrayList<Order> parsingTheData(ArrayList<?> data) 
+	private ArrayList<RestaurantOrders> parsingTheData(ArrayList<?> data) 
 	{
-		ArrayList<Order> users = new ArrayList<>();
+		ArrayList<RestaurantOrders> users = new ArrayList<>();
 		for (Object obj : data) 
 		{
-			if (obj instanceof Order) 
+			if (obj instanceof RestaurantOrders) 
 			{
-				users.add((Order) obj);
+				users.add((RestaurantOrders) obj);
 			}
 		}
 		return users;

@@ -9,6 +9,7 @@ import java.util.Map;
 import client.ChatClient;
 import entities.MenuItems;
 import entities.Restaurant;
+import entities.RestaurantOrders;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,7 +24,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class SelectFromRestMenuController {
+public class SelectFromRestMenuController 
+{
 
     @FXML
     private TableView<MenuItems> menuTableView;
@@ -74,11 +76,14 @@ public class SelectFromRestMenuController {
     private Map<MenuItems, CheckBoxTableCell> cellMap = new HashMap<>();
     
     private ArrayList<Restaurant> restaurantslocal = new  ArrayList<Restaurant>();
+    private RestaurantOrders restaurantOrders = new RestaurantOrders();
+
 
 
     
     @FXML
-    private void initialize() {
+    private void initialize() 
+    {
     	
         System.out.println("print MenuITTTTems:"+ChatClient.menuItems);
         
@@ -164,56 +169,7 @@ public class SelectFromRestMenuController {
         }
     }
 
-    /*
-    //KKKKKKKKKKKKKKKK
-    @FXML
-    private void handleBack(ActionEvent event) 
-    {
 
-        // Logic for back button
-        System.out.println("Back button clicked");
-        System.out.println("print MenuITtttTTems:"+restaurantslocal);
-
-        
-        
-        //aaaaaaaaaaaaaaaaaaaa
-        FXMLLoader loader = new FXMLLoader();
-        Pane root = null;
-        Stage primaryStage = new Stage();
-        try 
-        {
-            // Load the FXML file
-            loader.setLocation(getClass().getResource("/gui/RestaurantSelection.fxml"));
-
-            root = loader.load();
-            
-            // Hide the current window
-            ((Node) event.getSource()).getScene().getWindow().hide();
-
-            // Set the new stage
-            Scene scene = new Scene(root);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-			primaryStage.setTitle("User-Portal -> New Order -> Select Restaurant");
-
-            
-			RestaurantSelectionController RestaurantSelectionController = loader.getController();
-			RestaurantSelectionController.loadRestaurant(restaurantslocal);
-            // Uncomment and use if needed
-        } 
-        catch (IOException e) 
-        {
-            // Print the stack trace and show an error dialog
-            e.printStackTrace();
-            showAlert("Error", "Could not load the Start Order page.");
-        }
-        
-        //aaaaaaaaaaaaaaaaaaaaaa
-        
-        
-    }
-    //KKKKKKKKKKKKKKKKKKKKK
-    */
     
     
     //LLLLLLLLLLLLLLLLLLL
@@ -263,40 +219,7 @@ public class SelectFromRestMenuController {
     @FXML
     private void handleNext(ActionEvent event) 
     {
-    	/*
-        FXMLLoader loader = new FXMLLoader();
-        Pane root = null;
-        Stage primaryStage = new Stage();
-        try 
-        {
-            // Load the FXML file
-            loader.setLocation(getClass().getResource("/gui/SupplyConfiguration.fxml"));
 
-            root = loader.load();
-            
-            // Hide the current window
-            ((Node) event.getSource()).getScene().getWindow().hide();
-
-            // Set the new stage
-            Scene scene = new Scene(root);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-			primaryStage.setTitle("User-Portal -> New Order -> Select Restaurant -> Select Menu Items -> Supply Configuration");
-
-            
-			SupplyConfigurationController SupplyConfigurationController = loader.getController();
-			//SelectFromRestMenuController.loadRestaurant(restaurantslocal);
-
-            // Uncomment and use if needed
-        } 
-        catch (IOException e) 
-        {
-            // Print the stack trace and show an error dialog
-            e.printStackTrace();
-            showAlert("Error", "Could not load the Start Order page.");
-        }
-    
-    */
     	
     	//kkkkkkkkkkkkkkkkkkkkkk
         try {
@@ -305,13 +228,23 @@ public class SelectFromRestMenuController {
 
             SupplyConfigurationController supplyConfigurationController = loader.getController();
             supplyConfigurationController.initData(cartItems);
+            
+            supplyConfigurationController.loadRestaurantOrders(restaurantOrders);
+
+            
+            
+            //הדפסת עזר להבין איך נראה מערך הפריטים שהלקוח בחר להזמין לעצמו, בשביל שנבין מה נשלח לשרת לשמירה במסד נתונים
+            System.out.println("print cartItemsSSSSSSSSSSS:"+supplyConfigurationController.getcartItems());
+            
             supplyConfigurationController.setPreviousController(this);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        } catch (IOException e) {
+        } 
+        catch (IOException e) 
+        {
             e.printStackTrace();
             showAlert("Error", "Could not load the Supply Configuration page.");
         }
@@ -438,6 +371,20 @@ public class SelectFromRestMenuController {
 		System.out.println("KKKKKKKKKKKKKKKKKKKKKKKK"+ this.restaurantslocal.toString());
 
     }
+    
+    
+    //aaaaaaaaaaaaaaaaaaaaa
+    
+    public void loadRestaurantOrders(RestaurantOrders restaurantOrders) 
+    {
+        this.restaurantOrders = restaurantOrders;
+		System.out.println("TTTTTTTTTTTTTTTTT"+ this.restaurantOrders.toString());
+
+    }
+    
+    //aaaaaaaaaaaaaaaaaaaaaa
+    
+    
     
     //KKKKKKKKKKKKKKKKKKKKKKK
     public ObservableList<CartItem> getCartItems() {

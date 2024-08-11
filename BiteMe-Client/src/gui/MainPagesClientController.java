@@ -30,7 +30,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import entities.ClientInfo;
-import entities.Order;
+import entities.RestaurantOrders;
 import entities.User;
 
 
@@ -47,7 +47,7 @@ public class MainPagesClientController
 	@FXML
 	private ImageView imageView;
 	
-    private Order s;//זה שדה של הקונטרולר שדרך הדף לוג-אין יוצרים מופע של המחלקה ומעדכנים את השדה דרך מתודה שהגדרנו כאן
+    private RestaurantOrders s;//זה שדה של הקונטרולר שדרך הדף לוג-אין יוצרים מופע של המחלקה ומעדכנים את השדה דרך מתודה שהגדרנו כאן
      private User UserClient;
 
 
@@ -67,7 +67,7 @@ public class MainPagesClientController
  	}
  	
 
-    public void loadOrder(Order s1)
+    public void loadOrder(RestaurantOrders s1)
     {
         this.s = s1;
       

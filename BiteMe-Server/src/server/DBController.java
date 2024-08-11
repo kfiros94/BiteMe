@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import entities.ClientInfo;
 import entities.MenuItems;
-import entities.Order;
+import entities.RestaurantOrders;
 import entities.Restaurant;
 import entities.User;
 
@@ -20,7 +20,8 @@ import org.json.JSONObject;
 
 
 
-public class DBController {
+public class DBController 
+{
 
     protected static Connection conn = null;
 
@@ -51,10 +52,13 @@ public class DBController {
         }
     }
 
-    protected static ArrayList<Order> showOrder() 
+    
+    
+    /*
+    protected static ArrayList<RestaurantOrders> showOrder() 
     {
         System.out.println("in ShowOrder Function"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-        ArrayList<Order> orders = new ArrayList<>();
+        ArrayList<RestaurantOrders> orders = new ArrayList<>();
 
         try {
             String query = "SELECT * FROM restaurant_orders"; // Enclose table name in backticks
@@ -70,7 +74,7 @@ public class DBController {
                 int orderListNumber = ordersFromTable.getInt("Order_list_number");
                 String orderAddress = ordersFromTable.getString("Order_address");
                 System.out.println("Test 4"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-                orders.add(new Order(restaurantName, orderNumber, totalPrice, orderListNumber, orderAddress));
+                orders.add(new RestaurantOrders(restaurantName, orderNumber, totalPrice, orderListNumber, orderAddress));
             }
             stmt.close();
         } catch (SQLException e) {
@@ -79,6 +83,31 @@ public class DBController {
         System.out.println("Test 5"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
         return orders;
     }
+    */
+    
+    
+    
+    /*
+    
+    protected static String updateUsersOrderToDB(ArrayList<String> newEditedOrders) {
+        System.out.println("SpongeBob squerpant!!!!!");
+        String sql = "UPDATE `restaurant_orders` SET Total_price = ?, Order_address = ? WHERE Order_number = ?";
+        try (PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setFloat(1, Float.parseFloat(newEditedOrders.get(2)));
+            statement.setString(2, newEditedOrders.get(4));
+            statement.setInt(3, Integer.parseInt(newEditedOrders.get(1)));
+            statement.executeUpdate();
+            statement.close();
+            return "Successfully saved";
+        } catch (SQLException var12) {
+            return "failed to save";
+        }
+    }
+    */
+    
+    
+    
+    
     
     //return users table
     protected static ArrayList<User> showusers() {
@@ -191,22 +220,9 @@ public class DBController {
     
   
     
+
     
     
-    protected static String updateUsersOrderToDB(ArrayList<String> newEditedOrders) {
-        System.out.println("SpongeBob squerpant!!!!!");
-        String sql = "UPDATE `restaurant_orders` SET Total_price = ?, Order_address = ? WHERE Order_number = ?";
-        try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            statement.setFloat(1, Float.parseFloat(newEditedOrders.get(2)));
-            statement.setString(2, newEditedOrders.get(4));
-            statement.setInt(3, Integer.parseInt(newEditedOrders.get(1)));
-            statement.executeUpdate();
-            statement.close();
-            return "Successfully saved";
-        } catch (SQLException var12) {
-            return "failed to save";
-        }
-    }
     
     //method to update in the data base when user is logd-in or out
     protected static String updateUserLoginStatus(int userId, int loginStatus) {

@@ -9,6 +9,7 @@ import client.ChatClient;
 import entities.User;
 import entities.BiteOptions;
 import entities.Restaurant;
+import entities.RestaurantOrders;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,7 +29,12 @@ public class RestaurantSelectionController
     private User UserCustomer;
     private Restaurant restaurant = new Restaurant(0,"0","0","0","0",0);
     private ArrayList<Restaurant> restaurantslocal = new  ArrayList<Restaurant>();
+    private RestaurantOrders restaurantOrders = new RestaurantOrders();
 	
+    private  String selectedBranch;
+    
+    
+    
     @FXML
     private ComboBox<String> restaurantComboBox;
 
@@ -141,7 +147,18 @@ public class RestaurantSelectionController
 		BiteOptions option = new BiteOptions(restaurant.toString(), BiteOptions.Option.GET_SELECTED_REST_MENU);//kkkkkkk
 
 		ClientUI.chat.accept(option);
+		
+		//aaaaa
+		
+		restaurantOrders.setRestaurant_id(restaurant.getRestaurantID());
+		restaurantOrders.setRestaurant(restaurant.getName());
+		restaurantOrders.setBranch(selectedBranch);
+        System.out.println("print UPDATE RestaurantOrders:"+restaurantOrders.toString());
 
+		
+		//aaaaa
+
+		//selectedBranch
         //HHHHHHHHHHHHHHHHHHHHHHHHHHHHH
         
         
@@ -169,6 +186,7 @@ public class RestaurantSelectionController
             
 			SelectFromRestMenuController SelectFromRestMenuController = loader.getController();
 			SelectFromRestMenuController.loadRestaurant(restaurantslocal);
+			SelectFromRestMenuController.loadRestaurantOrders(restaurantOrders); //טוען לדף הבא את המופע של ההזמנה,מדף לדף אני אוסף מידע
 
             // Uncomment and use if needed
         } 
@@ -219,6 +237,13 @@ public class RestaurantSelectionController
     {
         this.UserCustomer = UserClient;
         System.out.println("Loading user customer: " + this.UserCustomer.toString());
+        
+        //aaaaaaaaaaaaaa
+        
+        restaurantOrders.setUser_id(UserCustomer.getUserId());
+        System.out.println("Loading user restaurantOrders: " + restaurantOrders.toString());
+
+        //aaaaaaaaaaaaa
 
         // Fetch restaurants from server for all branches
         BiteOptions option = new BiteOptions("ALL", BiteOptions.Option.SELECT_RESTAURANT);
@@ -249,7 +274,8 @@ public class RestaurantSelectionController
     
     private void updateRestaurantsForSelectedBranch() 
     {
-        String selectedBranch = branchComboBox.getValue();
+        selectedBranch = branchComboBox.getValue();//aaaaaaaaaaaaaaaaaaaaaa
+        System.out.println("Selected Branch: " + selectedBranch);
         restaurantComboBox.getItems().clear();
         if (selectedBranch != null && ChatClient.restaurants != null) {
             for (Restaurant restaurant : ChatClient.restaurants) {

@@ -43,7 +43,7 @@ public class ChatClient extends AbstractClient
    * the display method in the client.
    */
   ChatIF clientUI; 
-  public static Order  s1 = new Order("chackkk",0,0,0,null,new ClientInfo(null,null,null));
+  //public static RestaurantOrders  s1 = new RestaurantOrders("chackkk",0,0,0,null,new ClientInfo(null,null,null));
   public static User user1 = new User(0,null,null,null,null,null,null,false,0,null);
   public static ArrayList<Restaurant> restaurants = new  ArrayList<Restaurant>();
   public static ArrayList<MenuItems> menuItems = new  ArrayList<MenuItems>();
@@ -195,6 +195,15 @@ public class ChatClient extends AbstractClient
 				   
 				   
 		            break;
+		            
+		            
+			   case BACK_HOME_CUSTOMER_PAGE:
+
+				   System.out.println("Client received BACK_HOME_CUSTOMER_PAGE response");
+
+				   
+		            break;
+
 
 				   
 				   

@@ -14,7 +14,7 @@ import client.ClientController;
 import client.ClientUI;
 import common.ChatIF;
 import entities.BiteOptions;
-import entities.Order;
+import entities.RestaurantOrders;
 import entities.User;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -236,7 +236,7 @@ public class LogInUserController {
 						System.out.println("User type: Customer");
 						root = loader.load(getClass().getResource("/gui/MainPagesClient.fxml").openStream());
 						MainPagesClientController MainPagesClientController = loader.getController();
-						MainPagesClientController.loadOrder(ChatClient.s1);// פונקציית עזר אחרי שאנחנו יוצרים מופע של קונטרולר,אנחנו מעדכנים נתונים לשדה של הזמנה,וככה נעשה כל פעם רק בצורה אחרת
+						//MainPagesClientController.loadOrder(ChatClient.s1);// פונקציית עזר אחרי שאנחנו יוצרים מופע של קונטרולר,אנחנו מעדכנים נתונים לשדה של הזמנה,וככה נעשה כל פעם רק בצורה אחרת
 						MainPagesClientController.loadUserClient(ChatClient.user1);// בצאט-קליינט כשחוזרת הודעה מהשרת אז נגדיר שדות סטטיק שיהיה אפשר לטעון אותם לכאן
 						MainPagesClientController.initialize(ChatClient.user1.getUsername(), ChatClient.user1.getaccountStatus(), ChatClient.user1.getBranch());
 						primaryStage.setTitle("User-Portal");
@@ -289,7 +289,7 @@ public class LogInUserController {
 		System.exit(0);// add for the method to actually close client window
 	}
 
-	public void loadOrder(Order s1) {
+	public void loadOrder(RestaurantOrders s1) {
 		this.sfc.loadOrder(s1);
 	}
 
