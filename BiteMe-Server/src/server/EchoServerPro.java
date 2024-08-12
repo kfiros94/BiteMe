@@ -293,11 +293,46 @@ public class EchoServerPro extends AbstractServer
 				    client.sendToClient("44");
 
 				   
+				   break;
 				   
 				   
 				   
+				   
+			   case GET_USER_ORDERS:
+				    System.out.println("Eco-Test1: We entered the GET_USER_ORDERS case ");
+				    
+				    
+				    costumer_all_orders= DBController.getOrdersByUserId((int)request.getData());
+			        System.out.println("Eco-Test GET_USER_ORDERS: Print RRRRRR: "+costumer_all_orders);
+
+				    
+					answer.setData(costumer_all_orders.toString());
+					answer.setOption(BiteOptions.Option.GET_USER_ORDERS);
+					client.sendToClient(answer);
+					
+
 				   
 				   break;
+				   
+				   
+				   
+			   case UPDATE_ORDER_STATUS_CUSTOMER:
+				   
+				    System.out.println("Eco-Test1: We entered the UPDATE_ORDER_STATUS_CUSTOMER case ");
+
+				   
+				   // costumer_all_orders= DBController.getOrdersByUserId((int)request.getData());
+
+				    String result = DBController.updateOrderStatusToConfirmed((int)request.getData());
+				    System.out.println(result);
+				    
+				   
+				    client.sendToClient("66");
+
+				   
+				   break;
+
+
 				    
 				    
 				   
@@ -325,10 +360,7 @@ public class EchoServerPro extends AbstractServer
 		                }
 		            }
 				   //AAAAAAAAAAAAAAAAAA
-				   
-				   
-				   
-				   
+
 				   
 				    break;
 

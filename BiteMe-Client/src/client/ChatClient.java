@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 /**
  * This class overrides some of the methods defined in the abstract
  * superclass in order to give more functionality to the client.
@@ -51,6 +54,16 @@ public class ChatClient extends AbstractClient
   public static User user1 = new User(0,null,null,null,null,null,null,false,0,null);
   public static ArrayList<Restaurant> restaurants = new  ArrayList<Restaurant>();
   public static ArrayList<MenuItems> menuItems = new  ArrayList<MenuItems>();
+ // public static	ArrayList<RestaurantOrders> costumer_all_orders1 = new ArrayList<RestaurantOrders>();
+  
+  
+  
+
+//Assuming you have the ArrayList already defined
+public static ArrayList<RestaurantOrders> customer_all_orders1 = new ArrayList<>();
+
+//Convert the ArrayList to an ObservableList
+public static ObservableList<RestaurantOrders> observableOrdersList = FXCollections.observableArrayList(customer_all_orders1);
 
   
   //משתנה שעוזר להבין אם חזרה הודעה מהשרת ללקוח
@@ -213,6 +226,19 @@ public class ChatClient extends AbstractClient
 				   
 		            break;
 			   //SPONGEBOBBBBBBBBBBBBBBBBBB  
+
+
+		            
+		            
+			   case GET_USER_ORDERS:
+				   System.out.println("Client received GET_USER_ORDERS response");
+
+				   customer_all_orders1 = RestaurantOrders.fromStringArray(answer.getData().toString());
+		           System.out.println("LETS SEE WHAT IS THE ANSWER: " + customer_all_orders1);
+				   
+				   //costumer_all_orders1
+				   
+		            break;
 
 
 				   

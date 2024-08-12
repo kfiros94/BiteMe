@@ -60,6 +60,7 @@ public class SupplyConfigurationController {
 
     @FXML
     private void initialize() {
+    	supplyMethodComboBox.setValue("pickup");  // Set initial value
         supplyMethodComboBox.getItems().addAll("pickup", "Delivery");
         supplyMethodComboBox.setOnAction(e -> {
             updateFieldsAvailability();
