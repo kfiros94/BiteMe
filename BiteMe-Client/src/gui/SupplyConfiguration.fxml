@@ -16,13 +16,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SupplyConfigurationController">
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SupplyConfigurationController">
    <children>
       <VBox prefHeight="151.0" prefWidth="1001.0">
          <children>
             <Label alignment="CENTER" prefHeight="26.0" prefWidth="1000.0" text="Create New Order">
                <font>
-                  <Font name="System Bold" size="37.0" />
+                  <Font name="Aharoni Bold" size="37.0" />
                </font>
             </Label>
             <Label alignment="CENTER" prefHeight="30.0" prefWidth="1000.0" text="Supply Configuration">
@@ -69,6 +69,9 @@
                      </HBox.margin>
                   </Spinner>
                </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
             </HBox>
             <HBox layoutX="10.0" layoutY="107.0" prefHeight="38.0" prefWidth="1000.0">
                <VBox.margin>
@@ -80,12 +83,12 @@
                         <Font size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="20.0" />
+                        <Insets left="20.0" top="15.0" />
                      </HBox.margin>
                   </Label>
                   <TextField fx:id="selfPickupNameField">
                      <HBox.margin>
-                        <Insets left="65.0" />
+                        <Insets left="65.0" top="15.0" />
                      </HBox.margin>
                   </TextField>
                </children>
@@ -101,8 +104,14 @@
          <font>
             <Font size="18.0" />
          </font>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
       </Label>
-      <TextField fx:id="selfPickupPhoneField" layoutX="305.0" layoutY="155.0" />
+      <TextField fx:id="selfPickupPhoneField" layoutX="305.0" layoutY="155.0" AnchorPane.bottomAnchor="605.0">
+         <padding>
+            <Insets top="10.0" />
+         </padding></TextField>
       <Label layoutX="522.0" layoutY="280.0" text="➤ Enter Delivery Address:">
          <font>
             <Font size="18.0" />
