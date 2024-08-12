@@ -7,12 +7,22 @@ package client;
 import ocsf.client.*;
 import client.*;
 import entities.*;
+import gui.MainPagesClientController;
+import gui.RestaurantSelectionController;
+import gui.StartOrderController;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.stage.Stage;
 import common.ChatIF;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * This class overrides some of the methods defined in the abstract
@@ -40,8 +50,21 @@ public class ChatClient extends AbstractClient
    * the display method in the client.
    */
   ChatIF clientUI; 
-  public static Order  s1 = new Order("chackkk",0,0,0,null,new ClientInfo(null,null,null));
-  public static User user1 = new User(0,null,null,null,null,null,null,false,0);
+  //public static RestaurantOrders  s1 = new RestaurantOrders("chackkk",0,0,0,null,new ClientInfo(null,null,null));
+  public static User user1 = new User(0,null,null,null,null,null,null,false,0,null);
+  public static ArrayList<Restaurant> restaurants = new  ArrayList<Restaurant>();
+  public static ArrayList<MenuItems> menuItems = new  ArrayList<MenuItems>();
+ // public static	ArrayList<RestaurantOrders> costumer_all_orders1 = new ArrayList<RestaurantOrders>();
+  
+  
+  
+
+//Assuming you have the ArrayList already defined
+public static ArrayList<RestaurantOrders> customer_all_orders1 = new ArrayList<>();
+
+//Convert the ArrayList to an ObservableList
+public static ObservableList<RestaurantOrders> observableOrdersList = FXCollections.observableArrayList(customer_all_orders1);
+
   
   //משתנה שעוזר להבין אם חזרה הודעה מהשרת ללקוח
   public static boolean awaitResponse = false;
@@ -78,13 +101,15 @@ public class ChatClient extends AbstractClient
   //ואז מעדכנים את הנתונים במסך של ההזמנה של הלקוח
   public void handleMessageFromServer(Object msg) 
   {
-	    // Update the awaitResponse flag
-	    awaitResponse = false;
+	    
 
 	    // Printing a message with colors
 	    System.out.println("-->test5: in " + GREEN + "Class ChatClient extends AbstractClient" + RESET + BLUE + " func --handleMessageFromServer--" + RESET + " The server sent a response to the client");
 
 	    System.out.println("Message received from server: " + msg);
+	   
+	    // Update the awaitResponse flag
+	    awaitResponse = false;
 	    
 	    BiteOptions answer = (BiteOptions) msg;
 	    
@@ -141,6 +166,8 @@ public class ChatClient extends AbstractClient
 		            ChatClient.user1.setBranch(user.getBranch());
 		            ChatClient.user1.setHasDiscountCode(user.isHasDiscountCode());
 		            ChatClient.user1.setLoggedIn(user.getLoggedIn());
+		            ChatClient.user1.setaccountStatus(user.getaccountStatus());
+
 
 					System.out.println("user1 all Fileds we get from Server:"+ChatClient.user1);
 
@@ -161,6 +188,61 @@ public class ChatClient extends AbstractClient
 					break;
 
 				
+					
+			   case SELECT_RESTAURANT:
+				   System.out.println("Client received SELECT_RESTAURANT response");
+		            restaurants = Restaurant.fromStringArray(answer.getData().toString());
+		            System.out.println("Number of restaurants loaded: " + restaurants.size());
+		            for (Restaurant r : restaurants) 
+		            {
+		                System.out.println("Loaded restaurant: " + r.getName());
+		            }
+		            break;
+		            
+		            
+		            
+		            
+			   case GET_SELECTED_REST_MENU:
+				   
+				   System.out.println("Client received SELECT_RESTAURANT response");
+				   menuItems = MenuItems.fromStringArray(answer.getData().toString());
+		            System.out.println("Number of items of restaurant loaded: " + menuItems.size());
+		            System.out.println("The items of restaurant loaded: " + menuItems);
+
+				   
+				   
+		            break;
+		            
+		       //SPONGEBOBBBBBBBBBBBBBBBBBB  
+			   case BACK_HOME_CUSTOMER_PAGE:
+
+				   System.out.println("Client received BACK_HOME_CUSTOMER_PAGE response");
+				   user1 = User.fromString(answer.getData().toString());
+		           System.out.println("LETS SEE WHAT IS THE ANSWER: " + user1);
+		        //   StartOrderController soc = new StartOrderController();
+		        //   soc.loadUserCustomer(user1);
+		           MainPagesClientController mpc = new  MainPagesClientController();
+		           mpc.loadUserClient(user1);
+				   
+		            break;
+			   //SPONGEBOBBBBBBBBBBBBBBBBBB  
+
+
+		            
+		            
+			   case GET_USER_ORDERS:
+				   System.out.println("Client received GET_USER_ORDERS response");
+
+				   customer_all_orders1 = RestaurantOrders.fromStringArray(answer.getData().toString());
+		           System.out.println("LETS SEE WHAT IS THE ANSWER: " + customer_all_orders1);
+				   
+				   //costumer_all_orders1
+				   
+		            break;
+
+
+				   
+				   
 				
 			}
 		}
@@ -184,46 +266,39 @@ public class ChatClient extends AbstractClient
   
   public void handleMessageFromClientUI(Object list)  
   {
-    try
-    {
-    	
-    	//System.out.println("Option data + option" + (BiteOptions)list);//TTTTTTTTTTTTTTTTTTTTTTTT
-    	System.out.println("Option data + option" + list);//TTTTTTTTTTTTTTTTTTTTTTTT
+	  try {
+	        System.out.println("Sending message to server: " + list);
+	        openConnection();
+	        awaitResponse = true;
+	        sendToServer(list);
+	        
+	        // Add a timeout mechanism
+	        long startTime = System.currentTimeMillis();
+	        long timeout = 10000; // 10 seconds timeout
+	        while (awaitResponse) 
+	        {
+                System.out.println("Test4: I am waiting for a reply from the server");
 
-    	
-    	
-    	//מתחבר לשרת
-    	openConnection();//in order to send more than one message
-       //משתנה סטטי שעוזר לנו להבין אם הזרת החזיר לנו תשובה
-    	awaitResponse = true;
-       	System.out.println("test4: try to send");
-       	
-        //System.out.println("pring Size of Msg of Client:"+list.size());
-        
-
-       	
-    	sendToServer(list);
-       	System.out.println("test4: print list to msg server:"+list);
-
-		// wait for response
-       	//כל עוד השרת לא החזיר תשובה הלקוח בהמתנה פעילה
-		while (awaitResponse)
-		{
-			try {
-				Thread.sleep(100);
-		       	System.out.println("test4: i wait for Response from server ");
-
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-    }
-    catch(IOException e)
-    {
-    	e.printStackTrace();
-      clientUI.display("Could not send message to server: Terminating client."+ e);
-      quit();
-    }
+	            if (System.currentTimeMillis() - startTime > timeout) 
+	            {
+	                System.out.println("Server response timed out");
+	                awaitResponse = false;
+	                break;
+	            }
+	            try 
+	            {
+	                Thread.sleep(100);
+	            } 
+	            catch (InterruptedException e) 
+	            {
+	                e.printStackTrace();
+	            }
+	        }
+	    } catch(IOException e) {
+	        e.printStackTrace();
+	        clientUI.display("Could not send message to server: Terminating client."+ e);
+	        quit();
+	    }
   }
 
   
@@ -249,6 +324,25 @@ public class ChatClient extends AbstractClient
 
   }
   
-  
+  public static void updateUserInMainPagesController(User user) {
+      Platform.runLater(() -> {
+          try {
+              FXMLLoader loader = new FXMLLoader(ChatClient.class.getResource("/gui/MainPagesClient.fxml"));
+              Parent root = loader.load();
+              MainPagesClientController controller = loader.getController();
+              controller.loadUserClient(user);
+              
+              // Update the existing stage
+              Stage stage = (Stage) root.getScene().getWindow();
+              if (stage != null) {
+                  stage.getScene().setRoot(root);
+              } else {
+                  System.err.println("Cannot find the MainPagesClient stage");
+              }
+          } catch (IOException e) {
+              e.printStackTrace();
+          }
+      });
+  }
 }
 //End of ChatClient class

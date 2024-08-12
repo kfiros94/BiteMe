@@ -3,16 +3,23 @@ package server;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import entities.BiteOptions;
 import entities.ClientInfo;
-import entities.Order;
+import entities.MenuItems;
+import entities.RestaurantOrders;
+import entities.Restaurant;
 import entities.User;
 //import common.User;
 import guiPro.ServerPortFrameControllerPro;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 
 public class EchoServerPro extends AbstractServer 
 {
@@ -52,8 +59,13 @@ public class EchoServerPro extends AbstractServer
 
 		BiteOptions request = (BiteOptions) msg;
 		BiteOptions answer= new BiteOptions();
-		ArrayList<Order> costumer_all_orders = new ArrayList<Order>();
+		ArrayList<RestaurantOrders> costumer_all_orders = new ArrayList<RestaurantOrders>();
 		User user;
+		MenuItems menuItem;
+		Restaurant restaurant;
+		
+		RestaurantOrders restaurantOrderNew;
+		
 		try
 		{
 			switch(request.getOption())
@@ -147,8 +159,211 @@ public class EchoServerPro extends AbstractServer
 		        
 				break;
 
+			   case SELECT_RESTAURANT:
+				    System.out.println("Server handling SELECT_RESTAURANT request");
+				    String branch = (String) request.getData();
+				    System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + branch.toString() );
 
-				
+				    ArrayList<Restaurant> restaurants;
+				    if ("ALL".equals(branch)) 
+				    {
+				        restaurants = DBController.showAllRestaurants();
+				    } 
+				    else 
+				    {
+				        restaurants = DBController.showRestaurants(branch);//זה מביא מסעדות לפי מיקום סניף ספציפי
+				    }
+				    System.out.println("Restaurants fetched from DB: " + restaurants);
+				    answer.setData(restaurants.toString());
+				    answer.setOption(BiteOptions.Option.SELECT_RESTAURANT);
+				    client.sendToClient(answer);
+				    System.out.println("Server sent response: " + answer);
+				    break;
+				    
+				    
+				    
+				    
+			   case GET_SELECTED_REST_MENU:
+				   
+				    System.out.println("Server handling GET_SELECTED_REST_MENU request");
+
+				   
+				    restaurant = Restaurant.fromString(request.getData().toString());
+			        System.out.println("Eco-Test1: Print a check to see that we were able to convert the string to a user objec: "+restaurant);
+			        System.out.println("Eco-Test1: Print audit Extract a field from the instance of the object: "+restaurant.getName());
+
+
+					ArrayList<MenuItems> menuItems = DBController.getMenuItems();//מושך את כל המשתמשים מהמסד נתונים למערך משתמשים
+					System.out.println("MenuItems received from DB: " + menuItems.toString());
+				   
+					
+					//RRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+					
+					boolean MenuItemsnameFound = false;
+					try
+					{
+						
+						Iterator<MenuItems> iterator = menuItems.iterator();
+						while (iterator.hasNext()) 
+						{
+						    MenuItems menuItemToFind = iterator.next();
+						    if (menuItemToFind.getRestaurant_id() == restaurant.getRestaurantID()) 
+						    {
+						        MenuItemsnameFound = true;
+						    } 
+						    else 
+						    {
+						        iterator.remove();  // Safely remove the item using the iterator
+						    }
+						}
+
+						
+						answer.setData(menuItems.toString());
+						answer.setOption(BiteOptions.Option.GET_SELECTED_REST_MENU);
+						client.sendToClient(answer);
+						
+						
+						
+
+						if (!MenuItemsnameFound) 
+						{
+							System.out.println("MenuItems not found For Restaurant: " + restaurant.getName());
+							//client.sendToClient("-1");
+							
+							answer.setData("not found items");
+							answer.setOption(BiteOptions.Option.GET_SELECTED_REST_MENU);
+							client.sendToClient(answer);
+							
+						}
+						
+					}
+					//זה שייך למקרה של לוג-אין
+					catch (IOException e) 
+					{
+						e.printStackTrace();
+					}
+					
+					//RRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+					
+					
+				    
+				   
+				    break;
+  
+				    
+			   case BACK_HOME_CUSTOMER_PAGE:
+				    System.out.println("Eco-Test1: We entered the BACK_HOME_CUSTOMER_PAGE case ");
+				    System.out.println("\ntest666666666:  BOB SFOGGGGGGG Message received: " + request.getData() + " from " + client);
+
+				    userId = Integer.parseInt(request.getData().toString());
+				    user = DBController.getUserById(userId);
+
+				    if (user != null) {
+				        answer.setData(user.toString());
+				        answer.setOption(BiteOptions.Option.BACK_HOME_CUSTOMER_PAGE);
+				        client.sendToClient(answer);
+				        System.out.println("Eco-Test1- answer To Client in case BACK_HOME_CUSTOMER_PAGE: " + answer);
+				    } else {
+				        answer.setData("-1");
+				        answer.setOption(BiteOptions.Option.BACK_HOME_CUSTOMER_PAGE);
+				        client.sendToClient(answer);
+				        System.out.println("User not found for ID: " + userId);
+				    }
+				    break;
+					
+					//aaaaaaaaaaa
+				   
+				   
+
+				   
+				    
+				    
+				//לאחר לחיצה על כפתור להמשיך לתשלום בחלון של קונפיגורציית אספקה אנחנו רוצים לשמור את ההזמנה של הלקוח בטבלה של הזמנות מסעדה     
+			   case CREATE_ORDER:    
+				    System.out.println("Eco-Test1: We entered the CREATE_ORDER case ");
+			      
+				    restaurantOrderNew = RestaurantOrders.fromString(request.getData().toString());//ממיר את המחרוזת למופע של לקוח 
+			        System.out.println("Eco-Test CREATE_ORDER: Print a check to see that we were able to convert the string to a user objec: "+restaurantOrderNew);
+
+			        String orderSaved= DBController.insertRestaurantOrder(restaurantOrderNew);
+			        System.out.println("Eco-Test CREATE_ORDER: Print QQQQQQQQQQQQQ: "+orderSaved);
+
+				    
+				    
+				    client.sendToClient("44");
+
+				   
+				   break;
+				   
+				   
+				   
+				   
+			   case GET_USER_ORDERS:
+				    System.out.println("Eco-Test1: We entered the GET_USER_ORDERS case ");
+				    
+				    
+				    costumer_all_orders= DBController.getOrdersByUserId((int)request.getData());
+			        System.out.println("Eco-Test GET_USER_ORDERS: Print RRRRRR: "+costumer_all_orders);
+
+				    
+					answer.setData(costumer_all_orders.toString());
+					answer.setOption(BiteOptions.Option.GET_USER_ORDERS);
+					client.sendToClient(answer);
+					
+
+				   
+				   break;
+				   
+				   
+				   
+			   case UPDATE_ORDER_STATUS_CUSTOMER:
+				   
+				    System.out.println("Eco-Test1: We entered the UPDATE_ORDER_STATUS_CUSTOMER case ");
+
+				   
+				   // costumer_all_orders= DBController.getOrdersByUserId((int)request.getData());
+
+				    String result = DBController.updateOrderStatusToConfirmed((int)request.getData());
+				    System.out.println(result);
+				    
+				   
+				    client.sendToClient("66");
+
+				   
+				   break;
+
+
+				    
+				    
+				   
+			   case TEST_JSON:
+				   
+
+				   //AAAAAAAAAAAAAAAAAAA
+				   int orderId = 1; // Replace with the order ID you want to retrieve
+		            JSONArray orderJsonArray = DBController.getOrderWithJsonField(orderId);
+		            if (orderJsonArray != null) 
+		            {
+		                System.out.println("Order JSON Array: " + orderJsonArray.toString(4));
+		                
+		                // Example: iterate over the JSON array
+		                for (int i = 0; i < orderJsonArray.length(); i++) 
+		                {
+		                    JSONObject item = orderJsonArray.getJSONObject(i);
+		                    int itemId = item.getInt("item_id");
+		                    int quantity = item.getInt("quantity");
+		                    JSONArray changes = item.getJSONArray("changes");
+		                    System.out.println("Item ID: " + itemId);
+		                    System.out.println("Quantity: " + quantity);
+		                    System.out.println("Changes: " + changes.toString());
+				   
+		                }
+		            }
+				   //AAAAAAAAAAAAAAAAAA
+
+				   
+				    break;
+
 			}
 			
 			
@@ -165,11 +380,13 @@ public class EchoServerPro extends AbstractServer
 		
 		
 		
-		
-		System.out.println("\ntest2: Message received: " + msg + " from " + client);
+	/*
+		//System.out.println("\ntest2: Message received: " + msg + " from " + client);
 		int flagOrederFound = 0;
 		int idexMsg = 0;
 
+		
+		
 		if (msg instanceof List)
 		{
 			List<?> list = (List<?>) msg;
@@ -184,7 +401,7 @@ public class EchoServerPro extends AbstractServer
 					// Handle order retrieval
 					try 
 					{
-						ArrayList<Order> orders = DBController.showOrder();
+						ArrayList<RestaurantOrders> orders = DBController.showOrder();
 						System.out.println("Orders received from DB: " + orders.toString());
 
 						// Try parsing the order number to compare
@@ -194,7 +411,7 @@ public class EchoServerPro extends AbstractServer
 							int orderNumberToCompare = Integer.parseInt((String) list.get(idexMsg));
 							System.out.println("Order number to compare: " + orderNumberToCompare);
 
-							for (Order order : orders) 
+							for (RestaurantOrders order : orders) 
 							{
 								if (order.getOrderNumber() == orderNumberToCompare) 
 								{
@@ -276,7 +493,15 @@ public class EchoServerPro extends AbstractServer
 				}
 			}
 		}
+	
+	*/
+	
+	
+	
+	
 	}
+	
+	
 	
 	
 	
@@ -307,14 +532,14 @@ public class EchoServerPro extends AbstractServer
     
     //1aaaaaaaaaaaaaaaaaaa
     //אין שימוש למתודה הזאת אבל היא תבנית עיצוב להמרה לאובייקטים אולי לעתיד נשתמש בה
-	private ArrayList<Order> parsingTheData(ArrayList<?> data) 
+	private ArrayList<RestaurantOrders> parsingTheData(ArrayList<?> data) 
 	{
-		ArrayList<Order> users = new ArrayList<>();
+		ArrayList<RestaurantOrders> users = new ArrayList<>();
 		for (Object obj : data) 
 		{
-			if (obj instanceof Order) 
+			if (obj instanceof RestaurantOrders) 
 			{
-				users.add((Order) obj);
+				users.add((RestaurantOrders) obj);
 			}
 		}
 		return users;

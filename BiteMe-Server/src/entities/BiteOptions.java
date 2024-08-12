@@ -29,7 +29,7 @@ public class BiteOptions implements Serializable{
 	 * Enum representing different options for casting 
 	 */
 	public enum Option{
-		LOGIN, LOGOUT, CREATE_ORDER, DELETE_ORDER, RETRIEVE_ORDER_LIST, REGISTER_USER,
+		LOGIN, LOGOUT,SELECT_RESTAURANT,TEST_JSON,GET_SELECTED_REST_MENU, BACK_HOME_CUSTOMER_PAGE, CREATE_ORDER,GET_USER_ORDERS,UPDATE_ORDER_STATUS_CUSTOMER, DELETE_ORDER, RETRIEVE_ORDER_LIST, REGISTER_USER,
 		SEND_PAYMENT, ORDER_SUMMARY, LOGIN_COMPANY, LOGIN_RESTAURANT, 
 		PRE_ORDER_CREATE, REFUND_RECEIVED, REDEEM_REFUND, GENERATE_CUPON,
 		INVOICE_GENERATION, ORDER_RECIEVED_BY_SUPPLIER_CONFIRMATION, NOTIFY_COSTUMER_VIA_SMS, ORDER_READY_CONFIRMATION,
@@ -42,7 +42,7 @@ public class BiteOptions implements Serializable{
 	private Object data;
 	private Option option;
 	
-	public BiteOptions()
+	public BiteOptions()//default constructor
 	{
 
 	}
@@ -73,6 +73,6 @@ public class BiteOptions implements Serializable{
 	@Override
 	public String toString() 
 	{
-		return String.format("[%s, %s]", data.toString(), option);
+		return String.format("[%s, %s]", data, option);
 	}
 }

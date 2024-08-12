@@ -17,6 +17,7 @@ public class User implements Serializable{
     private boolean hasDiscountCode;
     private int loggedIn;
     private ClientInfo cl;
+    private String accountStatus;
     
     public User()
     {
@@ -25,7 +26,8 @@ public class User implements Serializable{
 
 
     // Constructor
-    public User(int userId, String username, String password, String email, String phoneNumber, String permission, String branch, boolean hasDiscountCode, int loggedIn) {
+    public User(int userId, String username, String password, String email, String phoneNumber, String permission, String branch, boolean hasDiscountCode, int loggedIn,String accountStatus) 
+    {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -35,6 +37,7 @@ public class User implements Serializable{
         this.branch = branch;
         this.hasDiscountCode = hasDiscountCode;
         this.loggedIn = loggedIn;
+        this.accountStatus = accountStatus;
     }
 
     // Getters and Setters
@@ -109,8 +112,17 @@ public class User implements Serializable{
     public void setLoggedIn(int loggedIn) {
         this.loggedIn = loggedIn;
     }
+    
+    public String getaccountStatus() {
+        return accountStatus;
+    }
 
-    // toString method
+    public void setaccountStatus(String accountStatus) {
+        this.accountStatus = accountStatus;
+    }
+    
+
+    // Updated toString method to include accountStatus
     @Override
     public String toString() {
         return "User{" +
@@ -123,15 +135,16 @@ public class User implements Serializable{
                 ", branch='" + branch + '\'' +
                 ", hasDiscountCode=" + hasDiscountCode +
                 ", loggedIn=" + loggedIn +
+                ", accountStatus='" + accountStatus + '\'' +
                 '}';
     }
     
-    
     //bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
     
- // Static method to create a User from a toString output
-    public static User fromString(String toStringOutput) {
-        Pattern pattern = Pattern.compile("User\\{userId=(\\d+), username='(.*?)', password='(.*?)', email='(.*?)', phoneNumber='(.*?)', permission='(.*?)', branch='(.*?)', hasDiscountCode=(true|false), loggedIn=(\\d+)\\}");
+    // Static method to create a User from a toString output
+    public static User fromString(String toStringOutput)
+    {
+        Pattern pattern = Pattern.compile("User\\{userId=(\\d+), username='(.*?)', password='(.*?)', email='(.*?)', phoneNumber='(.*?)', permission='(.*?)', branch='(.*?)', hasDiscountCode=(true|false), loggedIn=(\\d+), accountStatus='(.*?)'\\}");
         Matcher matcher = pattern.matcher(toStringOutput);
 
         if (matcher.find()) {
@@ -144,8 +157,9 @@ public class User implements Serializable{
             String branch = matcher.group(7).equals("null") ? null : matcher.group(7);
             boolean hasDiscountCode = Boolean.parseBoolean(matcher.group(8));
             int loggedIn = Integer.parseInt(matcher.group(9));
+            String accountStatus = matcher.group(10).equals("null") ? null : matcher.group(10);
 
-            return new User(userId, username, password, email, phoneNumber, permission, branch, hasDiscountCode, loggedIn);
+            return new User(userId, username, password, email, phoneNumber, permission, branch, hasDiscountCode, loggedIn, accountStatus);
         } else {
             throw new IllegalArgumentException("Invalid toString output: " + toStringOutput);
         }
