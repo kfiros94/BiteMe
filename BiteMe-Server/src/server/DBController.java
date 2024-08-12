@@ -10,8 +10,8 @@ import java.sql.Statement;
 import entities.BiteOptions;
 import entities.ClientInfo;
 import entities.MenuItem;
-import entities.Order;
 import entities.Restaurant;
+import entities.RestaurantOrders;
 import entities.User;
 
 
@@ -38,10 +38,11 @@ public class DBController {
             return false;
         }
     }
-
-    protected static ArrayList<Order> showOrder() {
+    
+    /*
+    protected static ArrayList<RestaurantOrders> showOrder() {
         System.out.println("in ShowOrder Function"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-        ArrayList<Order> orders = new ArrayList<>();
+        ArrayList<RestaurantOrders> orders = new ArrayList<>();
 
         try {
             String query = "SELECT * FROM restaurant_orders"; // Enclose table name in backticks
@@ -57,7 +58,7 @@ public class DBController {
                 int orderListNumber = ordersFromTable.getInt("Order_list_number");
                 String orderAddress = ordersFromTable.getString("Order_address");
                 System.out.println("Test 4"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-                orders.add(new Order(restaurantName, orderNumber, totalPrice, null, orderAddress, orderListNumber, orderListNumber, orderAddress, orderAddress, orderAddress, orderAddress, null));
+                orders.add(new RestaurantOrders(restaurantName, orderNumber, totalPrice, null, orderAddress, orderListNumber, orderListNumber, orderAddress, orderAddress, orderAddress, orderAddress, null));
             }
             stmt.close();
         } catch (SQLException e) {
@@ -65,28 +66,56 @@ public class DBController {
         }
         System.out.println("Test 5");
         return orders;
-    }
+    }*/
     
     /**
      * Gets the specific order management data for Restaurant order management page.
      * @param order
      * @return ArrayList<Order> orders
      */
-    protected static ArrayList<Order> getOrderManagementInfo(Order order) {
+    protected static BiteOptions getOrderManagementInfo(RestaurantOrders orders) {
         System.out.println("in getOrderManagmentInfo Function"); 
-        ArrayList<Order> orders = new ArrayList<>();
+        ArrayList<RestaurantOrders> restaurantOrders = new ArrayList<RestaurantOrders>();
         
-        String query = "SELECT ro.order_number, ro.delivery_type, ro.order_list, ro.order_received, ro.status, ro.phone_number " +
-                "FROM restaurant_orders ro" + 
+        /*String query = "SELECT order_number, order_list, user_id, status, delivery_type, phone_number, order_received" +
+                "FROM restaurant_orders" + 
+    			"WHERE restaurant_id = ?";*/
+        String query = "SELECT *" +
+                "FROM restaurant_orders" + 
     			"WHERE restaurant_id = ?";
         try(PreparedStatement stmt = conn.prepareStatement(query)) {
         	
-            stmt.setInt(1, order.getRestaurantID());
+            stmt.setInt(1, orders.getRestaurant_id());
             ResultSet resultSet = stmt.executeQuery();
             System.out.println("getOrderManagment query"); 
             
             while (resultSet.next()) {
-            	Order tempOrder = new Order();
+            	
+            	String restaurant = resultSet.getString("restaurant");
+            	int orderNumber = resultSet.getInt("order_number");
+            	double total_price = resultSet.getDouble("total_price");
+                String orderList = resultSet.getString("order_list");
+            	String order_address = resultSet.getString("order_address");
+                int userId = resultSet.getInt("user_id");
+                int restaurantID = resultSet.getInt("restaurant_id");
+                String placing_order_date = resultSet.getString("placing_order_date");
+                String status = resultSet.getString("status");
+                String deliveryType = resultSet.getString("delivery_type");
+                String order_requested_date = resultSet.getString("order_requested_date");
+                String full_name = resultSet.getString("full_name");
+                String phoneNumber = resultSet.getString("phone_number");
+                String branch = resultSet.getString("branch");
+                String orderReceived = resultSet.getString("order_received");
+                
+                // Create a new Order object with the fetched data
+                RestaurantOrders order = new RestaurantOrders(restaurant, orderNumber, total_price, orderList, order_address, userId, restaurantID, placing_order_date, status, deliveryType, order_requested_date, full_name, phoneNumber, branch, orderReceived);
+                
+                // Add the Order object to the orders list
+                restaurantOrders.add(order);
+                
+                // Print the order details (for debugging purposes)
+                System.out.println("Fetched Order: " + orders);
+            	/*RestaurantOrders tempOrder = new Order();
             	//Inserting the order values from DB to Order class.
             	tempOrder.setOrderNumber(resultSet.getInt("order_number"));
             	tempOrder.setDeliveryType(resultSet.getString("delivery_type"));
@@ -96,17 +125,17 @@ public class DBController {
             	tempOrder.setPlacingOrderDate(resultSet.getString("placing_order_date"));
                 tempOrder.setStatus(resultSet.getString("status"));
                 tempOrder.setPlacingOrderDate(resultSet.getString("phone_number"));
-                orders.add(tempOrder); //adding the order to the ArrayList.
+                RestaurantOrders.add(tempOrder); //adding the order to the ArrayList.*/
             }
             stmt.close();
         } catch (SQLException e) {
             System.out.println("Error returning Order Managment List: " + e.getMessage());
         }
-        System.out.println("OrderManagment was SUCCESSFULL!!!"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-        
-        //BiteOptions bite = new BiteOptions(orders, RETRIEVE_MANAGE_ORDER_LIST);
-        return orders;
+        System.out.println("OrderManagment was SUCCESSFULL!!!"); 
+        BiteOptions bite = new BiteOptions(restaurantOrders.toString(), BiteOptions.Option.RETRIEVE_MANAGE_ORDER_LIST);
+        return bite;
     }
+    
     
     //return users table
     protected static ArrayList<User> showusers() {

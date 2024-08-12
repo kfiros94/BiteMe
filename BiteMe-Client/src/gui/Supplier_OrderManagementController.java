@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -17,8 +18,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.application.Platform;
 import entities.BiteOptions;
-import entities.Order;
+import entities.MenuItem;
 import entities.Restaurant;
+import entities.RestaurantOrders;
 import entities.User;
 import client.ChatClient;
 import client.ClientUI; // Assume this is your client connection class
@@ -40,25 +42,28 @@ public class Supplier_OrderManagementController {
    
 	//// TABLE ELEMENTS ////
 	@FXML
-    private TableView<Order> tableView;
+    private TableView<RestaurantOrders> tableView;
 
     @FXML
-    private TableColumn<Order, String> orderNumberColumn;
+    private TableColumn<RestaurantOrders, String> orderNumberColumn;
 
     @FXML
-    private TableColumn<Order, String> typeColumn;
+    private TableColumn<RestaurantOrders, String> typeColumn;
     
     @FXML
-    private TableColumn<Order, String> itemsColumn;
+    private TableColumn<RestaurantOrders, String> itemNameColumn;
     
     @FXML
-    private TableColumn<Order, String> orderReceivedColumn; //CHANGE is needed
+    private TableColumn<RestaurantOrders, String> changesColumn;
+    
+    @FXML
+    private TableColumn<RestaurantOrders, String> receivedTimeColumn; //CHANGE is needed
 
     @FXML
-    private TableColumn<Order, String> phoneNumberColumn;
+    private TableColumn<RestaurantOrders, String> phoneNumberColumn;
 
     @FXML
-    private TableColumn<Order, String> statusColumn;
+    private TableColumn<RestaurantOrders, String> statusColumn;
     
     //// TEXT AND LABEL ELEMENTS ////////
 
@@ -66,7 +71,10 @@ public class Supplier_OrderManagementController {
     private TextField searchField;
     
     @FXML
-    private Label msgLabel;
+    private Label msglabel;
+    
+    @FXML
+    private Label errorlabel;
     
     //// BURRON ELEMENTS ////
     
@@ -96,34 +104,35 @@ public class Supplier_OrderManagementController {
 
     
 
-    
+   //// Variables ////
 
     // ObservableList to hold the orders data
-    private ObservableList<Order> orders = FXCollections.observableArrayList();
-    
+    private ObservableList<RestaurantOrders> orders = FXCollections.observableArrayList();
     private User cSupplier;
     private Restaurant cRestaurant;
-    
-    private ArrayList<Order> orderslocal = new ArrayList<Order>();
+    private ArrayList<RestaurantOrders> restaurantOrdersLocal = new ArrayList<RestaurantOrders>();
+    private ArrayList<MenuItem> menuItemsLocal = new ArrayList<MenuItem>();
     
     @FXML
     public void initialize() {
         // Initialize table columns with cell value factories
         orderNumberColumn.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("deliveryType"));
-        //CHANGE is needed
-        orderReceivedColumn.setCellValueFactory(new PropertyValueFactory<>("placingOrderDate")); 
+        itemNameColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
+        changesColumn.setCellValueFactory(new PropertyValueFactory<>("changes"));
+        receivedTimeColumn.setCellValueFactory(new PropertyValueFactory<>("receivedTime")); 
         phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-
+        
+        // Allow row selection
+        tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         // Set up search button action
         btnSearch.setOnAction(event -> handleSearch());
-
         // Set up refresh button action
         btnRefresh.setOnAction(event -> handleRefresh());
 
         // Load initial data
-        loadOrders();
+        //loadOrders();
     }
     
     
@@ -156,17 +165,17 @@ public class Supplier_OrderManagementController {
      */
     private void loadOrders() {
     	
-        Order order = new Order();
+    	RestaurantOrders order = new RestaurantOrders();
         //Sets the current Restaurant details inside order for data parsing.
-        order.setRestaurantName(cRestaurant.getName());
-        order.setRestaurantID(cRestaurant.getRestaurantID());
+        order.setRestaurant(cRestaurant.getName());
+        order.setRestaurant_id(cRestaurant.getRestaurantID());
         // Create a request to get orders from the server
         BiteOptions request = new BiteOptions(order, BiteOptions.Option.RETRIEVE_MANAGE_ORDER_LIST);
 
         // Send request to server
         ClientUI.chat.accept(request);
-        orderslocal.addAll(ChatClient.receivedOrders);
-        handleServerResponse(orderslocal);
+        restaurantOrdersLocal.addAll(ChatClient.receivedOrders);
+        handleServerResponse(restaurantOrdersLocal);
     }
     
     /**
@@ -174,30 +183,34 @@ public class Supplier_OrderManagementController {
      * @param cRestaurant
      * @param cSupplier
      */
-    
-    
     public void setRestaurantInfo(Restaurant cRestaurant, User cSupplier) {
     	this.cRestaurant = cRestaurant;
     	this.cSupplier = cSupplier;
+    	// Load initial data
+        loadOrders();
     }
     
     /**
      * Handles the response from the server
      * @param response The response object from the server
      */
-    public void handleServerResponse(ArrayList<Order> response) {
+    public void handleServerResponse(ArrayList<RestaurantOrders> response) {
     	
     	if(response.isEmpty()||response == null) {
     		orders.clear();
     		tableView.setItems(orders);
+    		errorlabel.setText("No Orders for this Restaurants!");
+        	errorlabel.setVisible(true);
     		System.out.println("No Orders for this Restaurants!");
+    		
     	}
     	else {
-    		Platform.runLater(() -> {
-                orders.clear();
-                orders.addAll(response);
-                tableView.setItems(orders);
-            });
+            orders.clear();
+            orders.addAll(response);
+            tableView.setItems(orders);
+            msglabel.setText("Refresh was successfull!");
+        	msglabel.setVisible(true);
+        	System.out.println("Refresh was successfull!");
     	}
     	
     }
@@ -208,13 +221,29 @@ public class Supplier_OrderManagementController {
     @FXML
     private void handleSearch() {
         String searchTerm = searchField.getText().trim();
-        if (!searchTerm.isEmpty()) {
+        if (!searchTerm.isEmpty() || searchTerm.isBlank() ) {
             try {
                 int searchOrderNumber = Integer.parseInt(searchTerm);
                 // Filter the orders list based on the search term
-                ObservableList<Order> filteredList = orders.filtered(order -> 
-                    order.getOrderNumber() == searchOrderNumber);
-                tableView.setItems(filteredList);
+                
+                ObservableList<RestaurantOrders> originalList = orders;
+                ObservableList<RestaurantOrders> filteredList = orders.filtered(order -> 
+                    order.getOrder_number() == searchOrderNumber);
+                if(filteredList.isEmpty()) { //Displays the original list if the search is empty
+                	orders.clear();
+                    orders.addAll(originalList);
+                	tableView.setItems(orders);
+                	errorlabel.setText("No such order exists!");
+                	errorlabel.setVisible(true);
+                }
+                else { //Displays the filtered list.
+                	orders.clear();
+                    orders.addAll(filteredList);
+                	tableView.setItems(orders);
+                	msglabel.setText("Order Found!");
+                	msglabel.setVisible(true);
+                }
+                
             } catch (NumberFormatException e) {
                 // Handle the case where the input is not a valid number
                 System.out.println("Invalid order number format");
@@ -222,7 +251,9 @@ public class Supplier_OrderManagementController {
         } else {
             // If search field is empty, show all orders
             tableView.setItems(orders);
-            System.out.println("Please write an order number before searching ");
+            errorlabel.setText("Please write an order number before searching!");
+        	errorlabel.setVisible(true);
+            System.out.println("Please write an order number before searching!");
         }
     }
 
@@ -234,7 +265,52 @@ public class Supplier_OrderManagementController {
     private void handleRefresh() {
         loadOrders();
     }
-
+    
+    // Method to handle Confirm button click
+    @FXML
+    private void handleConfirmedOrder() {
+    	RestaurantOrders selectedOrder = tableView.getSelectionModel().getSelectedItem();
+        if (selectedOrder != null) {
+            selectedOrder.setStatus("preparation");
+            tableView.refresh();
+            msglabel.setText("Order status updated to 'preparation'.");
+            msglabel.setVisible(true);
+        } else {
+        	errorlabel.setText("No order was Selected!");
+            errorlabel.setVisible(true);
+        }
+    }
+    
+    // Method to handle Deny button click
+    @FXML
+    private void handleDenyOrder() {
+    	RestaurantOrders selectedOrder = tableView.getSelectionModel().getSelectedItem();
+        if (selectedOrder != null) {
+            selectedOrder.setStatus("denied");
+            tableView.refresh();
+            msglabel.setText("Order status updated to 'denied'.");
+            msglabel.setVisible(true);
+        } else {
+        	errorlabel.setText("No order was Selected!");
+            errorlabel.setVisible(true);
+        }
+    }
+    
+ // Method to handle Deliver button click
+    @FXML
+    private void handleDeliverOrder() {
+    	RestaurantOrders selectedOrder = tableView.getSelectionModel().getSelectedItem();
+        if (selectedOrder != null) {
+            selectedOrder.setStatus("delivered");
+            tableView.refresh();
+            msglabel.setText("Order status updated to 'delivered'.");
+            msglabel.setVisible(true);
+        } else {
+        	errorlabel.setText("No order was Selected!");
+            errorlabel.setVisible(true);
+        }
+    }
+    
     /**
      * Handles the back button action
      * @param event The action event

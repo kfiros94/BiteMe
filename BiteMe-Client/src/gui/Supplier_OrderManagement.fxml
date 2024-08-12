@@ -13,23 +13,25 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="777.0" prefWidth="1000.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="supplier.Supplier_OrderManagementController">
+<AnchorPane prefHeight="777.0" prefWidth="1000.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.Supplier_OrderManagementController">
     <children>
         <BorderPane prefHeight="777.0" prefWidth="1000.0">
          <center>
-            <TableView fx:id="tableView" prefHeight="363.0" prefWidth="706.0" BorderPane.alignment="CENTER">
-              <columns>
-                <TableColumn fx:id="orderNumberColumn" prefWidth="98.0" text="Order Number" />
-                <TableColumn fx:id="typeColumn" prefWidth="106.0" text="Type" />
-                  <TableColumn prefWidth="224.0" text="Items" />
-                  <TableColumn fx:id="orderReceivedColumn" prefWidth="143.0" text="Order Receiving Time" />
-                  <TableColumn fx:id="phoneNumberColumn" prefWidth="205.0" text="Phone Number" />
-                  <TableColumn fx:id="statusColumn" minWidth="4.0" prefWidth="123.0" text="Status" />
-              </columns>
-               <BorderPane.margin>
-                  <Insets left="50.0" right="50.0" top="15.0" />
-               </BorderPane.margin>
-            </TableView>
+     <TableView fx:id="tableView" prefHeight="380.0" prefWidth="913.0">
+    <columns>
+        <TableColumn fx:id="orderNumberColumn" prefWidth="103.0" text="Order Number" />
+        <TableColumn fx:id="typeColumn" prefWidth="92.0" text="Type" />
+        <TableColumn fx:id="itemsColumn" prefWidth="112.0" text="Item Name" />
+        <TableColumn fx:id="changesColumn" prefWidth="293.0" text="Changes" />
+        <TableColumn fx:id="orderReceivedColumn" prefWidth="145.0" text="Order Receiving Time" />
+        <TableColumn fx:id="phoneNumberColumn" prefWidth="124.0" text="Phone Number" />
+        <TableColumn fx:id="statusColumn" prefWidth="100.0" text="Status" />
+    </columns>
+        <BorderPane.margin>
+          <Insets left="15.0" right="15.0" />
+        </BorderPane.margin>
+	</TableView>
+
          </center>
          <top>
             <Pane prefHeight="252.0" prefWidth="806.0" BorderPane.alignment="CENTER">
@@ -48,7 +50,7 @@
                      </font>
                   </Label>
                   <TextField fx:id="searchField" layoutX="451.0" layoutY="207.0" prefHeight="25.0" prefWidth="211.0" />
-                  <Button fx:id="btnSearch" layoutX="686.0" layoutY="203.0" mnemonicParsing="false" onAction="#CloseButton" prefHeight="35.0" prefWidth="90.0" style="-fx-background-color: rgba(108, 9, 219, 1);" text="Search" textFill="WHITE">
+                  <Button fx:id="btnSearch" layoutX="686.0" layoutY="203.0" mnemonicParsing="false" onAction="#handleSearch" prefHeight="35.0" prefWidth="90.0" style="-fx-background-color: rgba(108, 9, 219, 1);" text="Search" textFill="WHITE">
                      <font>
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
@@ -64,33 +66,41 @@
          <bottom>
             <Pane prefHeight="145.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="btnBack1" layoutX="14.0" layoutY="96.0" mnemonicParsing="false" onAction="#backButton" prefHeight="35.0" prefWidth="90.0" style="-fx-background-color: rgba(108, 9, 219, 1);" text="Back" textFill="WHITE">
+                  <Button fx:id="btnBack" layoutX="14.0" layoutY="96.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="35.0" prefWidth="90.0" style="-fx-background-color: rgba(108, 9, 219, 1);" text="Back" textFill="WHITE">
                      <font>
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnDeny" layoutX="854.0" layoutY="14.0" mnemonicParsing="false" onAction="#backButton" prefHeight="35.0" prefWidth="90.0" style="-fx-background-color: rgba(108, 9, 219, 1);" text="Deny" textFill="WHITE">
+                  <Button fx:id="btnDeny" layoutX="876.0" layoutY="34.0" mnemonicParsing="false" onAction="#handleDenyOrder" prefHeight="35.0" prefWidth="109.0" style="-fx-background-color: rgba(108, 9, 219, 1);" text="Deny" textFill="WHITE">
                      <font>
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="CRefresh" layoutX="455.0" layoutY="87.0" mnemonicParsing="false" onAction="#backButton" prefHeight="35.0" prefWidth="90.0" style="-fx-background-color: rgba(108, 9, 219, 1);" text="Refresh" textFill="WHITE">
+                  <Button fx:id="btnRefresh" layoutX="455.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleRefresh" prefHeight="35.0" prefWidth="90.0" style="-fx-background-color: rgba(108, 9, 219, 1);" text="Refresh" textFill="WHITE">
                      <font>
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnConfirm" layoutX="734.0" layoutY="14.0" mnemonicParsing="false" onAction="#backButton" prefHeight="35.0" prefWidth="107.0" style="-fx-background-color: rgba(108, 9, 219, 1);" text="Confirm" textFill="WHITE">
+                  <Button fx:id="btnConfirm" layoutX="762.0" layoutY="34.0" mnemonicParsing="false" onAction="#handleConfirmedOrder" prefHeight="35.0" prefWidth="107.0" style="-fx-background-color: rgba(108, 9, 219, 1);" text="Confirm" textFill="WHITE">
                      <font>
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
                   </Button>
-                  <Label fx:id="msgLable" layoutX="186.0" layoutY="18.0" prefHeight="56.0" prefWidth="164.0" />
-                  <Button fx:id="btnDeliver" layoutX="809.0" layoutY="62.0" mnemonicParsing="false" onAction="#backButton" prefHeight="35.0" prefWidth="90.0" style="-fx-background-color: rgba(108, 9, 219, 1);" text="Deliver" textFill="WHITE">
+                  <Button fx:id="btnDeliver" layoutX="762.0" layoutY="77.0" mnemonicParsing="false" onAction="#handleDeliverOrder" prefHeight="35.0" prefWidth="224.0" style="-fx-background-color: rgba(108, 9, 219, 1);" text="Set Oreder Is Ready" textFill="WHITE">
                      <font>
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
                   </Button>
-                  <Label fx:id="msgLabel" layoutX="328.0" layoutY="16.0" prefHeight="60.0" prefWidth="345.0" />
+                  <Label fx:id="msglabel" layoutX="280.0" layoutY="16.0" prefHeight="60.0" prefWidth="440.0" textFill="#239a41">
+                     <font>
+                        <Font name="Segoe UI Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="errorlabel" layoutX="279.0" layoutY="16.0" prefHeight="60.0" prefWidth="443.0" textFill="RED">
+                     <font>
+                        <Font name="Segoe UI Bold" size="18.0" />
+                     </font>
+                  </Label>
                </children>
             </Pane>
          </bottom>

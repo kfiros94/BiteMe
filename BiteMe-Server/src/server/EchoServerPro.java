@@ -9,8 +9,8 @@ import java.util.List;
 import entities.BiteOptions;
 import entities.ClientInfo;
 import entities.MenuItem;
-import entities.Order;
 import entities.Restaurant;
+import entities.RestaurantOrders;
 import entities.User;
 //import common.User;
 import guiPro.ServerPortFrameControllerPro;
@@ -55,7 +55,7 @@ public class EchoServerPro extends AbstractServer
 
 		BiteOptions request = (BiteOptions) msg;
 		BiteOptions answer = new BiteOptions();
-		ArrayList<Order> costumer_all_orders = new ArrayList<Order>();
+		ArrayList<RestaurantOrders> costumer_all_orders = new ArrayList<RestaurantOrders>();
 		User user;
 		Restaurant restaurant;
 		try
@@ -258,11 +258,12 @@ public class EchoServerPro extends AbstractServer
 				 * BiteOptions answer = new BiteOptions();
 				 */
 				System.out.println("Server received RETRIEVE_MANAGE_ORDER_LIST resquest");
-				Order order = (Order) request.getData();
-				ArrayList<Order> orders = DBController.getOrderManagementInfo(order);
+				RestaurantOrders order = RestaurantOrders.fromString(request.getData().toString());
+				BiteOptions orders = DBController.getOrderManagementInfo(order);
 				System.out.println("Order Management fetched from DB");
 				answer.setData(orders);
 				answer.setOption(BiteOptions.Option.RETRIEVE_MANAGE_ORDER_LIST);
+				//Send back to client:
 				client.sendToClient(answer);
 				System.out.println("Server sent response: " + answer);
 				break;
@@ -275,135 +276,9 @@ public class EchoServerPro extends AbstractServer
 		{
 			e.printStackTrace();
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		//System.out.println("\ntest2: Message received: " + msg + " from " + client);
-		int flagOrederFound = 0;
-		int idexMsg = 0;
-
-		
-		
-		if (msg instanceof List)
-		{
-			List<?> list = (List<?>) msg;
-			if (list.size() == 1)// במסך הראשון אנחנו שולחים רק מספר הזמנה לראות אם זה קיים במסד נתונים
-			{
-				idexMsg = 0;
-				if (!list.isEmpty() && list.get(idexMsg) instanceof String) 
-				{
-					// Debug statement
-					System.out.println("Message is a list of strings");
-					// System.out.println("Lang list MSG:"+list.size());
-					// Handle order retrieval
-					try 
-					{
-						ArrayList<Order> orders = DBController.showOrder();
-						System.out.println("Orders received from DB: " + orders.toString());
-
-						// Try parsing the order number to compare
-						try
-						{
-							// Assuming the first element of the list contains the order number
-							int orderNumberToCompare = Integer.parseInt((String) list.get(idexMsg));
-							System.out.println("Order number to compare: " + orderNumberToCompare);
-
-							for (Order order : orders) 
-							{
-								if (order.getOrderNumber() == orderNumberToCompare) 
-								{
-									System.out.println("SQLnumberOrder: " + order.getOrderNumber());
-									System.out.println("Order: " + order);
-									client.sendToClient(order.toString());
-									flagOrederFound++;
-								}
-
-							}
-
-							if (flagOrederFound == 0)
-							{
-								System.out.println("print flagOrederFound: " + flagOrederFound);
-
-								client.sendToClient("-1");
-								System.out.println("Invalid order number format!!!!0: " + list.get(idexMsg));
-							}
-
-						} 
-						catch (NumberFormatException e)
-						{
-							System.out.println("Invalid order number format: " + list.get(idexMsg));
-						}
-
-						// Send confirmation to the client
-						// client.sendToClient("order");// כרגע לא צריך את זה והשרת מחזיר את הרשומה
-						// הרלוונטית רק במידה והיא קיימת במסד נתונים
-						System.out.println("Sent 'order' to client");
-
-						// Send the actual order list to the client
-						// client.sendToClient(orders.toString());
-						System.out.println("Sent order list to client");
-					} 
-					catch (IOException e)
-					{
-						e.printStackTrace();
-					}
-					return;
-				}
-			}
-			
-
-		
-			
-			//זה למקרה והמשתמש רוצה לעדכן שדות בהזמנה קיימת כלומר בדף סיכום הזמנה וחוזר דף אחורה
-			else if (list.size() == 5) { // בחלון השני כאשר אנחנו לוחצים על שמירה,אז ההודעה שנשלחת היא באורך 5 איברים
-				// לכן מספר ההזמנה במסד נתונים הוא במקום השני במערך הזה
-				idexMsg = 1;
-
-				System.out.println("In the case of a message of length 5");
-
-				try {
-					if (msg instanceof List) {
-						ArrayList<?> arrayList = (ArrayList<?>) msg;
-
-						System.out.println("Print MSG LISTArry" + msg + " " + msg.toString());
-
-						ArrayList<String> orders = (ArrayList<String>) arrayList;
-
-						System.out.println("Print MSG LIST-ORDER" + orders + " " + orders.toString());
-
-						if (!orders.isEmpty()) {
-							System.out.println("YESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-
-							DBController.updateUsersOrderToDB(orders);
-							client.sendToClient("The order data has been updated");
-
-						} else {
-							System.out.println(
-									"Unsupported ArrayList type: " + arrayList.get(idexMsg).getClass().getName());
-						}
-					} else {
-						System.out.println("Unsupported message type: " + msg.getClass().getName());
-					}
-
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 	
-	
-	
-	
-	
-	
-	
-//////////////////
+	//////////////////
     /**
      * Handles user logout by updating the logged_in status in the database.
      * 
@@ -428,14 +303,14 @@ public class EchoServerPro extends AbstractServer
     
     //1aaaaaaaaaaaaaaaaaaa
     //אין שימוש למתודה הזאת אבל היא תבנית עיצוב להמרה לאובייקטים אולי לעתיד נשתמש בה
-	private ArrayList<Order> parsingTheData(ArrayList<?> data) 
+	private ArrayList<RestaurantOrders> parsingTheData(ArrayList<?> data) 
 	{
-		ArrayList<Order> users = new ArrayList<>();
+		ArrayList<RestaurantOrders> users = new ArrayList<>();
 		for (Object obj : data) 
 		{
-			if (obj instanceof Order) 
+			if (obj instanceof RestaurantOrders) 
 			{
-				users.add((Order) obj);
+				users.add((RestaurantOrders) obj);
 			}
 		}
 		return users;

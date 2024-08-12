@@ -45,10 +45,10 @@ public class ChatClient extends AbstractClient
    * the display method in the client.
    */
   ChatIF clientUI; 
-  public static Order  s1 = new Order("chackkk",0,0,0,null,new ClientInfo(null,null,null));
+  public static RestaurantOrders s1 = new RestaurantOrders("chackkk",0,0,null, null, 0, 0, null, null, null, null, null, null, null, null);
   public static User user1 = new User(0,null,null,null,null,null,null,false,0,null);
   public static ArrayList<Restaurant> restaurants = new  ArrayList<Restaurant>();
-  public static ArrayList<Order> receivedOrders = new ArrayList<Order>();
+  public static ArrayList<RestaurantOrders> receivedOrders = new ArrayList<RestaurantOrders>();
   
   //משתנה שעוזר להבין אם חזרה הודעה מהשרת ללקוח
   public static boolean awaitResponse = false;
@@ -201,7 +201,7 @@ public class ChatClient extends AbstractClient
 					
 			   case RETRIEVE_MANAGE_ORDER_LIST:
 				   System.out.println("Client received RETRIEVE_MANAGE_ORDER_LIST response");
-				   receivedOrders = Order.stringToOrderList(answer.getData().toString());
+				   receivedOrders = RestaurantOrders.fromStringArray(answer.getData().toString());
 				   System.out.println("Number of Orders loaded: " + receivedOrders.size());
 				   break;
 					

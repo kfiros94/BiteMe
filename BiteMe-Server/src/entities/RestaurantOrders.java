@@ -47,7 +47,18 @@ public class RestaurantOrders
         this.branch = branch;
         this.order_received = order_received;
     }
-
+    
+    public RestaurantOrders( int orderNumber, String orderList, int userId, String status, String deliveryType, String phoneNumber, String orderReceived) {
+    	
+        this.order_number = orderNumber;
+        this.order_list = orderList;
+        this.user_id = userId;
+        this.status = status;
+        this.delivery_type = deliveryType;
+        this.phone_number = phoneNumber;
+        this.order_received = orderReceived;
+    }
+    
     // Default Constructor
     public RestaurantOrders() {
     }
