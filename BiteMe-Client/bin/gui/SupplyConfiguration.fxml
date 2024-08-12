@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SupplyConfigurationController">
+   <children>
+      <VBox prefHeight="151.0" prefWidth="1001.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="26.0" prefWidth="1000.0" text="Create New Order">
+               <font>
+                  <Font name="Aharoni Bold" size="37.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="1000.0" text="Supply Configuration">
+               <font>
+                  <Font name="Agency FB" size="27.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="-8.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="38.0" prefWidth="1000.0">
+               <children>
+                  <Label text="➤ Enter Desired Supply time:">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="supplyDatePicker">
+                     <HBox.margin>
+                        <Insets left="50.0" />
+                     </HBox.margin>
+                  </DatePicker>
+                  <Label text="Hour">
+                     <HBox.margin>
+                        <Insets left="90.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Spinner fx:id="supplyHourSpinner" prefHeight="31.0" prefWidth="102.0">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Spinner>
+                  <Label text="Minute">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Spinner fx:id="supplyMinuteSpinner" layoutX="711.0" layoutY="10.0" prefHeight="31.0" prefWidth="134.0">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Spinner>
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="107.0" prefHeight="38.0" prefWidth="1000.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <children>
+                  <Label text="➤ Enter Contact Full Name:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="20.0" top="15.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="selfPickupNameField">
+                     <HBox.margin>
+                        <Insets left="65.0" top="15.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Label layoutX="663.0" layoutY="232.0" prefHeight="27.0" prefWidth="77.0" text="Delivery">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="22.0" layoutY="157.0" text="➤ Enter Contact Phone Number:">
+         <font>
+            <Font size="18.0" />
+         </font>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </Label>
+      <TextField fx:id="selfPickupPhoneField" layoutX="305.0" layoutY="155.0" AnchorPane.bottomAnchor="605.0">
+         <padding>
+            <Insets top="10.0" />
+         </padding></TextField>
+      <Label layoutX="522.0" layoutY="280.0" text="➤ Enter Delivery Address:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="deliveryAddressField" layoutX="762.0" layoutY="278.0" />
+      <Label layoutX="522.0" layoutY="338.0" text="➤ Additional Information:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="additionalInfoField" layoutX="762.0" layoutY="336.0" />
+      <Label layoutX="522.0" layoutY="387.0" text="➤ Delivery Fee:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="deliveryFeeLabel" layoutX="665.0" layoutY="387.0" prefHeight="27.0" prefWidth="51.0" text="25.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="716.0" layoutY="387.0" prefHeight="27.0" prefWidth="23.0" text="💲">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button layoutX="398.0" layoutY="701.0" mnemonicParsing="false" onAction="#handleNextButtonAction" prefHeight="40.0" prefWidth="206.0" text="✅ Proceed To Payment">
+         <effect>
+            <ColorAdjust brightness="-0.07">
+               <input>
+                  <InnerShadow choke="0.47" color="#05fa14" radius="13.11" width="33.44" />
+               </input>
+            </ColorAdjust>
+         </effect></Button>
+      <Button layoutX="22.0" layoutY="746.0" mnemonicParsing="false" onAction="#handleBackButtonAction" prefHeight="40.0" prefWidth="80.0" text="⬅ Back" />
+		<TableView fx:id="orderItemsTable" layoutX="2.0" layoutY="438.0" prefHeight="263.0" prefWidth="1000.0">
+		  <columns>
+		    <TableColumn fx:id="itemNameColumn" prefWidth="114.0" text="Item Name" />
+		    <TableColumn fx:id="changesColumn" prefWidth="811.0" text="Changes" />
+		    <TableColumn fx:id="priceColumn" prefWidth="74.0" text="Price" />
+		  </columns>
+		</TableView>
+      <Label layoutX="806.0" layoutY="711.0" text="Total Price:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="totalPriceLabel" layoutX="904.0" layoutY="711.0" text="0.00" />
+      <Label layoutX="949.0" layoutY="711.0" text="💲" />
+      <Label fx:id="timeNotSpecError" alignment="CENTER" layoutX="415.0" layoutY="746.0" prefHeight="7.0" prefWidth="174.0" text="You must specify a supply time" textFill="#e41010" visible="false" />
+      <Label layoutX="23.0" layoutY="203.0" text="➤ Enter Desired Supply Method:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="supplyMethodComboBox" layoutX="323.0" layoutY="201.0" prefWidth="150.0" />
+   </children>
+</AnchorPane>
