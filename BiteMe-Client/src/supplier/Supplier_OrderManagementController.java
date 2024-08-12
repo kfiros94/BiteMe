@@ -13,7 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.application.Platform;
 
 import entities.BiteOptions;
-import entities.Order;
+import entities.Orders;
 import entities.Restaurant;
 import entities.User;
 import client.ClientUI; // Assume this is your client connection class
@@ -29,22 +29,22 @@ public class Supplier_OrderManagementController {
 
     // FXML injected fields
     @FXML
-    private TableView<Order> tableView;
+    private TableView<Orders> tableView;
 
     @FXML
-    private TableColumn<Order, String> orderNumberColumn;
+    private TableColumn<Orders, String> orderNumberColumn;
 
     @FXML
-    private TableColumn<Order, String> typeColumn;
+    private TableColumn<Orders, String> typeColumn;
 
     @FXML
-    private TableColumn<Order, String> orderEtaColumn;
+    private TableColumn<Orders, String> orderEtaColumn;
 
     @FXML
-    private TableColumn<Order, String> phoneNumberColumn;
+    private TableColumn<Orders, String> phoneNumberColumn;
 
     @FXML
-    private TableColumn<Order, String> statusColumn;
+    private TableColumn<Orders, String> statusColumn;
 
     @FXML
     private TextField searchField;
@@ -62,7 +62,7 @@ public class Supplier_OrderManagementController {
     private Button btnRefresh;
 
     // ObservableList to hold the orders data
-    private ObservableList<Order> orders = FXCollections.observableArrayList();
+    private ObservableList<Orders> orders = FXCollections.observableArrayList();
     private User supllier;
     private Restaurant restaurant;
     
@@ -123,7 +123,7 @@ public class Supplier_OrderManagementController {
         if (response instanceof BiteOptions) {
             BiteOptions biteResponse = (BiteOptions) response;
             if (biteResponse.getOption() == BiteOptions.Option.RETRIEVE_MANAGE_ORDER_LIST) {
-                ArrayList<Order> receivedOrders = (ArrayList<Order>) biteResponse.getData();
+                ArrayList<Orders> receivedOrders = (ArrayList<Orders>) biteResponse.getData();
                 // Update UI on JavaFX Application Thread
                 Platform.runLater(() -> {
                     orders.clear();

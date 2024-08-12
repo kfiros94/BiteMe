@@ -14,7 +14,7 @@ import client.ClientController;
 import client.ClientUI;
 import common.ChatIF;
 import entities.BiteOptions;
-import entities.Order;
+import entities.Orders;
 import entities.Restaurant;
 import entities.User;
 import javafx.animation.KeyFrame;
@@ -380,7 +380,7 @@ public class LogInUserController {
 		System.exit(0);// add for the method to actually close client window
 	}
 
-	public void loadOrder(Order s1) {
+	public void loadOrder(Orders s1) {
 		this.sfc.loadOrder(s1);
 	}
 	

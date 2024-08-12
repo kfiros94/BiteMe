@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Vector;
 
-import entities.Order;
+import entities.Orders;
 import guiPro.ServerPortFrameControllerPro;
 import server.EchoServerPro;
 

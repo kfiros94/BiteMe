@@ -36,9 +36,9 @@ public class DBController {
         }
     }
 
-    protected static ArrayList<Order> showOrder() {
+    /*protected static ArrayList<RestaurantOrders> showOrder() {
         System.out.println("in ShowOrder Function"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-        ArrayList<Order> orders = new ArrayList<>();
+        ArrayList<RestaurantOrders> orders = new ArrayList<>();
 
         try {
             String query = "SELECT * FROM restaurant_orders"; // Enclose table name in backticks
@@ -54,7 +54,7 @@ public class DBController {
                 int orderListNumber = ordersFromTable.getInt("Order_list_number");
                 String orderAddress = ordersFromTable.getString("Order_address");
                 System.out.println("Test 4"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-                orders.add(new Order(restaurantName, orderNumber, totalPrice, orderListNumber, orderAddress));
+                orders.add(new RestaurantOrders(restaurantName, orderNumber, totalPrice, orderListNumber, orderAddress));
             }
             stmt.close();
         } catch (SQLException e) {
@@ -62,7 +62,7 @@ public class DBController {
         }
         System.out.println("Test 5"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
         return orders;
-    }
+    }*/
     
     //return users table
     protected static ArrayList<User> showusers() {

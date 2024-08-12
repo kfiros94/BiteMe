@@ -11,7 +11,7 @@ import client.ChatClient;
 import client.ClientUI;
 import entities.BiteOptions;
 import entities.ClientInfo;
-import entities.Order;
+import entities.Orders;
 import entities.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -34,7 +34,7 @@ import javafx.stage.Stage;
 
 // implements Initializable 
 public class MainPagesClientController {
-    private Order s;//זה שדה של הקונטרולר שדרך הדף לוג-אין יוצרים מופע של המחלקה ומעדכנים את השדה דרך מתודה שהגדרנו כאן
+    private Orders s;//זה שדה של הקונטרולר שדרך הדף לוג-אין יוצרים מופע של המחלקה ומעדכנים את השדה דרך מתודה שהגדרנו כאן
     //loadOrder(Order s1)    
     //אבל אין שימוש בשדה הזה ובמתודה הזאתי, השארתי את זה כדוגמא איך לייבא נתונים מדרך ההתחברות לסוג הלקוח הספציפי
     //פשוט נצטרך להוסיף שדה בקונטרולר הרצוי לעשות מתודה עדכון נתונים לשדה
@@ -172,7 +172,7 @@ public class MainPagesClientController {
     
     
     //יש טעות כי דרסתי את הפקולטה עם מידע על לקוח
-    public void loadOrder(Order s1) {
+    public void loadOrder(Orders s1) {
         this.s = s1;
         
         

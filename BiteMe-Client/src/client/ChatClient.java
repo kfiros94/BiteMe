@@ -42,7 +42,7 @@ public class ChatClient extends AbstractClient
    * the display method in the client.
    */
   ChatIF clientUI; 
-  public static Order  s1 = new Order("chackkk",0,0,0,null,new ClientInfo(null,null,null));
+  public static Orders  s1 = new Orders("chackkk",0,0,0,null,new ClientInfo(null,null,null));
   public static User user1 = new User(0,null,null,null,null,null,null,false,0);
   
   //משתנה שעוזר להבין אם חזרה הודעה מהשרת ללקוח

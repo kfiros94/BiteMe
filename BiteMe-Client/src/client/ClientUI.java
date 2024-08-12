@@ -9,7 +9,7 @@ import gui.LogInUserController;
 import gui.MainPagesClientController;
 import client.ClientController;
 import entities.ClientInfo;
-import entities.Order;
+import entities.Orders;
 
 public class ClientUI extends Application {
 	public static ClientController chat; //only one instance
