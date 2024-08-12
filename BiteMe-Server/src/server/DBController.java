@@ -355,9 +355,7 @@ public class DBController
     //KFIRKFIR
     
     
-    
-    
-    //KKKKKKKKKKKKKKKKKKKKKK
+
     
     // Protected static method to insert a new record into the restaurant_orders table
     protected static String insertRestaurantOrder(RestaurantOrders order)
@@ -398,7 +396,83 @@ public class DBController
     
     
     
-    //KKKKKKKKKKKKKKKKKKKKKK
+    
+    
+    
+ // Method to retrieve all orders by a specific user_id
+    protected static ArrayList<RestaurantOrders> getOrdersByUserId(int userId) {
+        ArrayList<RestaurantOrders> ordersList = new ArrayList<>();
+
+        String query = "SELECT restaurant, order_number, total_price, order_list, order_address, user_id, restaurant_id, " +
+                       "placing_order_date, status, delivery_type, order_requested_date, full_name, phone_number, branch, " +
+                       "order_received FROM restaurant_orders WHERE user_id = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                RestaurantOrders order = new RestaurantOrders();
+                order.setRestaurant(rs.getString("restaurant"));
+                order.setOrder_number(rs.getInt("order_number"));
+                order.setTotal_price(rs.getDouble("total_price"));
+                order.setOrder_list(rs.getString("order_list"));
+                order.setOrder_address(rs.getString("order_address"));
+                order.setUser_id(rs.getInt("user_id"));
+                order.setRestaurant_id(rs.getInt("restaurant_id"));
+                order.setPlacing_order_date(rs.getString("placing_order_date"));
+                order.setStatus(rs.getString("status"));
+                order.setDelivery_type(rs.getString("delivery_type"));
+                order.setOrder_requested_date(rs.getString("order_requested_date"));
+                order.setFull_name(rs.getString("full_name"));
+                order.setPhone_number(rs.getString("phone_number"));
+                order.setBranch(rs.getString("branch"));
+                order.setOrder_received(rs.getString("order_received"));
+
+                ordersList.add(order);
+            }
+
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println("Error retrieving orders by user ID: " + e.getMessage());
+        }
+
+        return ordersList;
+    }
+
+    
+    
+    //EEEEEEEEEEEEEEEEEEEEEEEEEE
+    
+ // In your DBController class
+    protected static String updateOrderStatusToConfirmed(int orderNumber) 
+    {
+        String updateQuery = "UPDATE restaurant_orders SET status = 'confirmed' WHERE order_number = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(updateQuery)) 
+        {
+            stmt.setInt(1, orderNumber);
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0) {
+            	
+                return "Order status updated to 'confirmed' successfully.";
+            } 
+            else
+            {
+                return "No order found with the specified order_number.";
+            }
+        } 
+        catch (SQLException e) 
+        {
+            System.out.println("Error updating order status: " + e.getMessage());
+            return "Failed to update order status.";
+        }
+    }
+
+    
+    //EEEEEEEEEEEEEEEEEEEEEEEEEE
     
     
   

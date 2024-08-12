@@ -34,6 +34,7 @@ import entities.RestaurantOrders;
 import entities.User;
 
 
+
 // implements Initializable 
 public class MainPagesClientController 
 {
@@ -50,6 +51,7 @@ public class MainPagesClientController
     private RestaurantOrders s;//זה שדה של הקונטרולר שדרך הדף לוג-אין יוצרים מופע של המחלקה ומעדכנים את השדה דרך מתודה שהגדרנו כאן
    // private User UserClient = new User(); //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     private User UserClient; //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  //  private	ArrayList<RestaurantOrders> costumer_all_orders = new ArrayList<RestaurantOrders>();
 
 
 /*
@@ -154,9 +156,66 @@ public class MainPagesClientController
     }
     
     
+    
+    
     @FXML
     private void OrderInProgress(ActionEvent event) 
     {
+    	
+    	
+    	//OOOOOOOOOOOOOOOOOOOOOOO
+        FXMLLoader loader = new FXMLLoader();
+        Pane root = null;
+        Stage primaryStage = new Stage();
+        try {
+            // Load the FXML file
+            loader.setLocation(getClass().getResource("/gui/OrderInProgress.fxml"));
+
+            root = loader.load();
+            
+            // Hide the current window
+            ((Node) event.getSource()).getScene().getWindow().hide();
+
+            // Set the new stage
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+            primaryStage.setTitle("User-Portal -> Order In Progress");
+            
+    		System.out.println("WWWW"+ UserClient);
+    		System.out.println("AWWWWW"+ ChatClient.user1);
+
+            
+            
+            if (ChatClient.user1 != null) 
+            {
+
+            	
+        		BiteOptions option = new BiteOptions(ChatClient.user1.getUserId(), BiteOptions.Option.GET_USER_ORDERS);//kkkkkkk
+        	    ClientUI.chat.accept(option);
+            	
+            	
+            	OrderInProgressController OrderInProgressController = loader.getController();
+            	ChatClient.observableOrdersList.addAll(0, ChatClient.customer_all_orders1);
+            	OrderInProgressController.setOrders(ChatClient.observableOrdersList);
+            	
+            } 
+            else 
+            {
+                System.err.println("Error: UserClient is null in MainPagesClientController");
+                // You might want to show an error message to the user here
+            }
+            
+
+        } 
+        catch (IOException e) 
+        {
+            e.printStackTrace();
+            showAlert("Error", "Could not load the Start Order page.");
+        }
+    	
+    	//OOOOOOOOOOOOOOOOOOOOOO
+    	
     	
     }
     
@@ -165,6 +224,9 @@ public class MainPagesClientController
     {
     	
     }
+    
+    
+    
     
     
     @FXML
