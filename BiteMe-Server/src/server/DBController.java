@@ -356,6 +356,51 @@ public class DBController
     
     
     
+    
+    //KKKKKKKKKKKKKKKKKKKKKK
+    
+    // Protected static method to insert a new record into the restaurant_orders table
+    protected static String insertRestaurantOrder(RestaurantOrders order)
+    {
+        String insertQuery = "INSERT INTO restaurant_orders (restaurant, order_number, total_price, order_list, " +
+                "order_address, user_id, restaurant_id, placing_order_date, status, delivery_type, " +
+                "order_requested_date, full_name, phone_number, branch, order_received) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement stmt = conn.prepareStatement(insertQuery)) {
+            stmt.setString(1, order.getRestaurant());
+            stmt.setInt(2, order.getOrder_number());
+            stmt.setDouble(3, order.getTotal_price());
+            stmt.setString(4, order.getOrder_list()); // Assuming order_list is stored as a JSON string
+            stmt.setString(5, order.getOrder_address());
+            stmt.setInt(6, order.getUser_id());
+            stmt.setInt(7, order.getRestaurant_id());
+            stmt.setString(8, order.getPlacing_order_date()); // Ensure the string is in 'YYYY-MM-DD HH:MM:SS' format
+            stmt.setString(9, order.getStatus());
+            stmt.setString(10, order.getDelivery_type());
+            stmt.setString(11, order.getOrder_requested_date()); // Ensure the string is in 'YYYY-MM-DD HH:MM:SS' format
+            stmt.setString(12, order.getFull_name());
+            stmt.setString(13, order.getPhone_number());
+            stmt.setString(14, order.getBranch());
+            stmt.setString(15, order.getOrder_received()); // Ensure the string is in 'YYYY-MM-DD HH:MM:SS' format
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0) {
+                return "Order inserted successfully.";
+            } else {
+                return "Failed to insert order.";
+            }
+        } catch (SQLException e) {
+            System.out.println("Error inserting order: " + e.getMessage());
+            return "Failed to insert order.";
+        }
+    }
+    
+    
+    
+    //KKKKKKKKKKKKKKKKKKKKKK
+    
+    
   
     
     

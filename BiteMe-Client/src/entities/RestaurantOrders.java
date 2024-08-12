@@ -1,12 +1,11 @@
 package entities;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.io.Serializable;
 
-public class RestaurantOrders 
-{
+public class RestaurantOrders implements Serializable {
 
     private String restaurant;
     private int order_number;
@@ -22,15 +21,14 @@ public class RestaurantOrders
     private String full_name;
     private String phone_number;
     private String branch;
-    private String order_received;
+    private String order_received;  // Adjusted to String
 
     // Constructor
-    public RestaurantOrders(String restaurant, int order_number, double total_price, String order_list, 
-                            String order_address, int user_id, int restaurant_id, 
-                            String placing_order_date, String status, String delivery_type, 
-                            String order_requested_date, String full_name, String phone_number, 
-                            String branch, String order_received) 
-    {
+    public RestaurantOrders(String restaurant, int order_number, double total_price, String order_list,
+                            String order_address, int user_id, int restaurant_id,
+                            String placing_order_date, String status, String delivery_type,
+                            String order_requested_date, String full_name, String phone_number,
+                            String branch, String order_received) {  // Adjusted to String
         this.restaurant = restaurant;
         this.order_number = order_number;
         this.total_price = total_price;
@@ -166,7 +164,7 @@ public class RestaurantOrders
         this.branch = branch;
     }
 
-    public String isOrder_received() {
+    public String getOrder_received() {
         return order_received;
     }
 
@@ -185,24 +183,21 @@ public class RestaurantOrders
                 ", order_address='" + order_address + '\'' +
                 ", user_id=" + user_id +
                 ", restaurant_id=" + restaurant_id +
-                ", placing_order_date=" + placing_order_date +
+                ", placing_order_date='" + placing_order_date + '\'' +
                 ", status='" + status + '\'' +
                 ", delivery_type='" + delivery_type + '\'' +
-                ", order_requested_date=" + order_requested_date +
+                ", order_requested_date='" + order_requested_date + '\'' +
                 ", full_name='" + full_name + '\'' +
                 ", phone_number='" + phone_number + '\'' +
                 ", branch='" + branch + '\'' +
-                ", order_received=" + order_received +
+                ", order_received='" + order_received + '\'' +  // Adjusted to String
                 '}';
     }
-    
-    
-    
-    
-    
+
+    // Corrected fromString method
     public static RestaurantOrders fromString(String toStringOutput) {
         Pattern pattern = Pattern.compile(
-            "RestaurantOrders\\{restaurant='(.*?)', order_number=(\\d+), total_price=(\\d+\\.\\d+), order_list='(.*?)', order_address='(.*?)', user_id=(\\d+), restaurant_id=(\\d+), placing_order_date=(.*?), status='(.*?)', delivery_type='(.*?)', order_requested_date=(.*?), full_name='(.*?)', phone_number='(.*?)', branch='(.*?)', order_received=(true|false)\\}"
+            "RestaurantOrders\\{restaurant='(.*?)', order_number=(\\d+), total_price=(\\d+\\.\\d+), order_list='(.*?)', order_address='(.*?)', user_id=(\\d+), restaurant_id=(\\d+), placing_order_date='(.*?)', status='(.*?)', delivery_type='(.*?)', order_requested_date='(.*?)', full_name='(.*?)', phone_number='(.*?)', branch='(.*?)', order_received='(.*?)'\\}"  // Adjusted to String
         );
         Matcher matcher = pattern.matcher(toStringOutput);
 
@@ -221,7 +216,7 @@ public class RestaurantOrders
             String full_name = matcher.group(12).equals("null") ? null : matcher.group(12);
             String phone_number = matcher.group(13).equals("null") ? null : matcher.group(13);
             String branch = matcher.group(14).equals("null") ? null : matcher.group(14);
-            String order_received = matcher.group(15).equals("null") ? null : matcher.group(15);
+            String order_received = matcher.group(15).equals("null") ? null : matcher.group(15);  // Adjusted to String
 
             return new RestaurantOrders(restaurant, order_number, total_price, order_list, order_address, user_id,
                     restaurant_id, placing_order_date, status, delivery_type, order_requested_date, full_name,
@@ -231,13 +226,10 @@ public class RestaurantOrders
         }
     }
 
-    
-    
-    
-    
+    // Corrected fromStringArray method
     public static ArrayList<RestaurantOrders> fromStringArray(String arrayString) {
         Pattern pattern = Pattern.compile(
-            "RestaurantOrders\\{restaurant='(.*?)', order_number=(\\d+), total_price=(\\d+\\.\\d+), order_list='(.*?)', order_address='(.*?)', user_id=(\\d+), restaurant_id=(\\d+), placing_order_date=(.*?), status='(.*?)', delivery_type='(.*?)', order_requested_date=(.*?), full_name='(.*?)', phone_number='(.*?)', branch='(.*?)', order_received=(true|false)\\}"
+            "RestaurantOrders\\{restaurant='(.*?)', order_number=(\\d+), total_price=(\\d+\\.\\d+), order_list='(.*?)', order_address='(.*?)', user_id=(\\d+), restaurant_id=(\\d+), placing_order_date='(.*?)', status='(.*?)', delivery_type='(.*?)', order_requested_date='(.*?)', full_name='(.*?)', phone_number='(.*?)', branch='(.*?)', order_received='(.*?)'\\}"  // Adjusted to String
         );
         Matcher matcher = pattern.matcher(arrayString);
 
@@ -257,7 +249,7 @@ public class RestaurantOrders
             String full_name = matcher.group(12).equals("null") ? null : matcher.group(12);
             String phone_number = matcher.group(13).equals("null") ? null : matcher.group(13);
             String branch = matcher.group(14).equals("null") ? null : matcher.group(14);
-            String order_received = matcher.group(15).equals("null") ? null : matcher.group(15);
+            String order_received = matcher.group(15).equals("null") ? null : matcher.group(15);  // Adjusted to String
 
             restaurantOrders.add(new RestaurantOrders(restaurant, order_number, total_price, order_list, order_address,
                     user_id, restaurant_id, placing_order_date, status, delivery_type, order_requested_date, full_name,
@@ -266,14 +258,4 @@ public class RestaurantOrders
 
         return restaurantOrders;
     }
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }

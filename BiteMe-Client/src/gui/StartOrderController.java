@@ -76,9 +76,17 @@ public class StartOrderController
 			primaryStage.setTitle("User-Portal");
 
             
-            MainPagesClientController MainPagesClientController = loader.getController();
-            MainPagesClientController.loadUserClient(UserCustomer);
+            System.out.println("GGGGGGGGGGGGGGGGG " + UserCustomer);
+        //    System.out.println("AGGGGGGGGGGGGGGGGG " + ChatClient.user1);
 
+			
+            MainPagesClientController MainPagesClientController = loader.getController();
+           // MainPagesClientController.loadUserClient(UserCustomer);
+            MainPagesClientController.loadUserClient(ChatClient.user1);
+            MainPagesClientController.initialize(UserCustomer.getUsername(), UserCustomer.getaccountStatus(), UserCustomer.getBranch());
+
+            
+            
             // Uncomment and use if needed
         } catch (IOException e) {
             // Print the stack trace and show an error dialog

@@ -60,7 +60,7 @@ public class SupplyConfigurationController {
 
     @FXML
     private void initialize() {
-        supplyMethodComboBox.getItems().addAll("Self Pick-Up", "Delivery");
+        supplyMethodComboBox.getItems().addAll("pickup", "Delivery");
         supplyMethodComboBox.setOnAction(e -> {
             updateFieldsAvailability();
             updateTotalPrice();
@@ -114,7 +114,7 @@ public class SupplyConfigurationController {
         String selectedMethod = supplyMethodComboBox.getValue();
         if (selectedMethod == null) {
             disableAllFields();
-        } else if (selectedMethod.equals("Self Pick-Up")) 
+        } else if (selectedMethod.equals("pickup")) 
         {
 
             deliveryAddressField.setDisable(true);
@@ -166,6 +166,12 @@ public class SupplyConfigurationController {
                 restaurantOrders.setStatus("pending");
                 restaurantOrders.setPlacing_order_date(dateTimeString);
                 
+                //dddddddd
+                restaurantOrders.setOrder_address("no address");
+
+                
+                //ddddddd
+                
                 if(supplyMethodComboBox.getValue().equals("Delivery"))
                 {
                     restaurantOrders.setOrder_address(deliveryAddressField.getText());
@@ -177,6 +183,10 @@ public class SupplyConfigurationController {
                 // Convert int to String using Integer.toString()
                 BiteOptions option = new BiteOptions(Integer.toString(restaurantOrders.getUser_id()), BiteOptions.Option.BACK_HOME_CUSTOMER_PAGE);
                 ClientUI.chat.accept(option);
+                
+                BiteOptions option2 = new BiteOptions(restaurantOrders, BiteOptions.Option.CREATE_ORDER);
+                ClientUI.chat.accept(option2);
+                
 
                 showOrderConfirmation();
             }

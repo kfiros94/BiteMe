@@ -48,7 +48,8 @@ public class MainPagesClientController
 	private ImageView imageView;
 	
     private RestaurantOrders s;//זה שדה של הקונטרולר שדרך הדף לוג-אין יוצרים מופע של המחלקה ומעדכנים את השדה דרך מתודה שהגדרנו כאן
-    private User UserClient;
+   // private User UserClient = new User(); //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    private User UserClient; //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
 
 /*
@@ -103,16 +104,42 @@ public class MainPagesClientController
             primaryStage.setScene(scene);
             primaryStage.show();
             primaryStage.setTitle("User-Portal -> New Order");
+            
+    		System.out.println("JJJJJJJJJJJJ"+ UserClient);
+    		System.out.println("AJJJJJJJJJJJJ"+ ChatClient.user1);
+
+
 
             StartOrderController startOrderController = loader.getController();
-            if (UserClient != null) {
+            
+            /*
+            if (UserClient != null) 
+            {
                 startOrderController.loadUserCustomer(UserClient);
-            } else {
+
+            } 
+            else 
+            {
                 System.err.println("Error: UserClient is null in MainPagesClientController");
                 // You might want to show an error message to the user here
             }
+            */
+            
+            
+            if (ChatClient.user1 != null) 
+            {
+                startOrderController.loadUserCustomer(ChatClient.user1);
+            } 
+            else 
+            {
+                System.err.println("Error: UserClient is null in MainPagesClientController");
+                // You might want to show an error message to the user here
+            }
+            
 
-        } catch (IOException e) {
+        } 
+        catch (IOException e) 
+        {
             e.printStackTrace();
             showAlert("Error", "Could not load the Start Order page.");
         }

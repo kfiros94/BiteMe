@@ -63,6 +63,9 @@ public class EchoServerPro extends AbstractServer
 		User user;
 		MenuItems menuItem;
 		Restaurant restaurant;
+		
+		RestaurantOrders restaurantOrderNew;
+		
 		try
 		{
 			switch(request.getOption())
@@ -277,6 +280,18 @@ public class EchoServerPro extends AbstractServer
 				    
 				//לאחר לחיצה על כפתור להמשיך לתשלום בחלון של קונפיגורציית אספקה אנחנו רוצים לשמור את ההזמנה של הלקוח בטבלה של הזמנות מסעדה     
 			   case CREATE_ORDER:    
+				    System.out.println("Eco-Test1: We entered the CREATE_ORDER case ");
+			      
+				    restaurantOrderNew = RestaurantOrders.fromString(request.getData().toString());//ממיר את המחרוזת למופע של לקוח 
+			        System.out.println("Eco-Test CREATE_ORDER: Print a check to see that we were able to convert the string to a user objec: "+restaurantOrderNew);
+
+			        String orderSaved= DBController.insertRestaurantOrder(restaurantOrderNew);
+			        System.out.println("Eco-Test CREATE_ORDER: Print QQQQQQQQQQQQQ: "+orderSaved);
+
+				    
+				    
+				    client.sendToClient("44");
+
 				   
 				   
 				   
