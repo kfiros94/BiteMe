@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiPro.ServerPortFrameControllerPro">
+   <children>
+      <Label alignment="CENTER" contentDisplay="TOP" layoutX="-21.0" layoutY="-7.0" prefHeight="99.0" prefWidth="655.0" text="Server Connection" textFill="#8708c7">
+         <font>
+            <Font name="Berlin Sans FB" size="36.0" />
+         </font>
+      </Label>
+      <VBox layoutX="32.0" layoutY="115.0" prefHeight="235.0" prefWidth="375.0">
+         <children>
+            <HBox prefHeight="30.0" prefWidth="251.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="IP Address:" wrappingWidth="76.705078125">
+                     <HBox.margin>
+                        <Insets top="6.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="ip1" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="34.0" promptText="xxx">
+                     <HBox.margin>
+                        <Insets left="18.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Label text=".">
+                     <HBox.margin>
+                        <Insets top="14.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="ip2" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="34.0" promptText="xxx" />
+                  <Label text=".">
+                     <HBox.margin>
+                        <Insets top="14.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="ip3" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="34.0" promptText="xxx" />
+                  <Label text=".">
+                     <HBox.margin>
+                        <Insets top="14.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="ip4" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="34.0" promptText="xxx">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="30.0" prefWidth="251.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Port:" wrappingWidth="58.705078125">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField id="textPort" fx:id="PortTxt" prefHeight="25.0" prefWidth="169.0" promptText="Enter Port">
+                     <HBox.margin>
+                        <Insets left="36.0" top="1.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="30.0" prefWidth="274.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="DB-Password:" wrappingWidth="91.205078125">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </Text>
+                  <PasswordField id="DBPassword" fx:id="DBPasswordTxt" prefHeight="25.0" prefWidth="170.0" promptText="Enter Data-Base Password">
+                     <HBox.margin>
+                        <Insets left="4.0" />
+                     </HBox.margin></PasswordField>
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <Label id="sucConn" fx:id="connection_Succ" prefHeight="16.0" prefWidth="235.0" text="Connection succeed!" textFill="#239a41" visible="false">
+               <font>
+                  <Font name="Arial" size="13.0" />
+               </font>
+               <padding>
+                  <Insets left="50.0" top="20.0" />
+               </padding>
+            </Label>
+            <Label fx:id="messageLabel" prefHeight="25.0" prefWidth="154.0" text="Incorrect password" textFill="red" visible="false">
+               <VBox.margin>
+                  <Insets bottom="60.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+      </VBox>
+      <HBox layoutX="32.0" layoutY="361.0" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Button id="ConnectBtn" alignment="CENTER" mnemonicParsing="false" onAction="#serveStartAction" prefHeight="43.0" prefWidth="77.0" text="Connect">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets bottom="10.0" left="35.0" right="25.0" top="20.0" />
+               </HBox.margin>
+               <effect>
+                  <InnerShadow>
+                     <color>
+                        <Color red="0.17973318696022034" green="0.8289473652839661" blue="0.04989035055041313" />
+                     </color>
+                  </InnerShadow>
+               </effect>
+            </Button>
+            <Button fx:id="btnClose" alignment="CENTER" mnemonicParsing="false" onAction="#closeAction" prefHeight="43.0" prefWidth="77.0" text="Close">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="20.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="387.0" layoutY="71.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/biteMe.jpeg" />
+         </image>
+      </ImageView>
+ 	 <TableView fx:id="tableView" layoutX="379.0" layoutY="216.0" prefHeight="242.0" prefWidth="220.0">
+	     <columns>
+	         <TableColumn fx:id="ipCol" prefWidth="125.5" text="Client ip" />
+	         <TableColumn fx:id="statusCol" prefWidth="66.0" text="Status" />
+	     </columns>
+	 </TableView>
+   </children>
+</AnchorPane>
