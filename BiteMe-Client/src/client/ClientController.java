@@ -70,7 +70,9 @@ public class ClientController implements ChatIF
     }
   }
   
-  
+  public ChatClient getChatClient() {
+	    return this.client;
+	}
 
   public void setMyhost(String Myhost) 
   {

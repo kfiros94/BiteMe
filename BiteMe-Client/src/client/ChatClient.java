@@ -34,6 +34,7 @@ public class ChatClient extends AbstractClient
     public static final String GREEN = "\033[0;32m";   // GREEN
     public static final String RED = "\033[0;31m";     // RED
     public static final String BLUE = "\033[0;34m";    // BLUE
+    private static String receivedData;
 
 	
   //Instance variables **********************************************
@@ -68,7 +69,105 @@ public class ChatClient extends AbstractClient
     this.clientUI = clientUI;
     //openConnection();
   }
+  public String fetchIncomeReports(String branch) {
+	    System.out.println("Sending request for income reports to server for branch: " + branch);
+	    
+	    // Reset the receivedData and awaitResponse flag
+	    receivedData = null;
+	    awaitResponse = true;
 
+	    BiteOptions request = new BiteOptions(branch, BiteOptions.Option.FETCH_INCOME_REPORTS);
+	    handleMessageFromClientUI(request);
+
+	    long startTime = System.currentTimeMillis();
+	    while (awaitResponse) {
+	        try {
+	            Thread.sleep(1); // Small delay to prevent busy waiting
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+
+	        // Timeout after 10 seconds
+	        if (System.currentTimeMillis() - startTime > 10000) {
+	            System.out.println("Timeout: No response from server.");
+	            awaitResponse = false;
+	            break;
+	        }
+	    }
+
+	    if (receivedData == null) {
+	        receivedData = "Error: No data received from server.";
+	    }
+
+	    System.out.println("Returning fetched income report: " + receivedData);
+	    return receivedData;
+	}
+
+  public String fetchOrderReports(String branch) {
+	    System.out.println("Sending request for order reports to server for branch: " + branch);
+	    
+	    // Reset the receivedData and awaitResponse flag
+	    receivedData = null;
+	    awaitResponse = true;
+
+	    BiteOptions request = new BiteOptions(branch, BiteOptions.Option.FETCH_ORDER_REPORTS);
+	    handleMessageFromClientUI(request);
+
+	    long startTime = System.currentTimeMillis();
+	    while (awaitResponse) {
+	        try {
+	            Thread.sleep(1); // Small delay to prevent busy waiting
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+
+	        // Timeout after 10 seconds
+	        if (System.currentTimeMillis() - startTime > 10000) {
+	            System.out.println("Timeout: No response from server.");
+	            awaitResponse = false;
+	            break;
+	        }
+	    }
+
+	    if (receivedData == null) {
+	        receivedData = "Error: No data received from server.";
+	    }
+
+	    // Optionally, correct or format the string if needed
+	    // Example: Remove unnecessary labels or adjust formatting
+
+	    System.out.println("Returning fetched order report: " + receivedData);
+	    return receivedData;
+	}
+
+  public String fetchPerformanceReports(String branch) {
+	    System.out.println("Sending request for performance reports to server for branch: " + branch);
+	    BiteOptions request = new BiteOptions(branch, BiteOptions.Option.FETCH_PERFORMANCE_REPORTS);
+	    handleMessageFromClientUI(request);
+
+	    awaitResponse = true;
+	    long startTime = System.currentTimeMillis();
+	    while (awaitResponse) {
+	        try {
+	            Thread.sleep(1); // Small delay to prevent busy waiting
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+
+	        // Timeout after 10 seconds
+	        if (System.currentTimeMillis() - startTime > 10000) {
+	            System.out.println("Timeout: No response from server.");
+	            break;
+	        }
+	    }
+
+	    if (receivedData == null) {
+	        receivedData = "Error: No data received from server.";
+	    }
+
+	    System.out.println("Returning fetched performance report: " + receivedData);
+	    return receivedData;
+	}
   //Instance methods ************************************************
     
   /**
@@ -103,6 +202,22 @@ public class ChatClient extends AbstractClient
 		{
 			switch(answer.getOption())
 			{
+			
+			case FETCH_INCOME_REPORTS:
+                receivedData = answer.getData().toString();
+                System.out.println("Received income report from server: " + receivedData);
+                awaitResponse = false;
+                break;
+			case FETCH_ORDER_REPORTS:
+			    receivedData = answer.getData().toString();
+			    System.out.println("Received order reports from server: " + receivedData);
+			    awaitResponse = false;
+			    break;
+            case FETCH_PERFORMANCE_REPORTS:
+                // Store the received data in a static variable to be retrieved later
+                receivedData = answer.getData().toString();
+                awaitResponse = false;
+                break;
 			
 			case LOGIN:		
 				System.out.println("Client-Test6: We entered the LOGIN case " );

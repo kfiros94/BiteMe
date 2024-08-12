@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+import BranchManager.MainBranchManagerController;
 import client.ChatClient;
 import client.ClientController;
 import client.ClientUI;
@@ -240,11 +241,22 @@ public class LogInUserController {
 						MainPagesClientController.loadUserClient(ChatClient.user1);// בצאט-קליינט כשחוזרת הודעה מהשרת אז נגדיר שדות סטטיק שיהיה אפשר לטעון אותם לכאן
 						MainPagesClientController.initialize(ChatClient.user1.getUsername(), ChatClient.user1.getaccountStatus(), ChatClient.user1.getBranch());
 						primaryStage.setTitle("User-Portal");
+					
 
 						break;
 					case "admin":
 						System.out.println("User type: Admin");
-						root = loader.load(getClass().getResource("/gui/MainPagesClient.fxml").openStream());
+						String accountType = ChatClient.user1.getaccountStatus();
+						switch (accountType) {
+						case "Branch Manager":
+							loader.setLocation(getClass().getResource("/BranchManager/MainBranchManager.fxml"));
+				            root = loader.load();
+				            
+				            MainBranchManagerController controller = loader.getController();
+				            controller.setChatClient(ClientUI.chat.getChatClient());  // Passing the ChatClient instance
+						default:
+							break;
+						}
 					default:
 						break;
 					}

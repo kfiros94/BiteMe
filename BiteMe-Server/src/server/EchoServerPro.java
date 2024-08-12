@@ -9,6 +9,7 @@ import entities.BiteOptions;
 import entities.ClientInfo;
 import entities.Order;
 import entities.Restaurant;
+import entities.RestaurantOrders;
 import entities.User;
 //import common.User;
 import guiPro.ServerPortFrameControllerPro;
@@ -60,6 +61,52 @@ public class EchoServerPro extends AbstractServer
 		{
 			switch(request.getOption())
 			{
+			case FETCH_INCOME_REPORTS:
+			    String branch = request.getData().toString();
+			    
+			    
+			    // Fetch detailed income reports from the database
+			    String incomeReport = DBController.getIncomeReports(branch);
+			    
+			    // Create a response to send back to the client
+			    BiteOptions response = new BiteOptions(incomeReport, BiteOptions.Option.FETCH_INCOME_REPORTS);
+			    client.sendToClient(response);
+			    
+			    
+			    break;
+			case FETCH_ORDER_REPORTS:
+			    branch = request.getData().toString();
+			    ArrayList<RestaurantOrders> orderReports = DBController.getOrderReports(branch);
+			    
+			    // Generate a summary of the orders
+			    StringBuilder summary = new StringBuilder();
+			    for (RestaurantOrders order : orderReports) {
+			        summary.append("Restaurant: ")
+			               .append(order.getRestaurant())
+			               .append(" - Order Number: ")
+			               .append(order.getOrder_number())
+			               .append("\nItems:\n")
+			               .append(order.getOrder_list())
+			               .append("\n\n");
+			    }
+			    
+			    System.out.println("Sending order summary to client: \n" + summary.toString());
+			    response = new BiteOptions(summary.toString(), BiteOptions.Option.FETCH_ORDER_REPORTS);
+			    client.sendToClient(response);
+			    break;
+			case FETCH_PERFORMANCE_REPORTS:
+			    branch = request.getData().toString();
+			    System.out.println("Fetching performance reports for branch: " + branch);
+
+			    // Fetch performance reports from the database
+			    String performanceReport = DBController.getPerformanceReports(branch);
+
+			    // Create a response to send back to the client
+			    response = new BiteOptions(performanceReport, BiteOptions.Option.FETCH_PERFORMANCE_REPORTS);
+			    client.sendToClient(response);
+
+			    System.out.println("Performance report sent to client:\n" + performanceReport);
+			    break;
 			
 			case LOGIN:		
 				System.out.println("Eco-Test1: We entered the LOGIN case " );
@@ -151,14 +198,14 @@ public class EchoServerPro extends AbstractServer
 
 			   case SELECT_RESTAURANT:
 				    System.out.println("Server handling SELECT_RESTAURANT request");
-				    String branch = (String) request.getData();
-				    System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + branch.toString() );
+				    String branch1 = (String) request.getData();
+				    System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + branch1.toString() );
 
 				    ArrayList<Restaurant> restaurants;
-				    if ("ALL".equals(branch)) {
+				    if ("ALL".equals(branch1)) {
 				        restaurants = DBController.showAllRestaurants();
 				    } else {
-				        restaurants = DBController.showRestaurants(branch);
+				        restaurants = DBController.showRestaurants(branch1);
 				    }
 				    System.out.println("Restaurants fetched from DB: " + restaurants);
 				    answer.setData(restaurants.toString());
