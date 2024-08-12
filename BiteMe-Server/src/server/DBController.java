@@ -322,7 +322,37 @@ public class DBController
     }
     
 
-    
+    //KFIRKFIR
+    protected static User getUserById(int userId) {
+        System.out.println("Retrieving user with ID: " + userId);
+        User user = null;
+
+        String query = "SELECT * FROM users WHERE user_id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                user = new User(
+                    rs.getInt("user_id"),
+                    rs.getString("username"),
+                    rs.getString("password"),
+                    rs.getString("email"),
+                    rs.getString("phone_number"),
+                    rs.getString("permission"),
+                    rs.getString("branch"),
+                    rs.getBoolean("has_discount_code"),
+                    rs.getInt("logged_in"),
+                    rs.getString("account_status")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving user details: " + e.getMessage());
+        }
+
+        return user;
+    }
+    //KFIRKFIR
     
     
     

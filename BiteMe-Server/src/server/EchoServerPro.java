@@ -246,67 +246,27 @@ public class EchoServerPro extends AbstractServer
 				    
 				   
 				    break;
-
-				   
-				    
+  
 				    
 			   case BACK_HOME_CUSTOMER_PAGE:
-				   
-				   
-					System.out.println("Eco-Test1: We entered the BACK_HOME_CUSTOMER_PAGE case " );
+				    System.out.println("Eco-Test1: We entered the BACK_HOME_CUSTOMER_PAGE case ");
+				    System.out.println("\ntest666666666:  BOB SFOGGGGGGG Message received: " + request.getData() + " from " + client);
 
-					System.out.println("\ntest666666666: Message received: " + request.getData() + " from " + client);
+				    userId = Integer.parseInt(request.getData().toString());
+				    user = DBController.getUserById(userId);
 
-					//כאן אנחנו לוקחים את המחרוזת בשדה ה-דאטה של מחלקת ביט-אופציות וממירים למופע חדש של המחלקה המתאימה לה לפי שדה הפקודה לוג-אין שבה איתה יחד
-			        user = User.fromString(request.getData().toString());
-			        System.out.println("Eco-Test1: Print a check to see that we were able to convert the string to a user objec: "+user);
-
-
-					ArrayList<User> users2 = DBController.showusers();//מושך את כל המשתמשים מהמסד נתונים למערך משתמשים
-					System.out.println("Users received from DB: " + users2.toString());
-				   
-				   //aaaaaaaaaaaaa
-					
-					boolean usernameFound2 = false;
-					try
-					{
-						
-						for (User userToFind : users2) 
-						{
-							if (userToFind.getUserId() == user.getUserId()) 
-							//if (userToFind.getUsername().equals(usernameToCompare)) 
-							{
-								usernameFound = true;
-								
-									System.out.println("SQLUserFound: " + userToFind.getUsername());
-									
-									answer.setData(userToFind.toString());
-									answer.setOption(BiteOptions.Option.BACK_HOME_CUSTOMER_PAGE);
-									client.sendToClient(answer);
-									System.out.println("Eco-Test1- answer To Client in case LOGIN: " + answer);
-
-									return;
-							}
-						}
-
-						if (!usernameFound2) 
-						{
-							System.out.println("Username not found: " + user.getUsername());
-							//client.sendToClient("-1");
-							
-							answer.setData("-1");
-							answer.setOption(BiteOptions.Option.BACK_HOME_CUSTOMER_PAGE);
-							client.sendToClient(answer);
-							
-						}
-						
-					}
-					//זה שייך למקרה של לוג-אין
-					catch (IOException e) 
-					{
-						e.printStackTrace();
-					}
-					break;
+				    if (user != null) {
+				        answer.setData(user.toString());
+				        answer.setOption(BiteOptions.Option.BACK_HOME_CUSTOMER_PAGE);
+				        client.sendToClient(answer);
+				        System.out.println("Eco-Test1- answer To Client in case BACK_HOME_CUSTOMER_PAGE: " + answer);
+				    } else {
+				        answer.setData("-1");
+				        answer.setOption(BiteOptions.Option.BACK_HOME_CUSTOMER_PAGE);
+				        client.sendToClient(answer);
+				        System.out.println("User not found for ID: " + userId);
+				    }
+				    break;
 					
 					//aaaaaaaaaaa
 				   

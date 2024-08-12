@@ -20,6 +20,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import client.ChatClient;
 import client.ClientUI;
 import entities.BiteOptions;
 import entities.RestaurantOrders;
@@ -156,27 +157,29 @@ public class SupplyConfigurationController {
             {
                 System.out.println("Generated DATETIME string: " + dateTimeString);
                 // Use dateTimeString as needed (e.g., save it to the database)
-            }
             
-            restaurantOrders.setTotal_price(totalPrice);
-            restaurantOrders.setOrder_list(this.getcartItems());
-            restaurantOrders.setFull_name(selfPickupNameField.getText());
-            restaurantOrders.setPhone_number(selfPickupPhoneField.getText());
-            restaurantOrders.setDelivery_type(supplyMethodComboBox.getValue());
-            restaurantOrders.setStatus("pending");
-            restaurantOrders.setPlacing_order_date(dateTimeString);
-            
-            
-            if(supplyMethodComboBox.getValue().equals("Delivery"))
-            {
-            	restaurantOrders.setOrder_address(deliveryAddressField.getText());
-            }
-            
-            System.out.println("GGGGGGGGGGGGGGGGG " + restaurantOrders);
+                restaurantOrders.setTotal_price(totalPrice);
+                restaurantOrders.setOrder_list(this.getcartItems());
+                restaurantOrders.setFull_name(selfPickupNameField.getText());
+                restaurantOrders.setPhone_number(selfPickupPhoneField.getText());
+                restaurantOrders.setDelivery_type(supplyMethodComboBox.getValue());
+                restaurantOrders.setStatus("pending");
+                restaurantOrders.setPlacing_order_date(dateTimeString);
+                
+                if(supplyMethodComboBox.getValue().equals("Delivery"))
+                {
+                    restaurantOrders.setOrder_address(deliveryAddressField.getText());
+                }
+                
+                System.out.println("GGGGGGGGGGGGGGGGG " + restaurantOrders);
 
-            
+                // Send request to server to load MainPagesClient
+                // Convert int to String using Integer.toString()
+                BiteOptions option = new BiteOptions(Integer.toString(restaurantOrders.getUser_id()), BiteOptions.Option.BACK_HOME_CUSTOMER_PAGE);
+                ClientUI.chat.accept(option);
 
-            showOrderConfirmation();
+                showOrderConfirmation();
+            }
         }
     }
     
@@ -216,6 +219,7 @@ public class SupplyConfigurationController {
             loadMainPagesClient();
         });
 
+
         VBox layout = new VBox(10);
         layout.getChildren().addAll(label, closeButton);
         layout.setAlignment(Pos.CENTER);
@@ -227,26 +231,20 @@ public class SupplyConfigurationController {
 
     private void loadMainPagesClient() {
         try {
-        	
-		    User user = new User(restaurantOrders.getUser_id(),null,null,null,null,null,null,false,0,null);//kkkkkkk
-			BiteOptions option = new BiteOptions(user.toString(), BiteOptions.Option.BACK_HOME_CUSTOMER_PAGE);//kkkkkkk
-
-			ClientUI.chat.accept(option);//kkkkkkk
-
-
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainPagesClient.fxml"));
             Parent root = loader.load();
             
-            // Create and show the new stage
+            MainPagesClientController controller = loader.getController();
+            controller.initialize(ChatClient.user1.getUsername(), ChatClient.user1.getaccountStatus(), ChatClient.user1.getBranch());
+            
             Stage stage = new Stage();
             stage.setTitle("Main Pages Client");
             stage.setScene(new Scene(root));
             stage.show();
             
             // Close the current window
-            Stage currentStage = (Stage) supplyDatePicker.getScene().getWindow(); // Assuming `supplyDatePicker` is a node in the current window
+            Stage currentStage = (Stage) supplyDatePicker.getScene().getWindow();
             currentStage.close();
-            
         } catch (IOException e) {
             e.printStackTrace();
             showAlert("Error", "Could not load the Main Pages Client page.");

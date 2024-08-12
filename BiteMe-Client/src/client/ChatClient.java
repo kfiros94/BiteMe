@@ -7,9 +7,13 @@ package client;
 import ocsf.client.*;
 import client.*;
 import entities.*;
+import gui.MainPagesClientController;
 import gui.RestaurantSelectionController;
+import gui.StartOrderController;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.stage.Stage;
 import common.ChatIF;
 
 import java.io.*;
@@ -196,13 +200,19 @@ public class ChatClient extends AbstractClient
 				   
 		            break;
 		            
-		            
+		       //SPONGEBOBBBBBBBBBBBBBBBBBB  
 			   case BACK_HOME_CUSTOMER_PAGE:
 
 				   System.out.println("Client received BACK_HOME_CUSTOMER_PAGE response");
-
+				   user1 = User.fromString(answer.getData().toString());
+		           System.out.println("LETS SEE WHAT IS THE ANSWER: " + user1);
+		        //   StartOrderController soc = new StartOrderController();
+		        //   soc.loadUserCustomer(user1);
+		           MainPagesClientController mpc = new  MainPagesClientController();
+		           mpc.loadUserClient(user1);
 				   
 		            break;
+			   //SPONGEBOBBBBBBBBBBBBBBBBBB  
 
 
 				   
@@ -288,6 +298,25 @@ public class ChatClient extends AbstractClient
 
   }
   
-  
+  public static void updateUserInMainPagesController(User user) {
+      Platform.runLater(() -> {
+          try {
+              FXMLLoader loader = new FXMLLoader(ChatClient.class.getResource("/gui/MainPagesClient.fxml"));
+              Parent root = loader.load();
+              MainPagesClientController controller = loader.getController();
+              controller.loadUserClient(user);
+              
+              // Update the existing stage
+              Stage stage = (Stage) root.getScene().getWindow();
+              if (stage != null) {
+                  stage.getScene().setRoot(root);
+              } else {
+                  System.err.println("Cannot find the MainPagesClient stage");
+              }
+          } catch (IOException e) {
+              e.printStackTrace();
+          }
+      });
+  }
 }
 //End of ChatClient class
