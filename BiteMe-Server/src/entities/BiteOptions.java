@@ -42,7 +42,7 @@ public class BiteOptions implements Serializable{
 	private Object data;
 	private Option option;
 	
-	public BiteOptions()
+	public BiteOptions()//default constructor
 	{
 
 	}
