@@ -5,6 +5,8 @@
 package client;
 
 import ocsf.client.*;
+import supplier.MainPageSupplierController;
+import supplier.SupplierEditItamController;
 import client.*;
 import entities.*;
 import gui.MainPagesClientController;
@@ -239,10 +241,61 @@ public static ObservableList<RestaurantOrders> observableOrdersList = FXCollecti
 				   //costumer_all_orders1
 				   
 		            break;
-
-
+		            
+		       //HfaraDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+			   case LOGIN_RESTAURANT:
+				   System.out.println("Client received GET_USER_ORDERS response");
+			  
+				   Restaurant restaurant = new Restaurant();
+				   System.out.println("ChatClient: "+answer);
+				   restaurant = Restaurant.fromString(answer.getData().toString());
+			    	// Send the restaurant to the main page supplier controller
+					if (MainPageSupplierController.controller != null) {
+						MainPageSupplierController.controller.setRestaurant(restaurant);
+					}
+				  // customer_all_orders1 = RestaurantOrders.fromStringArray(answer.getData().toString());
+		           System.out.println("LETS SEE WHAT IS THE ANSWER: " + answer.getData().toString());
 				   
-				   
+		            break;
+		            
+			   case SHOW_MENU_RESTAURANT:        
+	                  if (answer.getData() != null) {
+	                      System.out.println("-->test5: Received list of menu items from server: " + answer);
+	                      if (SupplierEditItamController.instance != null) {
+	                          System.out.println("-->test5: Setting menu items list in SupplierEditItamController");
+	                          SupplierEditItamController.setMenuItemsList(answer);
+	                      } else {
+	                          System.out.println("-->test5: SupplierEditItamController instance is null");
+	                      }
+	                  }
+	                  break;
+	                  
+	              case DELETE_ITEM_MENU:
+	                  if (answer.getData() != null) {
+	                      System.out.println("ChatClient: we entered DELETE_ITEM_MENU: " + answer.getData());
+	                      if (answer.getData().equals("success")) {
+	                          System.out.println("-->: Successful delete");
+	                          SupplierEditItamController.GetMessageFromServer("Successful delete from DB");
+	                      } else {
+	                          System.out.println("-->test5: SupplierEditItamController instance is null");
+	                      }
+	                  }
+	                  break;
+	                  
+	              case UPDATE_MENU:
+	                  System.out.println("ChatClient: we entered UPDATE_MENU: " + answer.getData());
+	                  if (answer.getData() == null) {
+	                      System.out.println("-->: Unsuccessful menu update");
+	                      SupplierEditItamController.GetMessageFromServer("Unsuccessful menu update");
+	                  } else {
+	                      System.out.println("-->test: Successful menu update");
+	                      SupplierEditItamController.GetMessageFromServer("Successful menu update");
+	                      String dataString = answer.getData().toString();
+	                      MenuItem receivedMenuItem = MenuItem.fromString(dataString);
+	                      SupplierEditItamController.getController().MenuItemAddOrupdatedFromChat(receivedMenuItem);
+	                  }
+	                  break;
+
 				
 			}
 		}
