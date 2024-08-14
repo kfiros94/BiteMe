@@ -13,6 +13,18 @@ import client.ClientUI;
 import entities.BiteOptions;
 import entities.MenuItem;
 
+/**
+ * Controller class for handling the creation and editing of menu items in the supplier interface.
+ * 
+ * @author Kfir Amoyal
+ * @author Noam Furman
+ * @author Israel Ohayon
+ * @author Eitan Zerbel
+ * @author Yaniv Shatil
+ * @author Omri Heit
+
+ * @version August 2024
+ */
 public class NewItemFormController {
 
     @FXML
@@ -41,15 +53,28 @@ public class NewItemFormController {
     private SupplierEditItamController mainController;
     public static List<MenuItem> menuItemsList;
 
+    /**
+     * Sets the list of menu items for the controller.
+     *
+     * @param menuItemsList the list of menu items
+     */
     public void SetMenuItemsList(List<MenuItem> menuItemsList) {
         this.menuItemsList = menuItemsList;
         System.out.println("NewItemFormController--> menuItemsList: " + menuItemsList);
     }
     
+    /**
+     * Sets the title of the page.
+     *
+     * @param title the title to set
+     */
     public void SetpageTitlelabel(String title) {
     	pageTitlelabel.setText(title);
     }
 
+    /**
+     * Initializes the form, populating the category ComboBox and configuring the ID field.
+     */
     @FXML
     public void initialize() {
         // Populate the ComboBox with options
@@ -63,10 +88,18 @@ public class NewItemFormController {
         IDFiled.setVisible(false); // Hide the ID field if it's not needed for display
     }
 
+    /**
+     * Sets the main controller that will handle interactions with this form.
+     *
+     * @param mainController the main controller
+     */
     public void setMainController(SupplierEditItamController mainController) {
         this.mainController = mainController;
     }
 
+    /**
+     * Handles the cancel action, closing the current window.
+     */
     @FXML
     private void handleCancel() {
         // Get the current stage (window) and close it
@@ -74,6 +107,11 @@ public class NewItemFormController {
         stage.close();
     }
 
+    /**
+     * Handles the save action, validating the input and saving the new or updated item.
+     *
+     * @param event the action event
+     */
     @FXML
     private void handleSave(ActionEvent event) {
         // Retrieve and validate the input values

@@ -30,7 +30,18 @@ import entities.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
+/**
+ * Controller class for managing orders for a supplier in the restaurant's management GUI.
+ * 
+ * @author Kfir Amoyal
+ * @author Noam Furman
+ * @author Israel Ohayon
+ * @author Eitan Zerbel
+ * @author Yaniv Shatil
+ * @author Omri Heit
 
+ * @version August 2024
+ */
 public class Supplier_OrderManagementController {
 	final String ANSI_RESET = "\u001B[0m";
 	final String ANSI_PURPLE = "\u001B[35m";
@@ -89,6 +100,9 @@ public class Supplier_OrderManagementController {
     public static Supplier_OrderManagementController instance;
     private ObservableList<RestaurantOrders> resOrders;
 
+    /**
+     * Initializes the controller, setting up the table columns for displaying order data.
+     */
     @FXML
     private void initialize() {
     	
@@ -108,13 +122,22 @@ public class Supplier_OrderManagementController {
     }
     
    
-    
+    /**
+     * Sets the supplier user for this controller.
+     *
+     * @param userSupplier The supplier user.
+     */
     public void setSupplier(User userSupplier) {
         this.supplier = userSupplier;
     	System.out.println(ANSI_PURPLE + "Supplier_OrderManagementController" + ANSI_RESET + ": initialized for supplier - " + supplier.getUsername());
 
     }
 
+    /**
+     * Sets the restaurant for this controller and loads its orders.
+     *
+     * @param restaurant The restaurant entity.
+     */
     public void setRestaurant(Restaurant restaurant) {
       	 this.restaurant = restaurant;
       	  resname.setText(restaurant.getName());
@@ -123,12 +146,19 @@ public class Supplier_OrderManagementController {
  	
     }
     
+    /**
+     * Gets the instance of this controller.
+     *
+     * @return The current instance of Supplier_OrderManagementController.
+     */
     public static Supplier_OrderManagementController getController() {
 		return instance;
 	}
 
    
-    //send request to get RestaurantOrders
+    /**
+     * Sends a request to the server to get the orders for the restaurant.
+     */
     public void loadRestaurantOrders() {
     	RestaurantOrders resordsRequest = new RestaurantOrders();
     	resordsRequest.setRestaurant_id(restaurant.getRestaurantID());
@@ -140,6 +170,11 @@ public class Supplier_OrderManagementController {
    	
     }
     
+    /**
+     * Loads the restaurant orders into the table after receiving them from the server.
+     *
+     * @param returendOrdersNoam The response containing the orders from the server.
+     */
     public void loadRestaurantOrders(BiteOptions returendOrdersNoam) {
 
     	ArrayList<RestaurantOrders> orderListFromDB =RestaurantOrders.fromStringArray(returendOrdersNoam.getData().toString());
@@ -152,6 +187,16 @@ public class Supplier_OrderManagementController {
         setOrders(observableOrdersList);
     }
     
+    /**
+     * Sets the list of restaurant orders and updates the order table.
+     * 
+     * <p>This method takes an ObservableList of RestaurantOrders, assigns it to the
+     * resOrders field, and then sets this list as the items for the orderTable.
+     * After updating, it prints a confirmation message to the console.</p>
+     *
+     * @param orders An ObservableList of RestaurantOrders to be set and displayed.
+     *               This list will replace any existing orders in the table.
+     */
     public void setOrders(ObservableList<RestaurantOrders> orders) {
         this.resOrders = orders;
         orderTable.setItems(orders);
@@ -163,6 +208,7 @@ public class Supplier_OrderManagementController {
     
     /**
      * Handles the back button action
+     * 
      * @param event The action event
      */
     @FXML
@@ -187,7 +233,11 @@ public class Supplier_OrderManagementController {
         }
     }
     
-    
+    /**
+     * Handles the action of the deny button, denying the selected order.
+     *
+     * @param event The action event.
+     */ 
     @FXML
     private void handleDeny(ActionEvent event) {
         RestaurantOrders selectedOrder = orderTable.getSelectionModel().getSelectedItem();
@@ -225,7 +275,11 @@ public class Supplier_OrderManagementController {
             }
         }
     }
-
+    /**
+     * Handles the action of the confirm button, confirming the selected order.
+     *
+     * @param event The action event.
+     */
     @FXML
     private void handleConfirm(ActionEvent event) {
         RestaurantOrders selectedOrder = orderTable.getSelectionModel().getSelectedItem();
@@ -259,7 +313,11 @@ public class Supplier_OrderManagementController {
             }
         }
     }
-    
+    /**
+     * Handles the action of the deliver button, marking the selected order as delivered.
+     *
+     * @param event The action event.
+     */
     @FXML
     private void handleDeliver(ActionEvent event) {
         RestaurantOrders selectedOrder = orderTable.getSelectionModel().getSelectedItem();
@@ -294,7 +352,11 @@ public class Supplier_OrderManagementController {
     }
 
     
-    
+    /**
+     * Sends a request to the server to get the user details for the notification.
+     *
+     * @param userId The ID of the user.
+     */
     private void getUserDetails(int userId) {
         User user = new User();
         user.setUserId(userId);
@@ -306,30 +368,15 @@ public class Supplier_OrderManagementController {
     }
     
 
-   /* public void settUserDitales(User recived){
-    	User userformail =new User();
-    	userformail=recived;
-        System.out.println("settUserDitales: " + userformail);
-        if (userformail != null) {
-            String userEmail = userformail.getEmail();
-            System.out.println("settUserDitales: User email received: " + userEmail);
-
-            // Simulate email notification
-            simulateMessageSending(userEmail, "Order Status Update", "Your order status has been updated.");
-            
-         // Use Platform.runLater to ensure UI updates occur on the JavaFX Application Thread
-            Platform.runLater(() -> {
-                simulateMessageSending(userEmail, "Order Status Update", "Your order status has been updated.");
-            });
-        }
-
-    
-    }*/
-    
+    /**
+     * Sets the user details and simulates sending a message to the user.
+     *
+     * @param receivedUser The user details received from the server.
+     */
     public void settUserDitales(User receivedUser) {
         if (receivedUser != null) {
             String userEmail = receivedUser.getEmail();
-            System.out.println("settUserDitales: User email received: " + userEmail);
+            System.out.println("setUserDetails: User email received: " + userEmail);
 
             // Use Platform.runLater to ensure UI updates occur on the JavaFX Application Thread
             Platform.runLater(() -> {
@@ -338,7 +385,13 @@ public class Supplier_OrderManagementController {
         }
     }
 
-    
+    /**
+    * Simulates sending a message by showing an alert with the details.
+    *
+    * @param recipient The recipient's email address.
+    * @param subject   The subject of the message.
+    * @param message   The content of the message.
+    */
     public void simulateMessageSending(String recipient, String subject, String message) {
         // Create an alert to simulate the message sending
         Alert alert = new Alert(AlertType.INFORMATION);
@@ -353,7 +406,11 @@ public class Supplier_OrderManagementController {
    
     	
     
-   
+    /**
+     * Sends a request to the server to change the status of an order.
+     *
+     * @param newStatRes The order with the new status.
+     */
     public void changeStatus(RestaurantOrders newStatRes) {
     	
     	BiteOptions changeresorder = new BiteOptions(newStatRes.toString(),BiteOptions.Option.CHANGE_ORDER_STATUS);
@@ -365,7 +422,11 @@ public class Supplier_OrderManagementController {
     	
     
     }
-
+    /**
+     * Gets the current user ID.
+     *
+     * @return The ID of the current user.
+     */
     public static Integer getCurrentUserId() {
         return currentUserId;
     }
@@ -373,7 +434,13 @@ public class Supplier_OrderManagementController {
 
 
     
-    
+    /**
+     * Simulates sending an email to the user with the specified subject and body.
+     *
+     * @param userId  The ID of the user.
+     * @param subject The subject of the email.
+     * @param body    The body of the email.
+     */
     private void sendEmail(int userId, String subject, String body) {
         // In a real application, you would retrieve the user's email address from the database
         String recipientEmail = "user" + userId + "@example.com"; // Placeholder email
@@ -397,6 +464,24 @@ public class Supplier_OrderManagementController {
             alert.showAndWait();
         });
     }
+    
+    /**
+     * Handles the refresh action for restaurant orders.
+     * 
+     * <p>This method is triggered by a user action, typically clicking a refresh button.
+     * If a restaurant is currently selected (not null), it reloads the restaurant orders
+     * by calling the loadRestaurantOrders method.</p>
+     *
+     * @param event The ActionEvent object representing the user's action that triggered this method.
+     *              This parameter is not used in the current implementation but is required for FXML.
+     */
+    @FXML
+    private void handleRefresh(ActionEvent event) {
+    	if (restaurant!=null) {
+    		loadRestaurantOrders();
+    	}
+    }
+
     
     
 }

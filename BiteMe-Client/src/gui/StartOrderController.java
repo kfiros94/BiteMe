@@ -17,7 +17,19 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+/**
+ * Controller class for handling the Start Order GUI.
+ * This class manages the events and interactions for the Start Order screen.
+ * 
+ * @author Kfir Amoyal
+ * @author Noam Furman
+ * @author Israel Ohayon
+ * @author Eitan Zerbel
+ * @author Yaniv Shatil
+ * @author Omri Heit
 
+ * @version August 2024
+ */
 public class StartOrderController 
 {
 	
@@ -41,7 +53,10 @@ public class StartOrderController
 
     @FXML
     private Button nextButton;
-
+    /**
+     * Initializes the Start Order controller.
+     * This method is automatically called after the FXML file has been loaded.
+     */
     @FXML
     private void initialize() 
     {
@@ -50,7 +65,12 @@ public class StartOrderController
         incorrectPasswordLabel.setVisible(false);
     }
 
-    
+    /**
+     * Handles the action when the back button is clicked.
+     * This method navigates the user back to the main client page.
+     *
+     * @param event The event that triggered this action.
+     */
     @FXML
     private void handleBackButtonAction(ActionEvent event) 
     {
@@ -76,27 +96,30 @@ public class StartOrderController
 			primaryStage.setTitle("User-Portal");
 
             
-            System.out.println("GGGGGGGGGGGGGGGGG " + UserCustomer);
-        //    System.out.println("AGGGGGGGGGGGGGGGGG " + ChatClient.user1);
+            System.out.println("print for UserCustomer: " + UserCustomer);
+        
 
 			
             MainPagesClientController MainPagesClientController = loader.getController();
-           // MainPagesClientController.loadUserClient(UserCustomer);
             MainPagesClientController.loadUserClient(ChatClient.user1);
             MainPagesClientController.initialize(UserCustomer.getUsername(), UserCustomer.getaccountStatus(), UserCustomer.getBranch());
 
             
             
-            // Uncomment and use if needed
+            
         } catch (IOException e) {
-            // Print the stack trace and show an error dialog
             e.printStackTrace();
             showAlert("Error", "Could not load the Start Order page.");
         }
     	
 
     }
-    
+    /**
+     * Shows an alert dialog with the specified title and message.
+     *
+     * @param title   The title of the alert dialog.
+     * @param message The message to be displayed in the alert dialog.
+     */
     private void showAlert(String title, String message) 
     {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -107,7 +130,12 @@ public class StartOrderController
     
     
 
-    
+    /**
+     * Handles the action when the next button is clicked.
+     * This method validates the user input and navigates the user to the restaurant selection page.
+     *
+     * @param event The event that triggered this action.
+     */   
     @FXML
     private void StartOrderhandleNextButtonAction(ActionEvent event) 
     {
@@ -170,23 +198,36 @@ public class StartOrderController
             showAlert("Error", "User information is not loaded properly.");
         }
     }
-
+    /**
+     * Validates the entered username against the stored user information.
+     *
+     * @param username The entered username.
+     * @return true if the username is valid, false otherwise.
+     */
     private boolean validateUsername(String username) 
     {
         return UserCustomer.getUsername().equals(username) && username != null && !username.trim().isEmpty();
     }
-
+    /**
+     * Validates the entered password against the stored user information.
+     *
+     * @param password The entered password.
+     * @return true if the password is valid, false otherwise.
+     */
     private boolean validatePassword(String password) 
     {
-        // Replace with your actual password validation logic
         return UserCustomer.getPassword().equals(password) && password != null && !password.trim().isEmpty();
     }
     
-    
+    /**
+     * Loads the user information into the controller.
+     *
+     * @param UserClient The user information to be loaded.
+     */
     public void loadUserCustomer(User UserClient) 
     {
         this.UserCustomer = UserClient;
-		System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"+ this.UserCustomer.toString());
+		System.out.println("Loaded user's info: "+ this.UserCustomer.toString());
 
     }
     

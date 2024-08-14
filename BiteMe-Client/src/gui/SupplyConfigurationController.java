@@ -28,8 +28,20 @@ import entities.User;
 import gui.SelectFromRestMenuController.CartItem;
 
 
+/**
+ * Controller class for handling the supply configuration view in the GUI.
+ * This class manages the user interface components related to setting up the 
+ * delivery or pickup options, as well as processing the order.
+ * 
+ * @author Kfir Amoyal
+ * @author Noam Furman
+ * @author Israel Ohayon
+ * @author Eitan Zerbel
+ * @author Yaniv Shatil
+ * @author Omri Heit
 
-
+ * @version August 2024
+ */
 public class SupplyConfigurationController {
 
     @FXML private DatePicker supplyDatePicker;
@@ -57,7 +69,11 @@ public class SupplyConfigurationController {
     private double totalPrice;
     
     
-
+    /**
+     * Initializes the controller class. This method is automatically called after the 
+     * FXML file has been loaded. It sets up the combo box, spinners, date picker, 
+     * and table columns, and disables certain fields based on the initial configuration.
+     */
     @FXML
     private void initialize() {
     	supplyMethodComboBox.setValue("pickup");  // Set initial value
@@ -82,8 +98,6 @@ public class SupplyConfigurationController {
         disableAllFields();
         deliveryFeeLabel.setText(String.format("%.2f", deliveryFee));
         
-        
-        //aaaaaaaaaaaaaaaa
         // Initialize the hour spinner with a range from 10 to 22
         SpinnerValueFactory<Integer> hourValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(10, 22);
         supplyHourSpinner.setValueFactory(hourValueFactory);
@@ -92,25 +106,34 @@ public class SupplyConfigurationController {
         SpinnerValueFactory<Integer> minuteValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59);
         supplyMinuteSpinner.setValueFactory(minuteValueFactory);
         
-        //aaaaaaaaaaaaaaa
         
     }
     
     
     
-
+    /**
+     * Disables all fields related to delivery information.
+     */
     private void disableAllFields() {
 
         deliveryAddressField.setDisable(true);
         additionalInfoField.setDisable(true);
     }
-
+    /**
+     * Initializes the data for the order items table.
+     * 
+     * @param cartItems The list of items added to the cart.
+     */
     public void initData(ObservableList<CartItem> cartItems) {
         this.cartItems = cartItems;
         orderItemsTable.setItems(this.cartItems);
         updateTotalPrice();
     }
-
+    /**
+     * Updates the availability of fields based on the selected supply method.
+     * If "pickup" is selected, delivery-related fields are disabled.
+     * If "Delivery" is selected, these fields are enabled.
+     */
     private void updateFieldsAvailability() {
         String selectedMethod = supplyMethodComboBox.getValue();
         if (selectedMethod == null) {
@@ -128,7 +151,10 @@ public class SupplyConfigurationController {
             additionalInfoField.setDisable(false);
         }
     }
-
+    /**
+     * Updates the total price label based on the items in the cart and the selected 
+     * supply method. Adds the delivery fee if "Delivery" is selected.
+     */
     private void updateTotalPrice() {
          totalPrice = cartItems.stream().mapToDouble(CartItem::getPrice).sum();
         
@@ -140,7 +166,10 @@ public class SupplyConfigurationController {
     }
 
 
-    
+    /**
+     * Handles the action when the "Next" button is clicked. 
+     * Validates the selected date and time, and proceeds to place the order if valid.
+     */ 
     @FXML
     private void handleNextButtonAction() 
     {
@@ -166,19 +195,14 @@ public class SupplyConfigurationController {
                 restaurantOrders.setDelivery_type(supplyMethodComboBox.getValue());
                 restaurantOrders.setStatus("pending");
                 restaurantOrders.setPlacing_order_date(dateTimeString);
-                
-                //dddddddd
                 restaurantOrders.setOrder_address("no address");
 
-                
-                //ddddddd
-                
                 if(supplyMethodComboBox.getValue().equals("Delivery"))
                 {
                     restaurantOrders.setOrder_address(deliveryAddressField.getText());
                 }
                 
-                System.out.println("GGGGGGGGGGGGGGGGG " + restaurantOrders);
+                System.out.println("Print restaurantOrders: " + restaurantOrders);
 
                 // Send request to server to load MainPagesClient
                 // Convert int to String using Integer.toString()
@@ -195,29 +219,10 @@ public class SupplyConfigurationController {
     }
     
 
-    /*
-    private void showOrderConfirmation() {
-        Stage popupWindow = new Stage();
-        popupWindow.initModality(Modality.APPLICATION_MODAL);
-        popupWindow.setTitle("Order Confirmation");
-
-        Label label = new Label("Your Order is waiting to be accepted by supplier ✅");
-        Button closeButton = new Button("OK");
-        closeButton.setOnAction(e -> popupWindow.close());
-
-        VBox layout = new VBox(10);
-        layout.getChildren().addAll(label, closeButton);
-        layout.setAlignment(Pos.CENTER);
-
-        Scene scene = new Scene(layout, 300, 150);
-        popupWindow.setScene(scene);
-        popupWindow.showAndWait();
-    }
-   */
-    
-    
-    //aaaaaaaaaaaaaaa
-    
+    /**
+     * Shows a confirmation dialog to the user after the order is placed.
+     * This method creates a new stage with a confirmation message.
+     */
     private void showOrderConfirmation() {
         Stage popupWindow = new Stage();
         popupWindow.initModality(Modality.APPLICATION_MODAL);
@@ -239,7 +244,10 @@ public class SupplyConfigurationController {
         popupWindow.setScene(scene);
         popupWindow.showAndWait();
     }
-
+    /**
+     * Loads the main client page after the order confirmation is closed.
+     * This method switches the scene to the MainPagesClient view.
+     */
     private void loadMainPagesClient() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainPagesClient.fxml"));
@@ -261,10 +269,13 @@ public class SupplyConfigurationController {
             showAlert("Error", "Could not load the Main Pages Client page.");
         }
     }
-    //aaaaaaaaaaaaaa
-    
-    
-    
+
+    /**
+     * Handles the action when the "Back" button is clicked. 
+     * Restores the previous controller state and loads the restaurant menu view.
+     * 
+     * @param event The event triggered by the button click.
+     */ 
     @FXML
     private void handleBackButtonAction(ActionEvent event) {
         try {
@@ -284,10 +295,20 @@ public class SupplyConfigurationController {
         }
     }
     
+    /**
+     * Sets the previous controller to restore state when navigating back.
+     * 
+     * @param controller The previous controller instance.
+     */
     public void setPreviousController(SelectFromRestMenuController controller) {
         this.previousController = controller;
     }
-    
+    /**
+     * Displays an alert dialog with the given title and content.
+     * 
+     * @param title   The title of the alert dialog.
+     * @param content The content of the alert message.
+     */
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -300,7 +321,12 @@ public class SupplyConfigurationController {
 
 
     
-    
+    /**
+     * Formats the changes in the cart items for display.
+     * 
+     * @param changes The changes string to be formatted.
+     * @return The formatted changes string.
+     */
     private String formatChanges(String changes) {
         if (changes == null || changes.isEmpty()) {
             return "[]"; // Return an empty array if there are no changes
@@ -314,7 +340,11 @@ public class SupplyConfigurationController {
 
         return "[" + formattedChanges + "]";
     }
-
+    /**
+     * Generates a JSON representation of the cart items.
+     * 
+     * @return A JSON string representing the items in the cart.
+     */
     public String getcartItems() {
         if (cartItems == null || cartItems.isEmpty()) {
             return "[]"; // Return an empty JSON array if there are no items
@@ -332,10 +362,11 @@ public class SupplyConfigurationController {
 
     
     
-    
-    
-    
-    
+    /**
+     * Loads the existing restaurant order details into the controller.
+     * 
+     * @param restaurantOrders The restaurant order details to load.
+     */
     public void loadRestaurantOrders(RestaurantOrders restaurantOrders) 
     {
         this.restaurantOrders = restaurantOrders;
@@ -344,7 +375,7 @@ public class SupplyConfigurationController {
     }
     
 
-    //aaaaaaaaaaaaaaa
+    
     
 
     /**
@@ -368,9 +399,5 @@ public class SupplyConfigurationController {
         return datePart + " " + timePart;  // 'YYYY-MM-DD HH:MM:SS'
     }
     
-    //aaaaaaaaaaaaaaaa
-    
-    
-    
-    
+
 }

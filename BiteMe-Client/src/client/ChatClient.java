@@ -31,15 +31,19 @@ import javafx.collections.ObservableList;
  * This class overrides some of the methods defined in the abstract
  * superclass in order to give more functionality to the client.
  *
- * @author Dr Timothy C. Lethbridge
- * @author Dr Robert Lagani&egrave;
- * @author Fran&ccedil;ois B&eacute;langer
- * @version July 2000
+ * @author Kfir Amoyal
+ * @author Noam Furman
+ * @author Israel Ohayon
+ * @author Eitan Zerbel
+ * @author Yaniv Shatil
+ * @author Omri Heit
+
+ * @version August 2024
  */
 public class ChatClient extends AbstractClient
 {
 	
-	//כלי עזר לשינוי צבע של הדפסות
+	// Utility for changing print colours
     public static final String RESET = "\033[0m";  // Text Reset
     public static final String GREEN = "\033[0;32m";   // GREEN
     public static final String RED = "\033[0;31m";     // RED
@@ -53,16 +57,14 @@ public class ChatClient extends AbstractClient
    * the display method in the client.
    */
   ChatIF clientUI; 
-  //public static RestaurantOrders  s1 = new RestaurantOrders("chackkk",0,0,0,null,new ClientInfo(null,null,null));
   public static User user1 = new User(0,null,null,null,null,null,null,false,0,null);
   public static ArrayList<Restaurant> restaurants = new  ArrayList<Restaurant>();
   public static ArrayList<MenuItems> menuItems = new  ArrayList<MenuItems>();
- // public static	ArrayList<RestaurantOrders> costumer_all_orders1 = new ArrayList<RestaurantOrders>();
   
-  
+  public static ArrayList<User> userEmptyArry = new ArrayList<User>();
+
   
 
-//Assuming you have the ArrayList already defined
 public static ArrayList<RestaurantOrders> customer_all_orders1 = new ArrayList<>();
 
 //Convert the ArrayList to an ObservableList
@@ -73,8 +75,9 @@ public static ArrayList<RestaurantOrders> Restaurantall_orders = new ArrayList<>
 public static ArrayList<RestaurantOrders> Restaurantall_Type_Food_orders = new ArrayList<>();
 public static ArrayList<RestaurantOrders> Restaurantall_orders_per = new ArrayList<>();
 
+public static int UserIdUpdate = 0;
   
-  //משתנה שעוזר להבין אם חזרה הודעה מהשרת ללקוח
+  //Variable that helps understand if a message has returned from the server to the client
   public static boolean awaitResponse = false;
 
   //Constructors ****************************************************
@@ -103,10 +106,10 @@ public static ArrayList<RestaurantOrders> Restaurantall_orders_per = new ArrayLi
    * @param msg The message from the server.
    */
 
-  ///////////מימוש של ישראל מגדיר הזמנה ולא לקוח
-  //כאן מקבלים חזרה הודעה מהשרת
-  //הופכים את הדגל לשקר בשביל לצאת מהמתנה פעילה
-  //ואז מעדכנים את הנתונים במסך של ההזמנה של הלקוח
+//Defines an order and not a client
+//Here a message is received back from the server
+//The flag is set to false in order to exit active waiting
+//Then the client's order screen is updated
   public void handleMessageFromServer(Object msg) 
   {
 	    
@@ -124,7 +127,7 @@ public static ArrayList<RestaurantOrders> Restaurantall_orders_per = new ArrayLi
 	    System.out.println("answe received from server: " + answer);
 
 	    
-	    //UUUUUUUUUUUUUUUUUUUUU
+	    
 		try
 		{
 			switch(answer.getOption())
@@ -135,8 +138,8 @@ public static ArrayList<RestaurantOrders> Restaurantall_orders_per = new ArrayLi
 			
 				
 				User user= new User();
-				
-				if(!answer.getData().toString().equals("-1"))//אם חזר אובייקט משתמש מהשרת רק אז נשמור את זה לוקלית בלקוח
+				// If a user object is returned from the server, only then save it locally on the client
+				if(!answer.getData().toString().equals("-1"))
 				{
 			         user = User.fromString(answer.getData().toString());
 					System.out.println("answer User From server:"+user);
@@ -154,14 +157,14 @@ public static ArrayList<RestaurantOrders> Restaurantall_orders_per = new ArrayLi
 				{
 
 		            // Incorrect password
-		        	ChatClient.user1.setUsername("inf");// ערך זבל כדאי לקבל הודעת שגיאה על סיסמא ולא על שם משתמש
+		        	ChatClient.user1.setUsername("inf");// // Placeholder value to receive a password error message instead of a username error
 		            ChatClient.user1.setPassword("-2");
 					System.out.println("user1 with wrong Password:"+ChatClient.user1);
 
 				}
 				
 				
-				//במקרה והשם משתמש וסיסמה נכונים, אז אנחנו רוצים לטעון את השדות של המשתמש שחזר מהשרת לתוך המשתמש1 שעובד עם החלונות הגרפים של המשתמש
+				// In case the username and password are correct, we want to load the fields of the user returned from the server into user1, which is used with the user's graphical windows				
 				else if(!user.getPassword().equals("-2"))
 				{
 
@@ -190,14 +193,14 @@ public static ArrayList<RestaurantOrders> Restaurantall_orders_per = new ArrayLi
 				
 
 				
-			   case LOGOUT:
+			   	case LOGOUT:
 					System.out.println("Client-Test6: We entered the LOGOUT case " );
 
 					break;
 
 				
 					
-			   case SELECT_RESTAURANT:
+			   	case SELECT_RESTAURANT:
 				   System.out.println("Client received SELECT_RESTAURANT response");
 		            restaurants = Restaurant.fromStringArray(answer.getData().toString());
 		            System.out.println("Number of restaurants loaded: " + restaurants.size());
@@ -210,7 +213,7 @@ public static ArrayList<RestaurantOrders> Restaurantall_orders_per = new ArrayLi
 		            
 		            
 		            
-			   case GET_SELECTED_REST_MENU:
+			   	case GET_SELECTED_REST_MENU:
 				   
 				   System.out.println("Client received SELECT_RESTAURANT response");
 				   menuItems = MenuItems.fromStringArray(answer.getData().toString());
@@ -221,24 +224,20 @@ public static ArrayList<RestaurantOrders> Restaurantall_orders_per = new ArrayLi
 				   
 		            break;
 		            
-		       //SPONGEBOBBBBBBBBBBBBBBBBBB  
-			   case BACK_HOME_CUSTOMER_PAGE:
+			   	case BACK_HOME_CUSTOMER_PAGE:
 
 				   System.out.println("Client received BACK_HOME_CUSTOMER_PAGE response");
 				   user1 = User.fromString(answer.getData().toString());
 		           System.out.println("LETS SEE WHAT IS THE ANSWER: " + user1);
-		        //   StartOrderController soc = new StartOrderController();
-		        //   soc.loadUserCustomer(user1);
 		           MainPagesClientController mpc = new  MainPagesClientController();
 		           mpc.loadUserClient(user1);
 				   
 		            break;
-			   //SPONGEBOBBBBBBBBBBBBBBBBBB  
 
 
 		            
 		            
-			   case GET_USER_ORDERS:
+			   	case GET_USER_ORDERS:
 				   System.out.println("Client received GET_USER_ORDERS response");
 
 				   customer_all_orders1 = RestaurantOrders.fromStringArray(answer.getData().toString());
@@ -248,8 +247,7 @@ public static ArrayList<RestaurantOrders> Restaurantall_orders_per = new ArrayLi
 				   
 		            break;
 		            
-		       //HfaraDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-			   case LOGIN_RESTAURANT:
+			   	case LOGIN_RESTAURANT:
 				   System.out.println("Client received GET_USER_ORDERS response");
 			  
 				   Restaurant restaurant = new Restaurant();
@@ -264,7 +262,7 @@ public static ArrayList<RestaurantOrders> Restaurantall_orders_per = new ArrayLi
 				   
 		            break;
 		            
-			   case SHOW_MENU_RESTAURANT:        
+			   	case SHOW_MENU_RESTAURANT:        
 	                  if (answer.getData() != null) {
 	                      System.out.println("-->test5: Received list of menu items from server: " + answer);
 	                      if (SupplierEditItamController.instance != null) {
@@ -303,8 +301,6 @@ public static ArrayList<RestaurantOrders> Restaurantall_orders_per = new ArrayLi
 	                  break;
 	                  
 	                  
-	                  //EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-	                  ///////////////////////////noam 2 down:
 	              case GET_RESTAURANT_ORDERS:  
                       System.out.println("-->test:in charclient case GET_RESTAURANT_ORDERS ");
                       if (Supplier_OrderManagementController.instance != null) {
@@ -314,7 +310,7 @@ public static ArrayList<RestaurantOrders> Restaurantall_orders_per = new ArrayLi
                           System.out.println("-->test5: Supplier_OrderManagementController instance is null");
                       }        	   
 			            break;
-			            //////////////////noam1 down:
+			         
 	              case GET_USER_FOR_NOTIFICATION:
                       System.out.println("-->test:in charclient case GET_RESTAURANT_ORDERS ");
                       if (Supplier_OrderManagementController.instance != null) {
@@ -326,20 +322,8 @@ public static ArrayList<RestaurantOrders> Restaurantall_orders_per = new ArrayLi
                       }        	   
 			            break;
 
-	                  
-	                  
-	                  
-	                  //EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-	                  
-	                  
-	                  
-	                  
-	                  
 	         			
-	         			////eitannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-	         			
-	         			
-	         			case FETCH_INCOME_REPORTS:
+	              case FETCH_INCOME_REPORTS:
 	                     
 	  	                System.out.println("ChatClient: we entered FETCH_INCOME_REPORTS: ");
 	  	               
@@ -352,7 +336,7 @@ public static ArrayList<RestaurantOrders> Restaurantall_orders_per = new ArrayLi
 	                      
 	                      
 	                      
-	           			case FETCH_ORDER_REPORTS:
+	           		case FETCH_ORDER_REPORTS:
 	           				
 		  	                System.out.println("ChatClient: we entered FETCH_ORDER_REPORTS: ");
 		  	              //Restaurantall_Type_Food_orders
@@ -375,42 +359,82 @@ public static ArrayList<RestaurantOrders> Restaurantall_orders_per = new ArrayLi
 
 	                      break;
 
-	                  
-	                  
-	                  
+	                      
+	                      
+	           			case CREATE_USER:
+		  	                System.out.println("ChatClient: we entered CREATE_USER: ");
 
-				
+		  	              userEmptyArry = User.fromStringArray(answer.getData().toString());
+			  			  System.out.println("LETS SEE WHAT IS THE ANSWER CREATE_USER: " + userEmptyArry);
+	           				
+		                  break;
+		                  
+	                  
+	           			case CLASIFY_UPDATE_USER_BY_EMAIL:
+		  	                System.out.println("ChatClient: we entered CLASIFY_UPDATE_USER_BY_EMAIL: ");
+
+				  			System.out.println("LETS SEE WHAT IS THE ANSWER CLASIFY_UPDATE_USER_BY_EMAIL: " + answer.getData().toString());
+
+				  			UserIdUpdate= (int)answer.getData();
+				  			
+				  			System.out.println("LETS SEE WHAT IS THE ANSWER CLASIFY_UPDATE_USER_BY_EMAIL INT: " + UserIdUpdate);
+
+	           				
+			                  break;
+			                  
+			                  
+	           			case UPDATE_CUSTOMER:
+	           				
+		  	                System.out.println("ChatClient: we entered UPDATE_CUSTOMER: ");
+
+				  			System.out.println("LETS SEE WHAT IS THE ANSWER UPDATE_CUSTOMER: " + answer.getData().toString());
+
+
+			                  break;
+
+	                  
+			                  
+	           			case UPDATE_RESTAURANT:
+	           				
+		  	                System.out.println("ChatClient: we entered UPDATE_CUSTOMER: ");
+
+				  			System.out.println("LETS SEE WHAT IS THE ANSWER UPDATE_CUSTOMER: " + answer.getData().toString());
+	           				
+	           				
+	           				
+			                  break;
+
 			}
 		}
-		//זה שייך לסוויץ-קייס הראשי
 		catch (Exception e) 
 		{
 			e.printStackTrace();
 		}
-		//UUUUUUUUUUUUUUUUUUUUUUUU
-	    
-
-	    
-	    
+	       
 	}
+  
+  
  
   /**
    * This method handles all data coming from the UI            
    *
-   * @param id The message from the UI.    
+   * @param list id The message from the UI.    
    */
   
   public void handleMessageFromClientUI(Object list)  
   {
 	  try {
+	    	// Connects to the server
 	        System.out.println("Sending message to server: " + list);
-	        openConnection();
-	        awaitResponse = true;
+	        openConnection();// In order to send more than one message 
+	        awaitResponse = true;// Static variable that helps us understand if the server has returned a response
 	        sendToServer(list);
 	        
 	        // Add a timeout mechanism
 	        long startTime = System.currentTimeMillis();
 	        long timeout = 10000; // 10 seconds timeout
+	        // wait for response
+	       	// As long as the server has not returned a response, the client is in active waiting
 	        while (awaitResponse) 
 	        {
                 System.out.println("Test4: I am waiting for a reply from the server");
@@ -452,7 +476,6 @@ public static ArrayList<RestaurantOrders> Restaurantall_orders_per = new ArrayLi
   }
   
   
-  //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
   @Override
   protected void connectionEstablished() 
   {
@@ -460,6 +483,13 @@ public static ArrayList<RestaurantOrders> Restaurantall_orders_per = new ArrayLi
 
   }
   
+  
+  /**
+   * This method updates the user in the MainPagesClientController.
+   * It ensures the update is performed on the JavaFX Application Thread.
+   *
+   * @param user The user object to update.
+   */
   public static void updateUserInMainPagesController(User user) {
       Platform.runLater(() -> {
           try {

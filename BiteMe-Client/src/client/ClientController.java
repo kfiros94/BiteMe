@@ -28,14 +28,11 @@ import entities.BiteOptions;
 public class ClientController implements ChatIF 
 {
 	
-	
-	//כלי עזר לשינוי צבע של הדפסות
     public static final String RESET = "\033[0m";  // Text Reset
     public static final String GREEN = "\033[0;32m";   // GREEN
     public static final String RED = "\033[0;31m";     // RED
     public static final String BLUE = "\033[0;34m";    // BLUE
 
-	//כלי עזר לשינוי צבע של הדפסות
 	
     public static String MyipHost;
 	
@@ -78,7 +75,7 @@ public class ClientController implements ChatIF
 
   public void setMyhost(String Myhost) 
   {
-	System.out.println("test3 CCCCChange my HHHOst");//TTTTTTTTTTTTTTTTTTTTTTTT
+	System.out.println("test3 CCCCChange my HHHOst");
 	  client.setHost(Myhost);
 
   }

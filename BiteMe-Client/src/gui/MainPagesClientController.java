@@ -34,8 +34,20 @@ import entities.RestaurantOrders;
 import entities.User;
 
 
+/**
+ * Controller class for the main client page.
+ * Handles interactions with the user interface for starting orders, viewing orders in progress,
+ * viewing order history, and logging out.
+ * 
+ * @author Kfir Amoyal
+ * @author Noam Furman
+ * @author Israel Ohayon
+ * @author Eitan Zerbel
+ * @author Yaniv Shatil
+ * @author Omri Heit
 
-// implements Initializable 
+ * @version August 2024
+ */ 
 public class MainPagesClientController 
 {
 	
@@ -48,17 +60,18 @@ public class MainPagesClientController
 	@FXML
 	private ImageView imageView;
 	
-    private RestaurantOrders s;//זה שדה של הקונטרולר שדרך הדף לוג-אין יוצרים מופע של המחלקה ומעדכנים את השדה דרך מתודה שהגדרנו כאן
-   // private User UserClient = new User(); //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-    private User UserClient; //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-  //  private	ArrayList<RestaurantOrders> costumer_all_orders = new ArrayList<RestaurantOrders>();
+    private RestaurantOrders s;// Field for storing the current restaurant order
+    private User UserClient;// Field for storing the current user
 
 
-/*
-    ObservableList<String> list;
-*/       
-    
-     
+ 
+    /**
+     * Initializes the controller with user-specific information.
+     * 
+     * @param userName The user's name.
+     * @param accountStatus The user's account status.
+     * @param branch The branch the user is associated with.
+     */ 
  	public void initialize(String userName, String accountStatus , String branch)
  	{
  		
@@ -69,23 +82,36 @@ public class MainPagesClientController
  		
  	}
  	
-
+ 	/**
+     * Loads a restaurant order into the controller.
+     * 
+     * @param s1 The restaurant order to be loaded.
+     */
     public void loadOrder(RestaurantOrders s1)
     {
         this.s = s1;
       
     }
     
-    
+    /**
+     * Loads the client user into the controller.
+     * 
+     * @param UserClient The user to be loaded.
+     */ 
     public void loadUserClient(User UserClient) 
     {
         this.UserClient = UserClient;
-		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+ this.UserClient.toString());
+		System.out.println("The UserClient: "+ this.UserClient.toString());
 
     }
 
     
-
+    /**
+     * Handles the action of starting a new order.
+     * Loads the StartOrder.fxml and switches to the start order screen.
+     * 
+     * @param event The event triggered by clicking the start order button.
+     */
     @FXML
     private void StartOrder(ActionEvent event) 
     {
@@ -114,19 +140,6 @@ public class MainPagesClientController
 
             StartOrderController startOrderController = loader.getController();
             
-            /*
-            if (UserClient != null) 
-            {
-                startOrderController.loadUserCustomer(UserClient);
-
-            } 
-            else 
-            {
-                System.err.println("Error: UserClient is null in MainPagesClientController");
-                // You might want to show an error message to the user here
-            }
-            */
-            
             
             if (ChatClient.user1 != null) 
             {
@@ -135,7 +148,6 @@ public class MainPagesClientController
             else 
             {
                 System.err.println("Error: UserClient is null in MainPagesClientController");
-                // You might want to show an error message to the user here
             }
             
 
@@ -157,13 +169,15 @@ public class MainPagesClientController
     
     
     
-    
+    /**
+     * Handles the action of viewing orders in progress.
+     * Loads the OrderInProgress.fxml and switches to the order in progress screen.
+     * 
+     * @param event The event triggered by clicking the order in progress button.
+     */ 
     @FXML
     private void OrderInProgress(ActionEvent event) 
     {
-    	
-    	
-    	//OOOOOOOOOOOOOOOOOOOOOOO
         FXMLLoader loader = new FXMLLoader();
         Pane root = null;
         Stage primaryStage = new Stage();
@@ -203,7 +217,6 @@ public class MainPagesClientController
             else 
             {
                 System.err.println("Error: UserClient is null in MainPagesClientController");
-                // You might want to show an error message to the user here
             }
             
 
@@ -214,21 +227,29 @@ public class MainPagesClientController
             showAlert("Error", "Could not load the Start Order page.");
         }
     	
-    	//OOOOOOOOOOOOOOOOOOOOOO
-    	
     	
     }
     
+    /**
+     * Handles the action of viewing the order history.
+     * Currently not implemented.
+     * 
+     * @param event The event triggered by clicking the view order history button.
+     */
     @FXML
     private void ViewOrderHistory(ActionEvent event) 
     {
     	
     }
     
-    
-    
-    
-    
+
+    /**
+     * Handles the action of logging out.
+     * Logs the user out and redirects to the login screen.
+     * 
+     * @param event The event triggered by clicking the close button.
+     * @throws IOException If an input or output exception occurs.
+     */
     @FXML
     private void CloseButton(ActionEvent event) throws IOException 
     {
@@ -259,8 +280,6 @@ public class MainPagesClientController
    
     
     }
-    
-    
- 
+
     
 }
