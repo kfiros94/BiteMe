@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.sql.Statement;
 import entities.BiteOptions;
 import entities.ClientInfo;
@@ -73,69 +74,91 @@ public class DBController {
      * @param order
      * @return ArrayList<Order> orders
      */
-    protected static BiteOptions getOrderManagementInfo(RestaurantOrders orders) {
-        System.out.println("in getOrderManagmentInfo Function"); 
+    protected static BiteOptions getOrderManagementInfo(RestaurantOrders restOrders) {
+       
         ArrayList<RestaurantOrders> restaurantOrders = new ArrayList<RestaurantOrders>();
+        System.out.println("DBController -> getOrderManagmentInfo Function"); 
+        System.out.println("DBController -> givenRestaurantID = " + restOrders); 
+        String query = "SELECT * FROM restaurant_orders WHERE restaurant_id = ?";
         
-        /*String query = "SELECT order_number, order_list, user_id, status, delivery_type, phone_number, order_received" +
-                "FROM restaurant_orders" + 
-    			"WHERE restaurant_id = ?";*/
-        String query = "SELECT *" +
-                "FROM restaurant_orders" + 
-    			"WHERE restaurant_id = ?";
-        try(PreparedStatement stmt = conn.prepareStatement(query)) {
-        	
-            stmt.setInt(1, orders.getRestaurant_id());
+        try {
+        	PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, restOrders.getRestaurant_id());
+            System.out.println("DBController: Query prepared: " + stmt.toString());
             ResultSet resultSet = stmt.executeQuery();
-            System.out.println("getOrderManagment query"); 
+            System.out.println("DBController -> getOrderManagmentInfo -> resultSet= "+ resultSet.toString()); 
             
             while (resultSet.next()) {
             	
-            	String restaurant = resultSet.getString("restaurant");
-            	int orderNumber = resultSet.getInt("order_number");
-            	double total_price = resultSet.getDouble("total_price");
-                String orderList = resultSet.getString("order_list");
-            	String order_address = resultSet.getString("order_address");
-                int userId = resultSet.getInt("user_id");
-                int restaurantID = resultSet.getInt("restaurant_id");
-                String placing_order_date = resultSet.getString("placing_order_date");
-                String status = resultSet.getString("status");
-                String deliveryType = resultSet.getString("delivery_type");
-                String order_requested_date = resultSet.getString("order_requested_date");
-                String full_name = resultSet.getString("full_name");
-                String phoneNumber = resultSet.getString("phone_number");
-                String branch = resultSet.getString("branch");
-                String orderReceived = resultSet.getString("order_received");
+            	RestaurantOrders order = new RestaurantOrders();
+                order.setOrder_number(resultSet.getInt("order_number"));
+                order.setRestaurant_id(resultSet.getInt("restaurant_id"));
+                order.setTotal_price(resultSet.getDouble("total_price"));
+                order.setOrder_list(resultSet.getString("order_list"));
                 
-                // Create a new Order object with the fetched data
-                RestaurantOrders order = new RestaurantOrders(restaurant, orderNumber, total_price, orderList, order_address, userId, restaurantID, placing_order_date, status, deliveryType, order_requested_date, full_name, phoneNumber, branch, orderReceived);
+                //order.setOrder_list(rebuildOrderList(resultSet.getString("order_list")));
+                //rebuildOrderList(order.getOrder_list());
+                //order.setOrder_list(resultSet.getString("order_list"));
                 
+                order.setOrder_address(resultSet.getString("order_address"));
+                order.setUser_id(resultSet.getInt("user_id"));
+                order.setPlacing_order_date(resultSet.getString("placing_order_date"));
+                order.setStatus(resultSet.getString("status"));
+                order.setDelivery_type(resultSet.getString("delivery_type"));
+                order.setOrder_requested_date(resultSet.getString("order_requested_date"));
+                order.setFull_name(resultSet.getString("full_name"));
+                order.setPhone_number(resultSet.getString("phone_number"));
+                order.setBranch(resultSet.getString("branch"));
+                order.setOrder_received(resultSet.getString("order_received"));
                 // Add the Order object to the orders list
                 restaurantOrders.add(order);
-                
-                // Print the order details (for debugging purposes)
-                System.out.println("Fetched Order: " + orders);
-            	/*RestaurantOrders tempOrder = new Order();
-            	//Inserting the order values from DB to Order class.
-            	tempOrder.setOrderNumber(resultSet.getInt("order_number"));
-            	tempOrder.setDeliveryType(resultSet.getString("delivery_type"));
-            	
-                //TODO: ADD ORDER_LIST INFO GETTER!!!!!!!!!!!!!!!!!//
-            	
-            	tempOrder.setPlacingOrderDate(resultSet.getString("placing_order_date"));
-                tempOrder.setStatus(resultSet.getString("status"));
-                tempOrder.setPlacingOrderDate(resultSet.getString("phone_number"));
-                RestaurantOrders.add(tempOrder); //adding the order to the ArrayList.*/
+                System.out.println("DBController -> LOOP -> " + order); 
             }
+            resultSet.close();
+            System.out.println("DBController -> Fetched Order: " + restaurantOrders.toString());
             stmt.close();
+            
+            if (restaurantOrders.isEmpty()) {
+                System.out.println("DBController -> No orders found for restaurant_id: " + restOrders);
+                return new BiteOptions(null, BiteOptions.Option.RETRIEVE_MANAGE_ORDER_LIST);
+            } else {
+                System.out.println("DBController -> Found " + restaurantOrders.size() + " orders for restaurant_id: " + restOrders);
+            }
+            
         } catch (SQLException e) {
-            System.out.println("Error returning Order Managment List: " + e.getMessage());
+            System.out.println("DBController -> Error returning Order Managment List: " + e.getMessage());
         }
-        System.out.println("OrderManagment was SUCCESSFULL!!!"); 
-        BiteOptions bite = new BiteOptions(restaurantOrders.toString(), BiteOptions.Option.RETRIEVE_MANAGE_ORDER_LIST);
+        
+        //BiteOptions bite = new BiteOptions(restaurantOrders.toString(), BiteOptions.Option.RETRIEVE_MANAGE_ORDER_LIST);
+        BiteOptions bite = new BiteOptions(restaurantOrders, BiteOptions.Option.RETRIEVE_MANAGE_ORDER_LIST);
+        System.out.println("DBController -> returning: " + bite.toString());
         return bite;
     }
     
+    public static String rebuildOrderList(String orderListString) {
+        StringBuilder rebuiltOrderList = new StringBuilder();
+        try {
+            // Parse the string (assuming the input is a valid JSON array)
+            org.json.JSONArray jsonArray = new org.json.JSONArray(orderListString);
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                org.json.JSONObject itemObject = jsonArray.getJSONObject(i);
+                String itemName = itemObject.getString("item");
+                org.json.JSONArray changesArray = itemObject.getJSONArray("changes");
+
+                List<String> changes = new ArrayList<>();
+                for (int j = 0; j < changesArray.length(); j++) {
+                    changes.add(changesArray.getString(j));
+                }
+
+                rebuiltOrderList.append("Item: ").append(itemName).append(", Changes: ").append(changes).append("\n");
+            }
+        } catch (org.json.JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println("rebuildOrderList -> AFTER LOOP -> rebuiltOrderList:" + rebuiltOrderList.toString().trim());
+        return rebuiltOrderList.toString().trim(); // Return the formatted string without trailing newline
+    }
     
     //return users table
     protected static ArrayList<User> showusers() {
@@ -161,8 +184,6 @@ public class DBController {
                 boolean hasDiscountCode = usersFromTable.getBoolean("has_discount_code");
                 int loggedIn = usersFromTable.getInt("logged_in");
                 String accountStatus = usersFromTable.getString("account_status");
-
-
                 System.out.println("Test 4"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
                 users.add(new User(userId, username, password, email, phoneNumber, permission, branch, hasDiscountCode, loggedIn,accountStatus));
             }

@@ -257,19 +257,25 @@ public class EchoServerPro extends AbstractServer
 		         * BiteOptions request = (BiteOptions) msg;
 				 * BiteOptions answer = new BiteOptions();
 				 */
-				System.out.println("Server received RETRIEVE_MANAGE_ORDER_LIST resquest");
-				RestaurantOrders order = RestaurantOrders.fromString(request.getData().toString());
-				BiteOptions orders = DBController.getOrderManagementInfo(order);
-				System.out.println("Order Management fetched from DB");
-				answer.setData(orders);
-				answer.setOption(BiteOptions.Option.RETRIEVE_MANAGE_ORDER_LIST);
+				System.out.println("handleMessageFromClient -> Server received RETRIEVE_MANAGE_ORDER_LIST resquest");
+				//RestaurantOrders order = RestaurantOrders.fromString(request.getData().toString());
+				
+				RestaurantOrders restOrders = new RestaurantOrders();
+				restOrders = RestaurantOrders.fromString(request.getData().toString());
+          	    System.out.println("handleMessageFromClient -> We entered RETRIEVE_MANAGE_ORDER_LIST: " + restOrders );
+				BiteOptions orders = DBController.getOrderManagementInfo(restOrders);
+				System.out.println("handleMessageFromClient -> We got from DB:" + orders.getData().toString());
+				//answer.setData(orders.getData());
+				//answer.setOption(BiteOptions.Option.RETRIEVE_MANAGE_ORDER_LIST);
+				orders.setOption(BiteOptions.Option.RETRIEVE_MANAGE_ORDER_LIST);
 				//Send back to client:
-				client.sendToClient(answer);
-				System.out.println("Server sent response: " + answer);
+				if(orders.getData()!=null) {
+					System.out.println("handleMessageFromClient -> We Send:" + orders);
+					client.sendToClient(orders);
+				}
+				
 				break;
 			}
-			
-			
 		}
 		//זה שייך לסוויץ-קייס הראשי
 		catch (Exception e) 

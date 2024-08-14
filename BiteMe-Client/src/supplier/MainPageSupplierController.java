@@ -18,7 +18,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import entities.*;
-import gui.Supplier_OrderManagementController;
 
 public class MainPageSupplierController {
 	
@@ -85,25 +84,25 @@ public class MainPageSupplierController {
 	
 	@FXML
 	public void showOrders(ActionEvent event) {
-		 System.out.println(Srestaurant.getName() + " enters Supplier_OrderManagementController");
-		    try {
-		        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/Supplier_OrderManagement.fxml"));
-		        Parent root = loader.load();
+		//System.out.println(Srestaurant.getName() + " enters Supplier_OrderManagementController");
+	    try {
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("/supplier/SupplierOrderManagement.fxml"));
+	        Parent root = loader.load();
 
-		        // Pass the current Srestaurant and UserSupplier to the new controller
-		        Supplier_OrderManagementController controller = loader.getController();
-		        
-		        // Set User and restaurant to the controller-Supplier_OrderManagementController
-		        controller.setRestaurantInfo(Srestaurant,UserSupllier); 
+	        // Pass the current Srestaurant and UserSupplier to the new controller
+	        SupplierOrderManagementController controller = loader.getController();
+	        
+	        // Set User and restaurant to the controller - SupplierOrderManagementController
+	        controller.initializeTableData(Srestaurant,UserSupllier); 
 
-		        Scene scene = new Scene(root);
-		        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		        stage.setScene(scene);
-		        stage.setTitle("Order Management - BiteMe");
-		        stage.show();
-		    } catch (IOException e) {
-		        e.printStackTrace();
-		    }
+	        Scene scene = new Scene(root);
+	        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+	        stage.setScene(scene);
+	        stage.setTitle("Order Management");
+	        stage.show();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 	

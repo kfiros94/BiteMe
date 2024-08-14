@@ -6,18 +6,30 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="supplier.MainPageSupplierController">
+<Pane prefHeight="451.0" prefWidth="549.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="supplier.MainPageSupplierController">
     <children>
-        <Label fx:id="resnamelbl" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="25.0" prefHeight="75.0" prefWidth="800.0" textAlignment="CENTER">
+        <Label fx:id="resnamelbl" alignment="CENTER" contentDisplay="CENTER" layoutX="5.0" layoutY="45.0" prefHeight="75.0" prefWidth="540.0" textAlignment="CENTER" textFill="#6c09db">
             <cursor>
                 <Cursor fx:constant="MOVE" />
             </cursor>
-         <font>
-            <Font size="39.0" />
-         </font>
+            <font>
+                <Font name="Segoe UI Bold" size="39.0" />
+            </font>
         </Label>
-        <Button fx:id="showOrdersButton" layoutX="314.0" layoutY="217.0" mnemonicParsing="false" onAction="#showOrders" prefHeight="33.0" prefWidth="106.0" text="Show Orders" />
-      <Button fx:id="LogOutButton" layoutX="685.0" layoutY="438.0" mnemonicParsing="false" onAction="#LogOutButton" text="Log Out" />
-      <Button fx:id="EditItamButton" layoutX="314.0" layoutY="292.0" mnemonicParsing="false" onAction="#EditItamButton" prefHeight="31.0" prefWidth="106.0" text="Edit itam" />
+        <Button fx:id="showOrdersButton" layoutX="205.0" layoutY="180.0" mnemonicParsing="false" onAction="#showOrders" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: rgba(108, 9, 219, 1);" text="Show Orders" textFill="WHITE">
+            <font>
+                <Font name="Segoe UI Bold" size="18.0" />
+            </font>
+        </Button>
+        <Button fx:id="LogOutButton" layoutX="205.0" layoutY="320.0" mnemonicParsing="false" onAction="#LogOutButton" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: rgba(108, 9, 219, 1);" text="Log Out" textFill="WHITE">
+            <font>
+                <Font name="Segoe UI Bold" size="18.0" />
+            </font>
+        </Button>
+        <Button fx:id="EditItamButton" layoutX="205.0" layoutY="250.0" mnemonicParsing="false" onAction="#EditItamButton" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: rgba(108, 9, 219, 1);" text="Edit Item" textFill="WHITE">
+            <font>
+                <Font name="Segoe UI Bold" size="18.0" />
+            </font>
+        </Button>
     </children>
 </Pane>

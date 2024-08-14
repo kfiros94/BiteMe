@@ -7,6 +7,7 @@ package client;
 import ocsf.client.*;
 import supplier.MainPageSupplierController;
 import supplier.SupplierEditItamController;
+import supplier.SupplierOrderManagementController;
 import client.*;
 import entities.*;
 import gui.RestaurantSelectionController;
@@ -198,13 +199,33 @@ public class ChatClient extends AbstractClient
 	                    SupplierEditItamController.getController().MenuItemAddOrupdatedFromChat(receivedMenuItem);
 
 	                }	
-					
+				/////////// YANIV  //////////////////////////////////	
 			   case RETRIEVE_MANAGE_ORDER_LIST:
-				   System.out.println("Client received RETRIEVE_MANAGE_ORDER_LIST response");
-				   receivedOrders = RestaurantOrders.fromStringArray(answer.getData().toString());
-				   System.out.println("Number of Orders loaded: " + receivedOrders.size());
-				   break;
-					
+				   System.out.println("CHAT CLIENT -> Client received RETRIEVE_MANAGE_ORDER_LIST response");
+				   //receivedOrders = RestaurantOrders.fromStringArray(answer.getData().toString());
+				   if (SupplierOrderManagementController.instance != null) {
+                       System.out.println("CHAT CLIENT -> Setting orders in Supplier_OrderManagementController");
+                       //SupplierOrderManagementController.instance.loadRestaurantOrders(answer);
+                       SupplierOrderManagementController.instance.handleServerResponse(answer);   
+                   	} else {
+                       System.out.println("CHAT CLIENT -> Supplier_OrderManagementController instance is null");
+                   	}        	   
+				   	System.out.println("CHAT CLIENT -> receivedOrders: " + answer);
+				   	break;
+				   	
+				   	
+			   case GET_USER_FOR_NOTIFICATION:
+				   	System.out.println("-->test:in charclient case GET_RESTAURANT_ORDERS ");
+				   	if (SupplierOrderManagementController.instance != null) {
+				   		System.out.println("-->test5: Setting orders in Supplier_OrderManagementController");
+				   		User sendusernoam =User.fromString(answer.getData().toString());
+				   		SupplierOrderManagementController.instance.setUserDetails(sendusernoam);
+				   	} else {
+				   		System.out.println("-->test5: Supplier_OrderManagementController instance is null");
+				   	}        	   
+		            break;
+   
+				////////////// YANIV /////////////////////////////////////////////////	
 			   case SELECT_RESTAURANT:
 				    System.out.println("Client received SELECT_RESTAURANT response");
 		            restaurants = Restaurant.fromStringArray(answer.getData().toString());
@@ -231,7 +252,7 @@ public class ChatClient extends AbstractClient
     public void handleMessageFromClientUI(Object list)  
     {
 	    try {
-	        System.out.println("Sending message to server: " + list);
+	        System.out.println("handleMessageFromClientUI -> Sending message to server: " + list);
 	        openConnection();
 	        awaitResponse = true;
 	        sendToServer(list);
