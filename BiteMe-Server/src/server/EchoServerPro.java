@@ -8,6 +8,7 @@ import java.util.List;
 
 import entities.BiteOptions;
 import entities.ClientInfo;
+import entities.MenuItem;
 import entities.MenuItems;
 import entities.RestaurantOrders;
 import entities.Restaurant;
@@ -60,6 +61,8 @@ public class EchoServerPro extends AbstractServer
 		BiteOptions request = (BiteOptions) msg;
 		BiteOptions answer= new BiteOptions();
 		ArrayList<RestaurantOrders> costumer_all_orders = new ArrayList<RestaurantOrders>();
+		ArrayList<RestaurantOrders> Restaurantall_orders_income = new ArrayList<RestaurantOrders>();
+
 		User user;
 		MenuItems menuItem;
 		Restaurant restaurant;
@@ -359,12 +362,197 @@ public class EchoServerPro extends AbstractServer
 				   
 		                }
 		            }
-				   //AAAAAAAAAAAAAAAAAA
 
 				   
 				    break;
+				    
+				    
+			   //HAFRADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
-			}
+			   case LOGIN_RESTAURANT:
+				   //AAAAAAA
+					//Restaurant receivedRestaurant = (Restaurant) request;
+					 Restaurant restaurantNoam = new Restaurant();
+					 restaurantNoam = Restaurant.fromString(request.getData().toString());
+					 //System.out.println(ANSI_BROWN + "Eco-Test:" + ANSI_RESET + "We entered the " + ANSI_BOLD + "LOGIN_RESTAURANT" + ANSI_RESET);
+
+		            System.out.println("Eco-Test: we enterd LOGIN_RESTAURANT" );
+		            try
+		            {
+		            	BiteOptions DBanser= new BiteOptions();
+		            	DBanser=DBController.getRestaurantBySupplierId(restaurantNoam.getSupplierID());
+		                if (DBanser != null) {
+		                	System.out.println("DB returend: "+DBanser);
+		                	//restaurantFromDB=(Restaurant) Dbandwer.getData().fromString();
+		                   // System.out.println("Restaurant found: " + restaurantFromDB);
+		                    client.sendToClient(DBanser);
+		                } 
+		                else 
+		                {
+		                    System.out.println("No restaurant found for supplier ID: " + restaurantNoam.getSupplierID());
+		                    client.sendToClient(null);
+		                }
+		            }
+		            catch (IOException e) {
+		                e.printStackTrace();
+		            }
+		            break;
+		            
+			   case SHOW_MENU_RESTAURANT:
+                   System.out.println("Eco-Test: we entered SHOW_MENU_RESTAURANT");
+                   MenuItem menuItemRequest = MenuItem.fromString(request.getData().toString());
+                   try {
+                       BiteOptions menuItemsOption = DBController.getMenuItemsByRestaurantId(menuItemRequest.getRestaurantItamId());
+                       System.out.println("-->: Fetched menu items from database: " + menuItemsOption);
+                       client.sendToClient(menuItemsOption);
+                       System.out.println("-->: Sent menu items to client");
+                   } catch (SQLException e) {
+                       e.printStackTrace();
+                       System.out.println("-->: Failed to fetch menu items from database");
+                   } catch (IOException e) {
+                       e.printStackTrace();
+                       System.out.println("-->: Failed to send menu items to client");
+                   }
+                   break;
+                   
+               case DELETE_ITEM_MENU:
+                   MenuItem itemDeleteRequest = MenuItem.fromString(request.getData().toString());
+                   System.out.println("Eco-Test: we entered DELETE_ITEM_MENU: " + itemDeleteRequest);
+
+                   BiteOptions itemDeleted = DBController.removeMenuItem(itemDeleteRequest);
+                   System.out.println("-->: Fetched menu items from database: " + itemDeleted);
+                   client.sendToClient(itemDeleted);
+                   break;
+
+               case UPDATE_MENU:
+                   System.out.println("Eco-Test: we entered UPDATE_MENU: " + request.getData());
+                   BiteOptions newOrUpdatedItem = DBController.saveOrUpdateMenuItem(request);
+                   System.out.println("-->: Fetched menu items from database: " + newOrUpdatedItem);
+                   client.sendToClient(newOrUpdatedItem);
+                   break;
+
+               // Add other cases here as needed...
+                   
+                   
+                   //EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+                   
+               case GET_RESTAURANT_ORDERS:          	   
+            	   RestaurantOrders ResOrdNoam = new RestaurantOrders();
+            	   ResOrdNoam = RestaurantOrders.fromString(request.getData().toString());
+					System.out.println("Eco-Test: We entered GET_RESTAURANT_ORDERS: " + ResOrdNoam );
+					BiteOptions returendOrdersNoam = DBController.getOrdersByRestaurantId(ResOrdNoam);
+					if (returendOrdersNoam.getData()!=null) {
+						System.out.println("Eco-Test: We recived from DB " + returendOrdersNoam );
+						client.sendToClient(returendOrdersNoam);
+
+					}
+		            break;
+		            /////////////noam2
+               case CHANGE_ORDER_STATUS:
+            	   RestaurantOrders ResstatNoam = new RestaurantOrders();
+            	   ResstatNoam = RestaurantOrders.fromString(request.getData().toString());
+					System.out.println("Eco-Test: We entered CHANGE_ORDER_STATUS: " + ResstatNoam );
+					String returensts = DBController.updateOrderStatus(ResstatNoam);
+					System.out.println("Eco-Test: returend from DB: " + returensts );
+			
+					client.sendToClient("88");
+
+		            break;
+		            ////////////////noam1
+               case GET_USER_FOR_NOTIFICATION:
+            	   User getusernoam =new User();
+            	   getusernoam=User.fromString(request.getData().toString());
+            	   int getusernoamid =getusernoam.getUserId();
+					System.out.println("Eco-Test: We entered GET_USER_FOR_NOTIFICATION: " + getusernoamid );
+
+	                User returenusernoam =DBController.getUserById(getusernoamid);
+					System.out.println("Eco-Test: returend from DB: " + returenusernoam );
+					
+					BiteOptions biteusernoam= new BiteOptions(returenusernoam.toString(),BiteOptions.Option.GET_USER_FOR_NOTIFICATION);
+					client.sendToClient(biteusernoam);
+		            break;
+            	   
+            	   //EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+                   
+                   
+                   
+       			
+       			////eitannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+       			
+       			
+       			case FETCH_INCOME_REPORTS:
+                   
+                   //_Restaurantall_orders
+                    System.out.println("Eco-Test: we entered FETCH_INCOME_REPORTS: " + request.getData().toString());
+       				
+       				
+                    Restaurantall_orders_income= DBController.getOrdersByBranch(request.getData().toString());
+			        System.out.println("Eco-Test FETCH_INCOME_REPORTS: Print RRRRRR: "+Restaurantall_orders_income);
+
+				    
+					answer.setData(Restaurantall_orders_income.toString());
+					answer.setOption(BiteOptions.Option.FETCH_INCOME_REPORTS);
+					client.sendToClient(answer);
+                   
+                   
+
+                    break;
+                    
+                    
+                    
+       			case FETCH_ORDER_REPORTS:
+                    System.out.println("Eco-Test: we entered FETCH_ORDER_REPORTS: " + request.getData().toString());
+
+                    
+                    Restaurantall_orders_income= DBController.getOrdersByBranch(request.getData().toString());
+			        System.out.println("Eco-Test FETCH_ORDER_REPORTS: Print KYYYYYYY: "+Restaurantall_orders_income);
+
+				    
+					answer.setData(Restaurantall_orders_income.toString());
+					answer.setOption(BiteOptions.Option.FETCH_ORDER_REPORTS);
+					client.sendToClient(answer);
+                    
+       				
+
+       				
+                    break;
+
+       				
+                    
+       			case FETCH_PERFORMENCE_REPORTS:
+
+                    System.out.println("Eco-Test: we entered FETCH_PERFORMENCE_REPORTS: " + request.getData().toString());
+
+                    
+                    Restaurantall_orders_income= DBController.getOrdersByBranch(request.getData().toString());
+			        System.out.println("Eco-Test FETCH_ORDER_REPORTS: Print tRRRRRR: "+Restaurantall_orders_income);
+
+				    
+					answer.setData(Restaurantall_orders_income.toString());
+					answer.setOption(BiteOptions.Option.FETCH_PERFORMENCE_REPORTS);
+					client.sendToClient(answer);
+                    
+       				
+
+       				
+                    break;
+
+
+                   
+                   
+                   
+           }
+
+				   
+				   
+				   
+				   // client.sendToClient("77N");
+				   //AAAAAAA
+			
+			
+			
+	
+			
 			
 			
 		}

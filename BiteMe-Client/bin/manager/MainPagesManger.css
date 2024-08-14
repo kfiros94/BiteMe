@@ -1,0 +1,6 @@
+.chart-bar {
+    -fx-bar-gap: 1px; /* Adjust the gap between bars */
+    -fx-bar-fill: #00ff00; /* Bar color */
+    -fx-min-bar-width: 1px; /* Minimum bar width */
+    -fx-max-bar-width: 1px; /* Maximum bar width */
+}

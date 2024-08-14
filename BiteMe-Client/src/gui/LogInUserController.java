@@ -35,6 +35,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import supplier.MainPageSupplierController;
+import manager.MainPagesMangerController;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -68,7 +70,7 @@ public class LogInUserController {
 	public static final String BLUE = "\033[0;34m"; // BLUE
 
 	private MainPagesClientController sfc;
-	private supplier.MainPageSupplierController MPsc;
+	//private supplier.MainPageSupplierController MPsc;
 	private static int itemIndex = 3;
 
 	@FXML
@@ -230,7 +232,9 @@ public class LogInUserController {
 					case "supplier":
 						System.out.println("User type: Supplier");
 						root = loader.load(getClass().getResource("/supplier/MainPageSupplier.fxml").openStream());
-						///add mainpagelodar like cluent
+						MainPageSupplierController MainPageSupplierController = loader.getController();
+						MainPageSupplierController.setUserSupplier(ChatClient.user1);
+						MainPageSupplierController.setRestaurant(null);
 						break;
 					case "customer":
 						System.out.println("User type: Customer");
@@ -244,7 +248,10 @@ public class LogInUserController {
 						break;
 					case "admin":
 						System.out.println("User type: Admin");
-						root = loader.load(getClass().getResource("/gui/MainPagesClient.fxml").openStream());
+						root = loader.load(getClass().getResource("/manager/MainPagesManger.fxml").openStream());
+						MainPagesMangerController MainPagesMangerController  = loader.getController();
+						MainPagesMangerController.loadUserClient(ChatClient.user1);
+						
 					default:
 						break;
 					}
