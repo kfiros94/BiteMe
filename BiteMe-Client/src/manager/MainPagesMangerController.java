@@ -37,7 +37,21 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+/**
+ * Controller class for managing the main pages of the manager's interface.
+ * Provides functionality for generating and displaying various reports
+ * such as income, order, and performance reports, and allows navigation
+ * to other parts of the application.
+ * 
+ * @author Kfir Amoyal
+ * @author Noam Furman
+ * @author Israel Ohayon
+ * @author Eitan Zerbel
+ * @author Yaniv Shatil
+ * @author Omri Heit
 
+ * @version August 2024
+ */
 public class MainPagesMangerController {
 
     @FXML
@@ -48,11 +62,6 @@ public class MainPagesMangerController {
 
     @FXML
     private Button incomeReportsButton;
-
-   /*
-    @FXML
-    private Button orderReportsButton;
-   */
 
 
     @FXML
@@ -84,111 +93,12 @@ public class MainPagesMangerController {
     private User UserClient; 
     
     
-    
-    /*
-    // Initialize the controller
-    @FXML
-    private void initialize() 
-    {
-        // This method is automatically called after the FXML file has been loaded.
-        // You can perform any setup actions here.
-        managerNameLabel.setText(ChatClient.user1.getUsername());  // Example: Set manager's name
-        branchNameLabel.setText(ChatClient.user1.getBranch());  // Example: Set branch name
-        
 
-        // Initialize ComboBox with report options
-        orderReportsButton.getItems().addAll("Daily Report", "Weekly Report", "Monthly Report");
-
-        // Optionally set a default value
-        orderReportsButton.setValue("Select Report Type");
-        
-        // Set listener for selection changes
-        orderReportsButton.setOnAction(event -> handleOrderReportsSelection());
-        
-        
-
-    }
-
-    
-    //sssssssssssssssssss
-    
-    @FXML
-    private void handleOrderReportsSelection() 
-    {
-        BiteOptions option = new BiteOptions(ChatClient.user1.getBranch().toString(), BiteOptions.Option.FETCH_ORDER_REPORTS);
-        ClientUI.chat.accept(option);
-        
-        //ChatClient.Restaurantall_Type_Food_orders
-    	
-
-        String selectedReport = orderReportsButton.getValue();
-        // Handle the selected report type here
-        reportTextArea.setText("Selected report: " + selectedReport);
-
-        // Add your logic to generate and display the report based on the selectedReport value
-        generateReport(selectedReport);
-        
-    }
-
-    
-    
-    
-    private void generateReport(String reportType) {
-        // Initialize a HashMap to store the count of each food item by restaurant
-        HashMap<String, HashMap<String, Integer>> restaurantFoodCounts = new HashMap<>();
-
-        // Iterate through the list of RestaurantOrders
-        for (RestaurantOrders order : ChatClient.Restaurantall_Type_Food_orders) {
-            String restaurant = order.getRestaurant();
-            String orderListJson = order.getOrder_list(); // Assuming order_list is stored as a JSON string
-
-            // Parse the order_list JSON to get the food items
-            JSONArray orderList = new JSONArray(orderListJson);
-            for (int i = 0; i < orderList.length(); i++) {
-                JSONObject foodItem = orderList.getJSONObject(i);
-                String itemName = foodItem.getString("item");
-
-                // Update the count of this item in the restaurant's map
-                restaurantFoodCounts
-                    .computeIfAbsent(restaurant, k -> new HashMap<>())
-                    .merge(itemName, 1, Integer::sum);
-            }
-        }
-
-        // Clear previous data from the bar chart
-        barChart.getData().clear();
-
-        // Create a new series for the bar chart
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName(reportType);
-
-        // Populate the series with data
-        for (String restaurant : restaurantFoodCounts.keySet()) {
-            HashMap<String, Integer> foodCounts = restaurantFoodCounts.get(restaurant);
-            for (String item : foodCounts.keySet()) {
-                int count = foodCounts.get(item);
-                series.getData().add(new XYChart.Data<>(restaurant + " - " + item, count));
-            }
-        }
-
-        // Add the series to the bar chart
-        barChart.getData().add(series);
-
-        // Optionally, display the report in the reportTextArea
-        StringBuilder report = new StringBuilder();
-        for (String restaurant : restaurantFoodCounts.keySet()) {
-            report.append("Restaurant: ").append(restaurant).append("\n");
-            HashMap<String, Integer> foodCounts = restaurantFoodCounts.get(restaurant);
-            for (String item : foodCounts.keySet()) {
-                report.append("    Item: ").append(item)
-                      .append(", Count: ").append(foodCounts.get(item))
-                      .append("\n");
-            }
-        }
-        reportTextArea.setText(report.toString());
-    }
-*/
-    
+    /**
+     * Initializes the controller.
+     * Sets up the manager's name, branch name, and populates the order report ComboBox
+     * with available restaurant names. Sets up event listeners for user actions.
+     */
     @FXML
     private void initialize() 
     {
@@ -201,7 +111,10 @@ public class MainPagesMangerController {
         // Set listener for selection changes
         orderReportsButton.setOnAction(event -> handleOrderReportsSelection());
     }
-
+    /**
+     * Populates the ComboBox with the names of restaurants available for generating reports.
+     * This method ensures that only unique restaurant names are added to the ComboBox.
+     */
     private void populateRestaurantComboBox() 
     {
     	
@@ -219,11 +132,13 @@ public class MainPagesMangerController {
                 orderReportsButton.getItems().add(restaurantName);
             }
         }
-
-        // Optionally set a default value
         orderReportsButton.setValue("Select Restaurant");
     }
-
+    
+    /**
+     * Handles the selection of a restaurant from the ComboBox.
+     * Generates and displays a report for the selected restaurant.
+     */
     @FXML
     private void handleOrderReportsSelection() 
     {
@@ -241,6 +156,12 @@ public class MainPagesMangerController {
         }
     }
 
+    /**
+     * Generates a report for the selected restaurant.
+     * The report includes the count of each food item ordered from the restaurant.
+     * 
+     * @param restaurant The name of the selected restaurant.
+     */
     private void generateReportForSelectedRestaurant(String restaurant) {
         // Initialize a HashMap to store the count of each food item
         HashMap<String, Integer> foodCounts = new HashMap<>();
@@ -248,7 +169,7 @@ public class MainPagesMangerController {
         // Iterate through the list of RestaurantOrders and filter by the selected restaurant
         for (RestaurantOrders order : ChatClient.Restaurantall_Type_Food_orders) {
             if (order.getRestaurant().equals(restaurant)) {
-                String orderListJson = order.getOrder_list(); // Assuming order_list is stored as a JSON string
+                String orderListJson = order.getOrder_list(); 
 
                 // Parse the order_list JSON to get the food items
                 JSONArray orderList = new JSONArray(orderListJson);
@@ -289,27 +210,14 @@ public class MainPagesMangerController {
     }
 
     
+
     
-    
-    
-    
-    //sssssssssssssssssssssssssss
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    /**
+     * Handles the click event for the Income Reports button.
+     * Generates and displays an income report for each restaurant.
+     * 
+     * @param event The ActionEvent triggered by the button click.
+     */
     @FXML
     private void onIncomeReportsButtonClick(ActionEvent event) 
     {
@@ -381,40 +289,12 @@ public class MainPagesMangerController {
     }
 
     
-    
-    
-    
-    
-    
-    
-    
-    
-    /*
-    
-    // Event handler for the Order Reports button
-    @FXML
-    private void onOrderReportsButtonClick(ActionEvent event) 
-    {
-        // Add your logic for handling order reports here
-        reportTextArea.setText("Displaying Order Reports...");
-    }
-*/
-    
-    
-    
-    /*
-    // Event handler for the Performance Reports button
-    @FXML
-    private void onPerformanceReportsButtonClick(ActionEvent event) 
-    {
-        // Add your logic for handling performance reports here
-        reportTextArea.setText("Displaying Performance Reports...");
-    }
-    */
-    
-    
-    //wwwwwwwwwwwwwwww
-    
+    /**
+     * Handles the click event for the Performance Reports button.
+     * Generates and displays a performance report showing late deliveries by restaurant.
+     * 
+     * @param event The ActionEvent triggered by the button click.
+     */
     @FXML
     private void onPerformanceReportsButtonClick(ActionEvent event) {
     	
@@ -489,20 +369,19 @@ public class MainPagesMangerController {
     
     
     
-    //wwwwwwwwwwwwww
-    
-    
-    
+
     
 
-    // Event handler for the Create New Customer button
+    /**
+     * Handles the event when the "Create New User" button is clicked.
+     * Navigates to the "Create New User" page and passes the current user data to the controller.
+     * 
+     * @param event The ActionEvent triggered by the button click.
+     */
     @FXML
     private void CreateNewCustomer(ActionEvent event) 
     {
-        // Add your logic for creating a new customer here
-    	
-    	//llllllllllllll
-    	
+      
         FXMLLoader loader = new FXMLLoader();
         Pane root = null;
         Stage primaryStage = new Stage();
@@ -528,19 +407,7 @@ public class MainPagesMangerController {
 
     		CreateNewCustomerController createNewCustomerController = loader.getController();
             
-            /*
-            if (UserClient != null) 
-            {
-                startOrderController.loadUserCustomer(UserClient);
 
-            } 
-            else 
-            {
-                System.err.println("Error: UserClient is null in MainPagesClientController");
-                // You might want to show an error message to the user here
-            }
-            */
-            
             
             if (ChatClient.user1 != null) 
             {
@@ -559,21 +426,20 @@ public class MainPagesMangerController {
             e.printStackTrace();
             showAlert("Error", "Could not load the Start Order page.");
         }
-    	//llllllllllllllllllllll
-    	
-    	
-    	
+    		
     }
 
-    // Event handler for the Back button
+
+    /**
+     * Handles the event when the "Back" button is clicked.
+     * Logs the user out and navigates back to the login page.
+     * 
+     * @param event The ActionEvent triggered by the button click.
+     */
     @FXML
     private void handleBack(ActionEvent event) 
     {
-    	/*
-        // Close the current window
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
-        */
+
     	
     	//aaaaaaaaa
 		BiteOptions option = new BiteOptions(ChatClient.user1.toString(), BiteOptions.Option.LOGOUT);//kkkkkkk
@@ -604,7 +470,12 @@ public class MainPagesMangerController {
 
     }
     
-    
+    /**
+     * Shows an alert dialog with the specified title and message.
+     * 
+     * @param title The title of the alert dialog.
+     * @param message The message to display in the alert dialog.
+     */  
     private void showAlert(String title, String message) 
     {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -614,7 +485,11 @@ public class MainPagesMangerController {
     }
     
     
-    
+    /**
+     * Loads the user data into this controller.
+     * 
+     * @param UserClient The user data to load.
+     */
     public void loadUserClient(User UserClient) 
     {
         this.UserClient = UserClient;

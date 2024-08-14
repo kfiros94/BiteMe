@@ -7,90 +7,102 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="700.0" prefWidth="600.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.CreateNewCustomerController">
+<Pane prefHeight="800.0" prefWidth="600.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.CreateNewCustomerController">
    <children>
 
-      <Label layoutX="114.0" layoutY="120.0" text="User name" textFill="#6c09db">
+      <Label layoutX="123.0" layoutY="183.0" text="User Uame" textFill="#6c09db">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="Username" layoutX="244.0" layoutY="115.0" />
+      <TextField fx:id="Username" layoutX="258.0" layoutY="184.0" />
 
-      <Label layoutX="111.0" layoutY="172.0" text="Password" textFill="#6c09db">
+      <Label layoutX="123.0" layoutY="229.0" text="Password" textFill="#6c09db">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="Password" layoutX="244.0" layoutY="170.0" prefHeight="31.0" prefWidth="186.0" />
+      <TextField fx:id="Password" layoutX="257.0" layoutY="227.0" prefHeight="31.0" prefWidth="186.0" />
 
-      <Label layoutX="125.0" layoutY="223.0" text="email" textFill="#6c09db">
+      <Label layoutX="149.0" layoutY="105.0" text="eMail" textFill="#6c09db">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="email" layoutX="243.0" layoutY="221.0" />
 
-      <Label layoutX="114.0" layoutY="317.0" text="Branch" textFill="#6c09db">
+      <Label layoutX="133.0" layoutY="375.0" text="Branch" textFill="#6c09db">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <ComboBox fx:id="Branch" layoutX="247.0" layoutY="315.0" prefWidth="150.0" />
+      <ComboBox fx:id="BranchComboBox" layoutX="256.0" layoutY="375.0" prefWidth="150.0" />
 
-      <Label layoutX="103.0" layoutY="365.0" text="account Type" textFill="#6c09db">
+      <Label layoutX="117.0" layoutY="326.0" prefHeight="27.0" prefWidth="128.0" text="Account Type" textFill="#6c09db">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="accountType" layoutX="242.0" layoutY="363.0" prefHeight="31.0" prefWidth="186.0" />
 
-      <Label fx:id="pageTitlelabel" layoutX="236.0" layoutY="93.0" textFill="#6c09db">
+      <Label fx:id="pageTitlelabel" layoutX="237.0" layoutY="62.0" textFill="#6c09db">
          <font>
             <Font name="Segoe UI Bold" size="36.0" />
          </font>
       </Label>
 
-      <Button fx:id="saveItamButton" layoutX="454.0" layoutY="594.0" mnemonicParsing="false" onAction="#handleSave" style="-fx-background-color: rgba(108, 9, 219, 1);" text="Save" textFill="WHITE">
+      <Button fx:id="saveItamButton" layoutX="454.0" layoutY="719.0" mnemonicParsing="false" onAction="#handleSave" style="-fx-background-color: rgba(108, 9, 219, 1);" text="Save" textFill="WHITE">
          <font>
             <Font name="Segoe UI Bold" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="cancelButton" layoutX="95.0" layoutY="594.0" mnemonicParsing="false" onAction="#handleCancel" style="-fx-background-color: rgba(108, 9, 219, 1);" text="Cancel" textFill="WHITE">
+      <Button fx:id="cancelButton" layoutX="82.0" layoutY="719.0" mnemonicParsing="false" onAction="#handleCancel" style="-fx-background-color: rgba(108, 9, 219, 1);" text="⬅Back" textFill="WHITE">
          <font>
             <Font name="Segoe UI Bold" size="18.0" />
          </font>
       </Button>
 
-      <Label fx:id="messageScreen" layoutX="82.0" layoutY="534.0" prefHeight="51.0" prefWidth="436.0" textFill="RED" />
-      <TextField fx:id="PhoneNumber" layoutX="244.0" layoutY="267.0" prefHeight="31.0" prefWidth="186.0" />
-      <Label layoutX="103.0" layoutY="267.0" text="Phone Number" textFill="#6c09db">
+      <Label fx:id="messageScreen" layoutX="82.0" layoutY="659.0" prefHeight="51.0" prefWidth="436.0" textFill="RED" />
+      <TextField fx:id="PhoneNumber" layoutX="256.0" layoutY="272.0" prefHeight="31.0" prefWidth="186.0" />
+      <Label layoutX="117.0" layoutY="274.0" text="Phone Number" textFill="#6c09db">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="103.0" layoutY="415.0" text="Credit Card" textFill="#6c09db">
+      <Label alignment="CENTER" layoutY="25.0" prefHeight="43.0" prefWidth="600.0" text="Create New User" textFill="#6c09db">
+         <font>
+            <Font name="Ebrima" size="42.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="AccountTypeComboBox" layoutX="256.0" layoutY="327.0" prefWidth="150.0" />
+      <Label layoutX="117.0" layoutY="413.0" prefHeight="27.0" prefWidth="128.0" text="Permission" textFill="#6c09db">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="CreditCard" layoutX="244.0" layoutY="413.0" prefHeight="31.0" prefWidth="186.0" />
-      <TextField fx:id="address" layoutX="244.0" layoutY="461.0" prefHeight="31.0" prefWidth="186.0" />
-      <Label layoutX="126.0" layoutY="463.0" text="address" textFill="#6c09db">
+      <ComboBox fx:id="PermissionComboBox" layoutX="256.0" layoutY="414.0" prefWidth="150.0" />
+      <Label fx:id="lbRetaurantName" alignment="CENTER" layoutX="78.0" layoutY="583.0" prefHeight="27.0" prefWidth="172.0" text="Retaurant Name" textFill="#6c09db" visible="false">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="workAddress" layoutX="244.0" layoutY="503.0" prefHeight="31.0" prefWidth="186.0" />
-      <Label layoutX="102.0" layoutY="505.0" text="work address" textFill="#6c09db">
+      <Label fx:id="lbRetaurantAddress" alignment="CENTER" layoutX="78.0" layoutY="630.0" prefHeight="27.0" prefWidth="172.0" text="Retaurant Address" textFill="#6c09db" visible="false">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="243.0" layoutY="36.0" text="Create New Customer" textFill="#6c09db">
+      <Label fx:id="lbCreditCard" alignment="CENTER" layoutX="63.0" layoutY="464.0" prefHeight="27.0" prefWidth="172.0" text="Credit Card" textFill="#6c09db" visible="false">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
+      <TextField fx:id="RestNameText" layoutX="252.0" layoutY="581.0" visible="false" />
+      <TextField fx:id="RestAddressText" layoutX="252.0" layoutY="628.0" visible="false" />
+      <TextField fx:id="CreditText" layoutX="250.0" layoutY="462.0" visible="false" />
+      <ComboBox fx:id="emailComboBox" layoutX="255.0" layoutY="103.0" prefWidth="150.0" />
+      <Label fx:id="lbAddress" alignment="CENTER" layoutX="63.0" layoutY="520.0" prefHeight="27.0" prefWidth="172.0" text="Address" textFill="#6c09db" visible="false">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="AddressText" layoutX="250.0" layoutY="518.0" visible="false" />
    </children>
 </Pane>

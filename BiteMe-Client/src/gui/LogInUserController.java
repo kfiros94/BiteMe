@@ -61,17 +61,30 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+/**
+ * Controller class for handling user login functionality in the BiteMe application.
+ * This class manages the login process, user authentication, and navigation to appropriate
+ * user interfaces based on user roles.
+ *
+ * <p>The controller interacts with the GUI elements defined in the LogInUser.fxml file
+ * and communicates with the server through the ClientUI class for user authentication.</p>
+ *
+ * @author Kfir Amoyal
+ * @author Israel Ohayon
+ * @author Yaniv Shatil
+ * @author Noam Furman
+ * @author Omri Heit
+ * @author Eitan Zerbel
+ * @version August 2024
+ */
 public class LogInUserController {
-	// כלי עזר לשינוי צבע של הדפסות
+
 	public static final String RESET = "\033[0m"; // Text Reset
 	public static final String GREEN = "\033[0;32m"; // GREEN
 	public static final String RED = "\033[0;31m"; // RED
 	public static final String BLUE = "\033[0;34m"; // BLUE
 
 	private MainPagesClientController sfc;
-	//private supplier.MainPageSupplierController MPsc;
-	private static int itemIndex = 3;
 
 	@FXML
 	private Label lbOrder_number;
@@ -120,6 +133,10 @@ public class LogInUserController {
 	private static final int NUM_WORDS = 1;
 	private static final String[] WORDS = { "🍔", "🍟", "🍕", "🌭", "🍜", "🍙" };
 
+    /**
+     * Initializes the login screen with animated food emojis falling in the background.
+     * This method is automatically called after the fxml file has been loaded.
+     */
 	@FXML
 	public void initialize() {
 		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> {
@@ -179,23 +196,15 @@ public class LogInUserController {
 		} 
 		else 
 		{
-			//List<String> list = new ArrayList<>();
-   		    //list.add(username);
-			//list.add(userpassword);
-			
-			//aaaaaaaaaaaaaaaaaaaaa
-		    User user = new User(0,username,userpassword,null,null,null,null,false,0,null);//kkkkkkk
-			//BiteOptions option = new BiteOptions(user, BiteOptions.Option.LOGIN);//kkkkkkk
-			//BiteOptions option = new BiteOptions("noam", BiteOptions.Option.LOGIN);//kkkkkkk
-			BiteOptions option = new BiteOptions(user.toString(), BiteOptions.Option.LOGIN);//kkkkkkk
+
+		    User user = new User(0,username,userpassword,null,null,null,null,false,0,null);
+			BiteOptions option = new BiteOptions(user.toString(), BiteOptions.Option.LOGIN);
 
 			System.out.println("test1: in" + GREEN + " Class SummaryOfExistingOrderController" + RESET
 					+ " login details we send TO " + RESET + BLUE + "func --accept--" + RESET);
 
-			//ClientUI.chat.accept(list);
-			System.out.println("Kaki Gdollllllllllll");
-			ClientUI.chat.accept(option);//kkkkkkk
-			//aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+			ClientUI.chat.accept(option);
+			
 			
 			System.out.println("test1: in" + GREEN + " Class SummaryOfExistingOrderController" + RESET
 					+ " There is an active standby at " + RESET + BLUE + "func --accept--" + RESET
@@ -273,33 +282,47 @@ public class LogInUserController {
 	}
 
 
-
-
-
-
+    /**
+     * Starts the login screen by loading the LogInUser.fxml file and displaying it.
+     *
+     * @param primaryStage The primary stage for this application, onto which
+     *                     the application scene can be set.
+     * @throws Exception if an error occurs during the FXML loading process.
+     */
 	public void start(Stage primaryStage) throws Exception {
-		// Parent root =
-		// FXMLLoader.load(getClass().getResource("/gui/SummaryOfExistingOrder.fxml"));
-		Parent root = FXMLLoader.load(getClass().getResource("/gui/LogInUser.fxml"));// אני החלפתי את הדף הראשון של
-																						// הצד לקוח להתחברות למערכת
 
+		Parent root = FXMLLoader.load(getClass().getResource("/gui/LogInUser.fxml"));
+																						
 		Scene scene = new Scene(root);
-		// scene.getStylesheets().add(getClass().getResource("/gui/SummaryOfExistingOrder.css").toExternalForm());
 		primaryStage.setTitle("Log-In BiteMe");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
 	}
-
+    /**
+     * Handles the exit button click event by closing the application.
+     *
+     * @param event The action event triggered by the user interaction.
+     * @throws Exception if an error occurs during the exit process.
+     */
 	public void getExitBtn(ActionEvent event) throws Exception {
 		System.out.println("exit Log-In BiteMe");
 		System.exit(0);// add for the method to actually close client window
 	}
-
+    /**
+     * Loads an order into the main page controller.
+     * This method is likely used for passing order information between controllers.
+     *
+     * @param s1 The RestaurantOrders object to be loaded.
+     */
 	public void loadOrder(RestaurantOrders s1) {
 		this.sfc.loadOrder(s1);
 	}
-
+    /**
+     * Displays a message, typically used for debugging or user feedback.
+     *
+     * @param message The message to be displayed.
+     */
 	public void display(String message) {
 		System.out.println("message");
 

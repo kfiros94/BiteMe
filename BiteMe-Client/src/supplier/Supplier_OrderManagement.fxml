@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="817.0" prefWidth="919.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="supplier.Supplier_OrderManagementController">
+<AnchorPane prefHeight="817.0" prefWidth="919.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="supplier.Supplier_OrderManagementController">
     <TableView fx:id="orderTable" editable="true" layoutX="13.0" layoutY="158.0" prefHeight="589.0" prefWidth="1041.0" AnchorPane.bottomAnchor="116.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="158.0">
         <columns>
             <TableColumn fx:id="orderNumberColumn" prefWidth="90.0" text="Order Number" />
@@ -20,7 +20,7 @@
             <TableColumn fx:id="deliveryTypeColumn" prefWidth="120" text="Delivery Type" />
         </columns>
     </TableView>
-   <Button fx:id="backButton" layoutX="46.0" layoutY="718.0" mnemonicParsing="false" onAction="#handleBack" text="Back" />
+   <Button fx:id="backButton" layoutX="46.0" layoutY="718.0" mnemonicParsing="false" onAction="#handleBack" text="⬅ Back" />
    <Label fx:id="resname" alignment="CENTER" layoutX="238.0" layoutY="39.0" prefHeight="76.0" prefWidth="498.0">
       <font>
          <Font name="Aharoni Bold" size="18.0" />
@@ -29,4 +29,5 @@
    <Label fx:id="errorlabel" layoutX="307.0" layoutY="758.0" prefHeight="59.0" prefWidth="259.0" />
    <Button fx:id="confirmButton" layoutX="601.0" layoutY="718.0" mnemonicParsing="false" onAction="#handleConfirm" text="confirm" />
    <Button fx:id="deliverButton" layoutX="690.0" layoutY="718.0" mnemonicParsing="false" onAction="#handleDeliver" text="deliver" />
+   <Button layoutX="350.0" layoutY="718.0" mnemonicParsing="false" onAction="#handleRefresh" text="🗘Refresh" />
 </AnchorPane>

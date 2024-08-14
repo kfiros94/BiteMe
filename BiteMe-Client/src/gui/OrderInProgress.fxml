@@ -40,7 +40,7 @@
                         <Insets left="250.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#handleRefresh" prefHeight="40.0" prefWidth="80.0" text="Refresh">
+                  <Button mnemonicParsing="false" onAction="#handleRefresh" prefHeight="40.0" prefWidth="106.0" text="🗘Refresh">
                      <HBox.margin>
                         <Insets left="300.0" />
                      </HBox.margin>

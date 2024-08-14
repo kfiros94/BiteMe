@@ -21,7 +21,21 @@ import client.ChatClient;
 import client.ClientUI;
 import entities.BiteOptions;
 import entities.RestaurantOrders;
+/**
+ * Controller class for handling the Order In Progress screen.
+ * This class manages the TableView that displays the list of restaurant orders
+ * and provides functionality to confirm delivery, refresh the order list,
+ * and navigate back to the previous screen.
+ * 
+ * @author Kfir Amoyal
+ * @author Noam Furman
+ * @author Israel Ohayon
+ * @author Eitan Zerbel
+ * @author Yaniv Shatil
+ * @author Omri Heit
 
+ * @version August 2024
+ */
 public class OrderInProgressController {
 
     @FXML
@@ -58,7 +72,9 @@ public class OrderInProgressController {
     private Button backButton;
 
     private ObservableList<RestaurantOrders> orders;
-
+    /**
+     * Initializes the TableView columns with the appropriate properties from the RestaurantOrders entity.
+     */
     @FXML
     private void initialize()
     {
@@ -73,9 +89,12 @@ public class OrderInProgressController {
 
     
 
-    
-    
-    
+    /**
+     * Handles the action of confirming the delivery of a selected order.
+     * Displays various alerts depending on the status of the selected order.
+     * 
+     * @param event the action event triggered by the confirm delivery button
+     */
     @FXML
     private void handleConfirmDelivery(ActionEvent event)
     {
@@ -88,7 +107,7 @@ public class OrderInProgressController {
                 selectedOrder.setStatus("confirmed");
                 orderlist.refresh(); // Refresh the TableView to reflect the status change
                 
-                System.out.println("AGLLLLLLLLLLLL " + selectedOrder.getOrder_number());
+                System.out.println("The Order number is: " + selectedOrder.getOrder_number());
                 BiteOptions option = new BiteOptions(selectedOrder.getOrder_number(), BiteOptions.Option.UPDATE_ORDER_STATUS_CUSTOMER);
                 ClientUI.chat.accept(option);
             } 
@@ -137,7 +156,6 @@ public class OrderInProgressController {
         } 
         else
         {
-            // Optionally, you can add another alert for when no order is selected
             Alert alert = new Alert(AlertType.WARNING);
             alert.setTitle("No Selection");
             alert.setHeaderText(null);
@@ -148,16 +166,17 @@ public class OrderInProgressController {
     
     
 
-
-
+    /**
+     * Handles the action of refreshing the list of orders.
+     * Fetches the latest orders from the server and updates the TableView.
+     * 
+     * @param event the action event triggered by the refresh button
+     */
     @FXML
     private void handleRefresh(ActionEvent event)
     {
         // Implement the logic to refresh the list of orders
-        // You might want to fetch the latest data from the database
-        // Example:
-        // orders = DBController.getOrdersInProgress();
-        // orderlist.setItems(orders);
+        // to fetch the latest data from the database
    
 		BiteOptions option = new BiteOptions(ChatClient.user1.getUserId(), BiteOptions.Option.GET_USER_ORDERS);//kkkkkkk
 	    ClientUI.chat.accept(option);
@@ -177,8 +196,12 @@ public class OrderInProgressController {
     }
 
     
-    
-    
+    /**
+     * Handles the action of navigating back to the previous screen.
+     * Loads the main page client interface and hides the current window.
+     * 
+     * @param event the action event triggered by the back button
+     */
     @FXML
     private void handleBack(ActionEvent event) 
     {
@@ -205,9 +228,8 @@ public class OrderInProgressController {
 			primaryStage.setTitle("User-Portal");
 
             
-           System.out.println("AGGGGGGGGGGGGGGGGG " + ChatClient.user1);
+           System.out.println("The user is:  " + ChatClient.user1);
 
-           //orderlist.
            
            
            if (orderlist != null && orderlist.getItems() != null) 
@@ -220,8 +242,6 @@ public class OrderInProgressController {
             MainPagesClientController.initialize(ChatClient.user1.getUsername(), ChatClient.user1.getaccountStatus(), ChatClient.user1.getBranch());
 
             
-            
-            // Uncomment and use if needed
         } 
         catch (IOException e)
         {
@@ -233,7 +253,12 @@ public class OrderInProgressController {
 
     }
     
-    
+    /**
+     * Displays an alert dialog with the specified title and message.
+     * 
+     * @param title the title of the alert dialog
+     * @param message the content of the alert dialog
+     */
     private void showAlert(String title, String message) 
     {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -246,7 +271,11 @@ public class OrderInProgressController {
     
     
 
-    // A method to set orders and populate the TableView
+    /**
+     * Sets the orders and populates the TableView.
+     * 
+     * @param orders the list of orders to display in the TableView
+     */
     public void setOrders(ObservableList<RestaurantOrders> orders) 
     {
         this.orders = orders;
@@ -256,16 +285,4 @@ public class OrderInProgressController {
 
     }
 
-    // Optionally, a method to load the previous screen
-    private void loadPreviousScreen() 
-    {
-        // Logic to load the previous screen, such as using FXMLLoader
-        // Example:
-        // FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/PreviousScreen.fxml"));
-        // Parent root = loader.load();
-        // Stage stage = new Stage();
-        // stage.setTitle("Previous Screen");
-        // stage.setScene(new Scene(root));
-        // stage.show();
-    }
 }

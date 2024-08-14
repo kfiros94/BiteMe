@@ -18,7 +18,19 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import entities.*;
+/**
+ * Controller class for the main page of the supplier's interface.
+ * Handles actions related to viewing orders, editing items, and logging out.
+ * 
+ * @author Kfir Amoyal
+ * @author Noam Furman
+ * @author Israel Ohayon
+ * @author Eitan Zerbel
+ * @author Yaniv Shatil
+ * @author Omri Heit
 
+ * @version August 2024
+ */
 public class MainPageSupplierController {
 	
 	final String ANSI_RESET = "\u001B[0m";
@@ -38,18 +50,32 @@ public class MainPageSupplierController {
     private Restaurant Srestaurant;
     public static MainPageSupplierController controller;
 
+    /**
+     * Initializes the controller class.
+     * Sets the static controller reference to this instance.
+     */
     @FXML
     public void initialize() {
         controller = this;
     }
     
+    /**
+     * Sets the supplier user for this controller.
+     *
+     * @param userSupplier The user who is a supplier.
+     */
     public void setUserSupplier(User userSupplier) {
         this.UserSupllier = userSupplier;
     	System.out.println(ANSI_PURPLE + "MainPageSupplierController" + ANSI_RESET + ": initialized for supplier - " + UserSupllier.getUsername());
 
     }
     
-    
+    /**
+     * Sets the restaurant for this controller. If the restaurant is null,
+     * it will request the restaurant data from the server based on the supplier ID.
+     *
+     * @param restaurant The restaurant associated with the supplier.
+     */
     public void setRestaurant(Restaurant restaurant) {
     	//Handles the case for LoginUserController, retrieves the restaurant by supplier ID from the database
     	if (restaurant==null) { 
@@ -84,36 +110,14 @@ public class MainPageSupplierController {
     
     
 	
-    /*
-    //לממש מחדש יניב עשה
-	@FXML
-	public void showOrders(ActionEvent event) {
-		 System.out.println(Srestaurant.getName() + " enters Supplier_OrderManagementController");
-		    try {
-		        FXMLLoader loader = new FXMLLoader(getClass().getResource("/supplier/Supplier_OrderManagement.fxml"));
-		        Parent root = loader.load();
 
-		       // Supplier_OrderManagementController controller = loader.getController();
-		        
-		        // Set User and restaurant to the controller-Supplier_OrderManagementController
-		       // controller.setRestaurantInfo(Srestaurant,UserSupllier); 
 
-		        Scene scene = new Scene(root);
-		        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		        stage.setScene(scene);
-		        stage.setTitle("Order Management - BiteMe");
-		        stage.show();
-		    } catch (IOException e) {
-		        e.printStackTrace();
-		    }
-	}
-	*/
-    
-    
-    //aaaaaaaaaaaaaaaaaa
-    
-    
-    //לממש מחדש יניב עשה
+    /**
+     * Handles the action when the "Show Orders" button is clicked.
+     * Loads the Supplier_OrderManagement.fxml and passes the supplier and restaurant information to the next controller.
+     *
+     * @param event The action event triggered by clicking the button.
+     */
 	@FXML
 	public void showOrders(ActionEvent event) {
 		 System.out.println(Srestaurant.getName() + " enters Supplier_OrderManagementController");
@@ -140,10 +144,12 @@ public class MainPageSupplierController {
 	
     
     
-    //aaaaaaaaaaaaaaaaaa
-    
-    
-	
+    /**
+     * Handles the action when the "Edit Item" button is clicked.
+     * Loads the SupplierEditItam.fxml and passes the supplier and restaurant information to the next controller.
+     *
+     * @param event The action event triggered by clicking the button.
+     */
     @FXML
     public void EditItamButton(ActionEvent event) 
     {
@@ -168,6 +174,13 @@ public class MainPageSupplierController {
         }
     }
 	
+    /**
+     * Handles the action when the "Log Out" button is clicked.
+     * Logs out the user and resets the current user and restaurant information.
+     * Loads the LogInUser.fxml for the login screen.
+     *
+     * @param event The action event triggered by clicking the button.
+     */
 	 @FXML
     private void LogOutButton(ActionEvent event) 
 	 { 	

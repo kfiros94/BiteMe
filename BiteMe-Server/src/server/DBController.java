@@ -11,6 +11,7 @@ import java.util.List;
 
 import entities.BiteOptions;
 import entities.ClientInfo;
+import entities.Customer;
 import entities.MenuItem;
 import entities.MenuItems;
 import entities.RestaurantOrders;
@@ -21,15 +22,31 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 
-
-
-
+/**
+ * DBController class handles all database-related operations such as connecting
+ * to the database, retrieving and updating records, and managing database
+ * transactions.
+ * 
+ * @author Kfir Amoyal
+ * @author Israel Ohayon
+ * @author Yaniv Shatil
+ * @author Noam Furman
+ * @author Omri Heit
+ * @author Eitan Zerbel
+ * 
+ * @version August 2024
+ */
 public class DBController 
 {
 
     protected static Connection conn = null;
 
-    // Method to connect to the database
+    /**
+     * Connects to the database using the given password.
+     * 
+     * @param password The password for the database.
+     * @return true if the connection is successful, false otherwise.
+     */
     protected static boolean connectToDB(String password) 
     {
         try 
@@ -57,63 +74,11 @@ public class DBController
     }
 
     
-    
-    /*
-    protected static ArrayList<RestaurantOrders> showOrder() 
-    {
-        System.out.println("in ShowOrder Function"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-        ArrayList<RestaurantOrders> orders = new ArrayList<>();
-
-        try {
-            String query = "SELECT * FROM restaurant_orders"; // Enclose table name in backticks
-            java.sql.Statement stmt = conn.createStatement();
-            ResultSet ordersFromTable = stmt.executeQuery(query);
-            System.out.println("Test 2"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-
-            while (ordersFromTable.next()) {
-                System.out.println("Test 3"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-                String restaurantName = ordersFromTable.getString("restaurant");
-                int orderNumber = ordersFromTable.getInt("Order_number");
-                float totalPrice = ordersFromTable.getFloat("Total_price");
-                int orderListNumber = ordersFromTable.getInt("Order_list_number");
-                String orderAddress = ordersFromTable.getString("Order_address");
-                System.out.println("Test 4"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-                orders.add(new RestaurantOrders(restaurantName, orderNumber, totalPrice, orderListNumber, orderAddress));
-            }
-            stmt.close();
-        } catch (SQLException e) {
-            System.out.println("Error returning order details: " + e.getMessage());
-        }
-        System.out.println("Test 5"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-        return orders;
-    }
-    */
-    
-    
-    
-    /*
-    
-    protected static String updateUsersOrderToDB(ArrayList<String> newEditedOrders) {
-        System.out.println("SpongeBob squerpant!!!!!");
-        String sql = "UPDATE `restaurant_orders` SET Total_price = ?, Order_address = ? WHERE Order_number = ?";
-        try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            statement.setFloat(1, Float.parseFloat(newEditedOrders.get(2)));
-            statement.setString(2, newEditedOrders.get(4));
-            statement.setInt(3, Integer.parseInt(newEditedOrders.get(1)));
-            statement.executeUpdate();
-            statement.close();
-            return "Successfully saved";
-        } catch (SQLException var12) {
-            return "failed to save";
-        }
-    }
-    */
-    
-    
-    
-    
-    
-    //return users table
+    /**
+     * Retrieves all users from the users table.
+     * 
+     * @return An ArrayList of User objects.
+     */
     protected static ArrayList<User> showusers() {
         System.out.println("in ShowOrder Function"); 
         ArrayList<User> users = new ArrayList<>();
@@ -139,7 +104,7 @@ public class DBController
                 String accountStatus = usersFromTable.getString("account_status");
 
 
-                System.out.println("Test 4"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+                System.out.println("Test 4"); 
                 users.add(new User(userId, username, password, email, phoneNumber, permission, branch, hasDiscountCode, loggedIn,accountStatus));
             }
 
@@ -147,18 +112,19 @@ public class DBController
         } catch (SQLException e) {
             System.out.println("Error returning order details: " + e.getMessage());
         }
-        System.out.println("Test 5"); // TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+        System.out.println("Test 5"); 
         return users;
     }
 
     
-    
-    
-    
-    
-    //KKKKKKKKKKKKKKKKKKKKKK
+  
 
-    // New method to return restaurants table
+    /**
+     * Retrieves a list of restaurants associated with a specific branch.
+     * 
+     * @param branch The branch to filter the restaurants by.
+     * @return An ArrayList of Restaurant objects.
+     */
     protected static ArrayList<Restaurant> showRestaurants(String branch) 
     {
         System.out.println("in ShowRestaurants Function for branch: " + branch);
@@ -191,8 +157,11 @@ public class DBController
     }
 
     
-    //KKKKKKKKKKKKKKKKKKKK
-    
+    /**
+     * Retrieves a list of all restaurants.
+     * 
+     * @return An ArrayList of Restaurant objects.
+     */
     protected static ArrayList<Restaurant> showAllRestaurants() {
         System.out.println("in ShowAllRestaurants Function");
         ArrayList<Restaurant> restaurants = new ArrayList<>();
@@ -228,7 +197,13 @@ public class DBController
     
     
     
-    //method to update in the data base when user is logd-in or out
+    /**
+     * Updates the login status of a user.
+     * 
+     * @param userId      The ID of the user.
+     * @param loginStatus The new login status.
+     * @return A message indicating success or failure.
+     */
     protected static String updateUserLoginStatus(int userId, int loginStatus) {
     	
         System.out.println("Updating user login status");
@@ -247,8 +222,11 @@ public class DBController
 
     
     
-    
-    //LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
+    /**
+     * Retrieves all menu items from the database.
+     * 
+     * @return An ArrayList of MenuItems objects.
+     */
     protected static ArrayList<MenuItems> getMenuItems() 
     {
         System.out.println("Retrieving all menu items from the database");
@@ -289,7 +267,6 @@ public class DBController
     }
 
     
-    //LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
     
     
     
@@ -297,7 +274,12 @@ public class DBController
     
 
     
-    // Method to retrieve a specific order with a JSON field
+    /**
+     * Retrieves the order list of a specific order as a JSON array.
+     * 
+     * @param orderId The ID of the order.
+     * @return A JSONArray containing the order details.
+     */
     protected static JSONArray getOrderWithJsonField(int orderId)
     {
         JSONArray orderDetails = null;
@@ -325,8 +307,12 @@ public class DBController
         return orderDetails;
     }
     
-
-    //KFIRKFIR
+    /**
+     * Retrieves a user by their ID.
+     * 
+     * @param userId The ID of the user.
+     * @return A User object if found, null otherwise.
+     */
     protected static User getUserById(int userId) {
         System.out.println("Retrieving user with ID: " + userId);
         User user = null;
@@ -356,12 +342,16 @@ public class DBController
 
         return user;
     }
-    //KFIRKFIR
     
     
 
     
-    // Protected static method to insert a new record into the restaurant_orders table
+    /**
+     * Inserts a new restaurant order into the database.
+     * 
+     * @param order The RestaurantOrders object containing order details.
+     * @return A message indicating success or failure.
+     */
     protected static String insertRestaurantOrder(RestaurantOrders order)
     {
         String insertQuery = "INSERT INTO restaurant_orders (restaurant, order_number, total_price, order_list, " +
@@ -403,7 +393,12 @@ public class DBController
     
     
     
- // Method to retrieve all orders by a specific user_id
+    /**
+     * Retrieves all orders placed by a specific user.
+     * 
+     * @param userId The ID of the user.
+     * @return An ArrayList of RestaurantOrders objects.
+     */
     protected static ArrayList<RestaurantOrders> getOrdersByUserId(int userId) {
         ArrayList<RestaurantOrders> ordersList = new ArrayList<>();
 
@@ -447,9 +442,13 @@ public class DBController
 
     
     
-    //EEEEEEEEEEEEEEEEEEEEEEEEEE
     
- // In your DBController class
+    /**
+     * Updates the status of an order to "confirmed".
+     * 
+     * @param orderNumber The number of the order to update.
+     * @return A message indicating success or failure.
+     */
     protected static String updateOrderStatusToConfirmed(int orderNumber) 
     {
         String updateQuery = "UPDATE restaurant_orders SET status = 'confirmed' WHERE order_number = ?";
@@ -476,10 +475,13 @@ public class DBController
     }
 
     
-    //EEEEEEEEEEEEEEEEEEEEEEEEEE
     
-    //HafradAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-    //getRestaurantBySupplierId
+    /**
+     * Retrieves a restaurant by its supplier ID.
+     * 
+     * @param supplierId The supplier ID associated with the restaurant.
+     * @return A BiteOptions object containing the restaurant details.
+     */
     protected static BiteOptions getRestaurantBySupplierId(int supplierId) {
         System.out.println("DBController: getRestaurantBySupplierId Function for supplier id: " + supplierId);
         Restaurant restaurant = null;
@@ -519,6 +521,13 @@ public class DBController
         return restaurantfound;
     }
     
+    
+    /**
+     * Removes a menu item from the database.
+     * 
+     * @param itam The MenuItem object to be removed.
+     * @return A BiteOptions object indicating the result of the operation.
+     */
     public static BiteOptions removeMenuItem(MenuItem itam) {
         System.out.println("Removing menu item : " + itam);
         String sql = "DELETE FROM menuitems WHERE item_id = ?";
@@ -540,7 +549,12 @@ public class DBController
         }
     }
 
-    // Method to save or update a menu item
+    /**
+     * Saves or updates a menu item in the database.
+     * 
+     * @param menuItemOption A BiteOptions object containing the menu item details.
+     * @return A BiteOptions object indicating the result of the operation.
+     */
     public static BiteOptions saveOrUpdateMenuItem(BiteOptions menuItemOption) {
         MenuItem menuItem = MenuItem.fromString(menuItemOption.getData().toString());
         int restaurantId = menuItem.getRestaurantItamId();
@@ -594,38 +608,14 @@ public class DBController
         }
     }
     
-    /*public static BiteOptions getMenuItemsByRestaurantId(int restaurantId) throws SQLException {
-        List<MenuItem> menuItems = new ArrayList<>();
-        String query = "SELECT * FROM menuitems WHERE restaurant_id = ?";
-        try {
-            PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setInt(1, restaurantId);
-            ResultSet rs = stmt.executeQuery();
 
-            while (rs.next()) {
-                int itemId = rs.getInt("item_id");
-                String name = rs.getString("name");
-                String description = rs.getString("description");
-                float price = rs.getFloat("price");
-                String category = rs.getString("category");
-                String possibleChanges = rs.getString("possible_changes");
-
-                MenuItem menuItem = new MenuItem(itemId, restaurantId, name, description, price, category, possibleChanges);
-                menuItems.add(menuItem);
-                System.out.println("in db in getMenuItemsByRestaurantId item: " + menuItem);
-            }
-
-            // Create BiteOptions object
-            BiteOptions menuOptions = new BiteOptions(menuItems, BiteOptions.Option.SHOW_MENU_RESTAURANT);
-            System.out.println("BiteOptions created: " + menuOptions);
-            return menuOptions;
-
-        } catch (SQLException e) {
-            System.out.println("Error retrieving menu items: " + e.getMessage());
-            return new BiteOptions(null, BiteOptions.Option.SHOW_MENU_RESTAURANT); // Return an empty list on error
-        }
-    }*/
-    
+    /**
+     * Retrieves all menu items associated with a specific restaurant ID.
+     * 
+     * @param restaurantId The ID of the restaurant.
+     * @return A BiteOptions object containing the menu items.
+     * @throws SQLException If there is an error accessing the database.
+     */
     public static BiteOptions  getMenuItemsByRestaurantId(int restaurantId) throws SQLException {
         List<MenuItem> menuItems = new ArrayList<>();
         String query = "SELECT * FROM menuitems WHERE restaurant_id = ?";
@@ -662,7 +652,12 @@ public class DBController
     }
     
     
-    
+    /**
+     * Retrieves a restaurant by its supplier ID.
+     * 
+     * @param supplierId The supplier ID associated with the restaurant.
+     * @return A BiteOptions object containing the restaurant details.
+     */
     protected static BiteOptions getRestaurantBySupplierId1(int supplierId) {
         System.out.println("DBController: getRestaurantBySupplierId Function for supplier id: " + supplierId);
         Restaurant restaurant = null;
@@ -702,9 +697,13 @@ public class DBController
     }
     
     
-    //aaaaaaaaaaaaaaaaaaaa
     
- // Method to retrieve all orders for a specific branch
+    /**
+     * Retrieves all orders associated with a specific branch.
+     * 
+     * @param branchName The name of the branch.
+     * @return An ArrayList of RestaurantOrders objects.
+     */
     protected static ArrayList<RestaurantOrders> getOrdersByBranch(String branchName)
     {
         ArrayList<RestaurantOrders> ordersList = new ArrayList<>();
@@ -747,10 +746,8 @@ public class DBController
     }
 
     
-    //aaaaaaaaaaaaaaaaaaaa
     
     
-    //noammmm
     
     /**
      * Retrieves all restaurant orders for a given restaurant ID.
@@ -815,8 +812,12 @@ public class DBController
     }
     
     
-    //noammmm
-    
+    /**
+     * Updates the status of a restaurant order.
+     * 
+     * @param order The RestaurantOrders object containing the order details.
+     * @return A message indicating success or failure.
+     */
     protected static String updateOrderStatus(RestaurantOrders order) {
         String updateQuery = "UPDATE restaurant_orders SET status = ? WHERE order_number = ?";
         
@@ -853,4 +854,223 @@ public class DBController
     }
     
 
+    /**
+     * Retrieves a list of users with negative values for username and password.
+     *
+     * @return An ArrayList of User objects containing the retrieved users.
+     */
+    protected static ArrayList<User> getUsersByNegativeValues() {
+        ArrayList<User> usersList = new ArrayList<>();
+
+        String query = "SELECT user_id, username, password, email, phone_number, permission, branch, has_discount_code, logged_in, account_status " +
+                       "FROM users WHERE " +
+                       "CAST(username AS SIGNED) < 0 AND " +
+                       "CAST(password AS SIGNED) < 0";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                User user = new User();
+                user.setUserId(rs.getInt("user_id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setEmail(rs.getString("email"));
+                user.setPhoneNumber(rs.getString("phone_number"));
+                user.setPermission(rs.getString("permission"));
+                user.setBranch(rs.getString("branch"));
+                user.setHasDiscountCode(rs.getBoolean("has_discount_code"));
+                user.setLoggedIn(rs.getInt("logged_in"));
+                user.setaccountStatus(rs.getString("account_status"));
+
+                usersList.add(user);
+            }
+
+            rs.close();
+        } catch (SQLException e) {
+            System.out.println("Error retrieving users with negative username and password: " + e.getMessage());
+        }
+
+        return usersList;
+    }
+
+    
+    
+    
+    /**
+     * Updates a user with negative username and password values by their email and returns the updated user ID.
+     *
+     * @param userToUpdate The User object containing the updated information.
+     * @return The user ID of the updated user, or -1 if the update failed.
+     */
+    protected static int updateUserByEmailWithNegativeUsernamePasswordReturnId(User userToUpdate) {
+        int updatedUserId = -1;
+
+        // Check if the email is provided in the user object
+        if (userToUpdate.getEmail() == null || userToUpdate.getEmail().isEmpty()) {
+            System.out.println("Email is required to update the user.");
+            return updatedUserId;
+        }
+
+        String updateQuery = "UPDATE users SET username = ?, password = ?, email = ?, phone_number = ?, permission = ?, branch = ?, " +
+                             "has_discount_code = ?, logged_in = ?, account_status = ? " +
+                             "WHERE CAST(username AS SIGNED) < 0 AND CAST(password AS SIGNED) < 0 AND email = ? LIMIT 1";
+
+        String selectQuery = "SELECT user_id FROM users WHERE CAST(username AS SIGNED) < 0 AND CAST(password AS SIGNED) < 0 AND email = ? LIMIT 1";
+
+        try {
+            // Start a transaction
+            conn.setAutoCommit(false);
+
+            // First, select the user_id of the record to be updated
+            try (PreparedStatement selectStmt = conn.prepareStatement(selectQuery)) {
+                selectStmt.setString(1, userToUpdate.getEmail());
+                ResultSet rs = selectStmt.executeQuery();
+
+                if (rs.next()) {
+                    updatedUserId = rs.getInt("user_id");
+                } else {
+                    System.out.println("No matching user record found with negative username and password for the provided email.");
+                    conn.rollback();
+                    return updatedUserId;
+                }
+            }
+
+            // Then, update the record with the new values
+            try (PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
+                updateStmt.setString(1, userToUpdate.getUsername());
+                updateStmt.setString(2, userToUpdate.getPassword());
+                updateStmt.setString(3, userToUpdate.getEmail());
+                updateStmt.setString(4, userToUpdate.getPhoneNumber());
+                updateStmt.setString(5, userToUpdate.getPermission());
+                updateStmt.setString(6, userToUpdate.getBranch());
+                updateStmt.setBoolean(7, userToUpdate.isHasDiscountCode());
+                updateStmt.setInt(8, userToUpdate.getLoggedIn());
+                updateStmt.setString(9, userToUpdate.getaccountStatus());
+                updateStmt.setString(10, userToUpdate.getEmail());
+
+                int affectedRows = updateStmt.executeUpdate();
+
+                if (affectedRows > 0) {
+                    // Commit the transaction
+                    conn.commit();
+                    System.out.println("User record updated successfully. User ID: " + updatedUserId);
+                } else {
+                    updatedUserId = -1;
+                    System.out.println("Failed to update the user record.");
+                    conn.rollback();
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error updating user with negative username and password: " + e.getMessage());
+            try {
+                conn.rollback();
+            } catch (SQLException rollbackEx) {
+                System.out.println("Error rolling back transaction: " + rollbackEx.getMessage());
+            }
+        } finally {
+            try {
+                // Restore the default commit behavior
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                System.out.println("Error setting auto-commit to true: " + e.getMessage());
+            }
+        }
+
+        return updatedUserId;
+    }
+
+    
+    
+    
+    
+    /**
+     * Inserts a new customer record into the database.
+     *
+     * @param customer The Customer object containing the information to be inserted.
+     * @return A message indicating success or failure, along with the generated customer ID if successful.
+     */
+    protected static String insertCustomer(Customer customer) {
+        String insertQuery = "INSERT INTO customers (username, password, email, phone_number, branch, account_type, credit_card, " +
+                             "address, work_address, has_discount_code, userID) " +
+                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement stmt = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, customer.getUsername());
+            stmt.setString(2, customer.getPassword());
+            stmt.setString(3, customer.getEmail());
+            stmt.setString(4, customer.getPhoneNumber());
+            stmt.setString(5, customer.getBranch());
+            stmt.setString(6, customer.getAccountType());
+            stmt.setString(7, customer.getCredit_card());
+            stmt.setString(8, customer.getAddress());
+            stmt.setString(9, customer.getWork_address());
+            stmt.setInt(10, customer.getHas_discount_code());
+            stmt.setInt(11, customer.getUserID());
+
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                // Get the generated customer_id
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int customerId = generatedKeys.getInt(1);
+                        return "Customer inserted successfully with ID: " + customerId;
+                    }
+                }
+            } else {
+                return "Failed to insert customer record.";
+            }
+        } catch (SQLException e) {
+            System.out.println("Error inserting customer record: " + e.getMessage());
+            return "Failed to insert customer record.";
+        }
+
+        return "Customer inserted, but failed to retrieve the generated ID.";
+    }
+
+    
+    
+    
+    /**
+     * Inserts a new restaurant record into the database.
+     *
+     * @param restaurant The Restaurant object containing the information to be inserted.
+     * @return A message indicating success or failure, along with the generated restaurant ID if successful.
+     */
+    protected static String insertRestaurant(Restaurant restaurant) {
+        String insertQuery = "INSERT INTO restaurants (name, address, phone_number, branch, supplierID) " +
+                             "VALUES (?, ?, ?, ?, ?)";
+
+        try (PreparedStatement stmt = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, restaurant.getName());
+            stmt.setString(2, restaurant.getAddress());
+            stmt.setString(3, restaurant.getPhoneNumber());
+            stmt.setString(4, restaurant.getBranch());
+            stmt.setInt(5, restaurant.getSupplierID());
+
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                // Get the generated restaurant_id
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int restaurantId = generatedKeys.getInt(1);
+                        return "Restaurant inserted successfully with ID: " + restaurantId;
+                    }
+                }
+            } else {
+                return "Failed to insert restaurant record.";
+            }
+        } catch (SQLException e) {
+            System.out.println("Error inserting restaurant record: " + e.getMessage());
+            return "Failed to insert restaurant record.";
+        }
+
+        return "Restaurant inserted, but failed to retrieve the generated ID.";
+    }
+
+
+    
 }

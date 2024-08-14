@@ -22,7 +22,19 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+/**
+ * Controller class for the restaurant selection screen in the application.
+ * Handles the logic for selecting a restaurant and branch, and navigating between different screens in the GUI.
+ * 
+ * @author Kfir Amoyal
+ * @author Noam Furman
+ * @author Israel Ohayon
+ * @author Eitan Zerbel
+ * @author Yaniv Shatil
+ * @author Omri Heit
 
+ * @version August 2024
+ */
 public class RestaurantSelectionController
 {
 
@@ -52,7 +64,10 @@ public class RestaurantSelectionController
 
     @FXML
     private Label selectBranchLabel;
-
+    /**
+     * Initializes the controller class. Sets up the event handlers for the
+     * ComboBoxes used for selecting a branch and a restaurant.
+     */
     @FXML
     private void initialize() 
     {
@@ -60,30 +75,16 @@ public class RestaurantSelectionController
         restaurantComboBox.setOnAction(e -> handleRestaurantSelection());
     }
     //SpongeBob
-    /*
-    private void loadRestaurantsForBranch() {
-        String selectedBranch = branchComboBox.getValue();
-        restaurantComboBox.getItems().clear();
-        if (selectedBranch != null && ChatClient.restaurants != null && !ChatClient.restaurants.isEmpty()) {
-            for (Restaurant restaurant : ChatClient.restaurants) {
-                if (restaurant.getBranch().equals(selectedBranch)) {
-                    restaurantComboBox.getItems().add(restaurant.getName());
-                }
-            }
-        } else {
-            System.out.println("No restaurants available or restaurants not loaded yet.");
-        }
-    }
-    */
-
+    /**
+     * Handles the back button action, navigating the user back to the start order page.
+     * @param event The ActionEvent triggered by clicking the back button.
+     */
     @FXML
     private void handleBackButtonAction(ActionEvent event) 
     {
         // Logic for back button
         System.out.println("Back button clicked");
         
-        
-        //aaaaaaaaaaaaaaaaaaaa
         FXMLLoader loader = new FXMLLoader();
         Pane root = null;
         Stage primaryStage = new Stage();
@@ -116,11 +117,13 @@ public class RestaurantSelectionController
             showAlert("Error", "Could not load the Start Order page.");
         }
         
-        //aaaaaaaaaaaaaaaaaaaaaa
-        
     }
     
-    
+    /**
+     * Shows an alert dialog with the specified title and message.
+     * @param title The title of the alert dialog.
+     * @param message The message to display in the alert dialog.
+     */ 
     private void showAlert(String title, String message) 
     {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -130,39 +133,27 @@ public class RestaurantSelectionController
     }
     
     
-
-    
-    
+    /**
+     * Handles the next button action, navigating the user to the menu selection page.
+     * @param event The ActionEvent triggered by clicking the next button.
+     */
     @FXML
     private void handleNextButtonAction(ActionEvent event) 
     {
         // Logic for next button
         System.out.println("Next button clicked");
         
-        
-        
-        //HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
         System.out.println("print Restaurnttttt:"+restaurant.toString());
 
 		BiteOptions option = new BiteOptions(restaurant.toString(), BiteOptions.Option.GET_SELECTED_REST_MENU);//kkkkkkk
 
 		ClientUI.chat.accept(option);
-		
-		//aaaaa
+
 		
 		restaurantOrders.setRestaurant_id(restaurant.getRestaurantID());
 		restaurantOrders.setRestaurant(restaurant.getName());
 		restaurantOrders.setBranch(selectedBranch);
         System.out.println("print UPDATE RestaurantOrders:"+restaurantOrders.toString());
-
-		
-		//aaaaa
-
-		//selectedBranch
-        //HHHHHHHHHHHHHHHHHHHHHHHHHHHHH
-        
-        
-
         
         FXMLLoader loader = new FXMLLoader();
         Pane root = null;
@@ -201,10 +192,9 @@ public class RestaurantSelectionController
     }
     
     
-    
-    
-    
-
+    /**
+     * Loads the available restaurants into the restaurant ComboBox.
+     */
     private void loadRestaurants() 
     {
     	restaurantComboBox.getItems().clear();
@@ -218,7 +208,9 @@ public class RestaurantSelectionController
          //Kfir
     }
 
-    
+    /**
+     * Loads the available branches into the branch ComboBox.
+     */
     private void loadBranches() 
     {
         branchComboBox.getItems().clear();
@@ -229,25 +221,24 @@ public class RestaurantSelectionController
     }
     
 
-    //זאת מתודת עזר שקוראים לה מהקונטרולר הקודם לאחר יצירת מופע של הקונטרולר הזה של בחירת מסעדה
-    //מה שקורה כאן זה 2 דברים במקביל שזה ממש טוב לנו
-    //טוענים מידע מהקונטרולר של התחלת הזמנה לשדה משתמש של הקונטרולר הזה 
-    //וגם אנחנו מבצעים פנייה לשרת לבקש את כל המסעדות שיש במסד נתונים כהכנה לעבודה עם הדף הנוכחי
+    /**
+     * Loads the user data into the controller and initializes the restaurant orders.
+     * Fetches the list of restaurants from the server.
+     * @param UserClient The user object containing the user data.
+     */
     public void loadUserCustomer(User UserClient) 
     {
         this.UserCustomer = UserClient;
         System.out.println("Loading user customer: " + this.UserCustomer.toString());
-        
-        //aaaaaaaaaaaaaa
+
         
         restaurantOrders.setUser_id(UserCustomer.getUserId());
         System.out.println("Loading user restaurantOrders: " + restaurantOrders.toString());
 
-        //aaaaaaaaaaaaa
 
         // Fetch restaurants from server for all branches
         BiteOptions option = new BiteOptions("ALL", BiteOptions.Option.SELECT_RESTAURANT);
-        ClientUI.chat.accept(option);// המתנה פעילה עד לתשובה מהשרת
+        ClientUI.chat.accept(option);//  Wait until reply from server
 
         restaurantslocal.addAll(0, ChatClient.restaurants);
         
@@ -257,24 +248,31 @@ public class RestaurantSelectionController
         });
     }
     
-    
+    /**
+     * Loads the list of restaurants into the controller.
+     * @param restaurants The list of restaurants to load.
+     */ 
     public void loadRestaurant(ArrayList<Restaurant> restaurants) 
     {
         this.restaurantslocal = restaurants;
-		System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"+ this.restaurantslocal.toString());
+		System.out.println("Loaded restaurant: "+ this.restaurantslocal.toString());
 
     }
-    
+    /**
+     * Updates the restaurant list in the ComboBox based on the selected branch.
+     */
     public void updateRestaurantList() 
     {
         Platform.runLater(() -> {
             loadRestaurants();
         });
     }
-    
+    /**
+     * Updates the list of restaurants in the restaurant ComboBox based on the selected branch.
+     */
     private void updateRestaurantsForSelectedBranch() 
     {
-        selectedBranch = branchComboBox.getValue();//aaaaaaaaaaaaaaaaaaaaaa
+        selectedBranch = branchComboBox.getValue();
         System.out.println("Selected Branch: " + selectedBranch);
         restaurantComboBox.getItems().clear();
         if (selectedBranch != null && ChatClient.restaurants != null) {
@@ -287,7 +285,9 @@ public class RestaurantSelectionController
         // Clear the selected restaurant when branch changes
         restaurantComboBox.setValue(null);
     }
-    
+    /**
+     * Handles the selection of a restaurant from the ComboBox.
+     */
     private void handleRestaurantSelection() 
     {
         String selectedRestaurant = restaurantComboBox.getValue();
@@ -309,11 +309,10 @@ public class RestaurantSelectionController
     }
     
     
-    
-    
-    
-    //UUUUUUUUUUUUUUUUUUUUUU
-    
+    /**
+     * Reloads the restaurants and sets the branch in the ComboBox.
+     * Fetches the list of restaurants from the server.
+     */ 
     public void reloadRestaurantsAndSetBranch() {
         // Fetch restaurants from server for all branches
         BiteOptions option = new BiteOptions("ALL", BiteOptions.Option.SELECT_RESTAURANT);
@@ -331,7 +330,6 @@ public class RestaurantSelectionController
         });
     }
     
-    //UUUUUUUUUUUUUUUUUUUUU
     
     
 }

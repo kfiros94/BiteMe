@@ -23,7 +23,19 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+/**
+ * Controller class for the restaurant menu selection screen.
+ * Handles interactions with the menu, cart, and navigation buttons.
+ * 
+ * @author Kfir Amoyal
+ * @author Noam Furman
+ * @author Israel Ohayon
+ * @author Eitan Zerbel
+ * @author Yaniv Shatil
+ * @author Omri Heit
 
+ * @version August 2024
+ */
 public class SelectFromRestMenuController 
 {
 
@@ -80,7 +92,9 @@ public class SelectFromRestMenuController
 
 
 
-    
+    /**
+    * Initializes the controller after its root element has been completely processed.
+    */
     @FXML
     private void initialize() 
     {
@@ -128,6 +142,9 @@ public class SelectFromRestMenuController
         });
     }
 
+    /**
+    * Sets up the changes column to display CheckBoxes in a TableCell.
+    */
     private void setupChangesColumn() 
     {
         changesColumn.setCellFactory(column -> {
@@ -141,6 +158,9 @@ public class SelectFromRestMenuController
         });
     }
 
+    /**
+     * Handles the addition of a selected menu item to the cart.
+     */
     @FXML
     private void handleAddItem() 
     {
@@ -154,12 +174,21 @@ public class SelectFromRestMenuController
         }
     }
 
+    /**
+     * Retrieves the selected changes for a given menu item.
+     * 
+     * @param item the menu item to get changes for
+     * @return a list of selected changes
+     */
     private ArrayList<String> getSelectedChangesForItem(MenuItems item)
     {
         CheckBoxTableCell cell = cellMap.get(item);
         return cell != null ? cell.getSelectedChanges() : new ArrayList<>();
     }
 
+    /**
+     * Handles the removal of a selected item from the cart.
+     */
     @FXML
     private void handleRemoveItem() {
         CartItem selectedItem = cartTableView.getSelectionModel().getSelectedItem();
@@ -169,11 +198,11 @@ public class SelectFromRestMenuController
         }
     }
 
-
-    
-    
-    //LLLLLLLLLLLLLLLLLLL
-    
+    /**
+     * Handles the action of the "Back" button, returning to the previous screen.
+     * 
+     * @param event the action event triggered by the "Back" button
+     */
     @FXML
     private void handleBack(ActionEvent event) {
         System.out.println("Back button clicked");
@@ -202,9 +231,14 @@ public class SelectFromRestMenuController
         }
     }
     
-    //LLLLLLLLLLLLLLLLLLLL
     
     
+    /**
+     * Displays an alert with the given title and content.
+     * 
+     * @param title the title of the alert
+     * @param content the content of the alert
+     */ 
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -213,47 +247,51 @@ public class SelectFromRestMenuController
         alert.showAndWait();
     }
     
-    
-    
+    /**
+     * Handles the action of the "Next" button, proceeding to the Supply Configuration screen.
+     * 
+     * @param event the action event triggered by the "Next" button
+     */
+	@FXML
+	private void handleNext(ActionEvent event) {
+	    // Check if the cart is empty
+	    if (cartItems.isEmpty()) {
+	        showAlert("Cart Empty", "Your cart is empty. Please add items to your cart before proceeding.");
+	    } else {
+	        try {
+	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SupplyConfiguration.fxml"));
+	            Parent root = loader.load();
 
-    @FXML
-    private void handleNext(ActionEvent event) 
-    {
+	            SupplyConfigurationController supplyConfigurationController = loader.getController();
+	            supplyConfigurationController.initData(cartItems);
 
-    	
-    	//kkkkkkkkkkkkkkkkkkkkkk
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SupplyConfiguration.fxml"));
-            Parent root = loader.load();
+	            supplyConfigurationController.loadRestaurantOrders(restaurantOrders);
 
-            SupplyConfigurationController supplyConfigurationController = loader.getController();
-            supplyConfigurationController.initData(cartItems);
-            
-            supplyConfigurationController.loadRestaurantOrders(restaurantOrders);
+	            // Debugging print to understand how the cart items array looks like
+	            System.out.println("print cartItemsSSSSSSSSSSS:" + supplyConfigurationController.getcartItems());
 
-            
-            
-            //הדפסת עזר להבין איך נראה מערך הפריטים שהלקוח בחר להזמין לעצמו, בשביל שנבין מה נשלח לשרת לשמירה במסד נתונים
-            System.out.println("print cartItemsSSSSSSSSSSS:"+supplyConfigurationController.getcartItems());
-            
-            supplyConfigurationController.setPreviousController(this);
+	            supplyConfigurationController.setPreviousController(this);
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } 
-        catch (IOException e) 
-        {
-            e.printStackTrace();
-            showAlert("Error", "Could not load the Supply Configuration page.");
-        }
-    }
-    	//kkkkkkkkkkkkkkkkkkkkkkk
-    
-    
+	            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+	            Scene scene = new Scene(root);
+	            stage.setScene(scene);
+	            stage.show();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            showAlert("Error", "Could not load the Supply Configuration page.");
+	        }
+	    }
+	}
+
+  
 
     
+
+    /**
+     * Restores the state of the controller from a previous instance.
+     * 
+     * @param previousState the previous state of the controller
+     */
     public void restoreState(SelectFromRestMenuController previousState) {
         this.cartItems = previousState.cartItems;
         this.menuItemsList = previousState.menuItemsList;
@@ -270,13 +308,17 @@ public class SelectFromRestMenuController
         updateTotalPrice();
     }
     
-    
+    /**
+     * Loads menu items into the table view.
+     */
     private void loadMenuItems() {
         // Convert the ArrayList to an ObservableList and set it to the TableView
         menuItemsList = FXCollections.observableArrayList(menuItemsArrayList);
         menuTableView.setItems(menuItemsList);
     }
-
+    /**
+     * Updates the total price label based on the items in the cart.
+     */
     private void updateTotalPrice() {
         double total = cartItems.stream()
                 .mapToDouble(CartItem::getPrice)
@@ -284,13 +326,16 @@ public class SelectFromRestMenuController
         totalPriceLabel.setText(String.format("%.2f", total));
     }
 
-    // Custom cell factory to display CheckBoxes in a TableCell
+    /**
+     * Custom cell factory to display CheckBoxes in a TableCell.
+     */
     private static class CheckBoxTableCell extends TableCell<MenuItems, ArrayList<String>> {
         private final List<CheckBox> checkBoxes = new ArrayList<>();
         private final HBox hbox = new HBox(10);
         private MenuItems currentItem;
         private OnUpdateItemCallback onUpdateItem;
 
+        
         private CheckBoxTableCell() {
             setGraphic(hbox);
         }
@@ -364,33 +409,44 @@ public class SelectFromRestMenuController
         }
     }
     
-    
+    /**
+     * Loads the restaurants into the controller.
+     * This method is used to pass restaurant data from a previous screen.
+     *
+     * @param restaurants An ArrayList of Restaurant objects to be loaded into the controller.
+     */
     public void loadRestaurant(ArrayList<Restaurant> restaurants) 
     {
         this.restaurantslocal = restaurants;
-		System.out.println("KKKKKKKKKKKKKKKKKKKKKKKK"+ this.restaurantslocal.toString());
+		System.out.println("loaded restaurant: "+ this.restaurantslocal.toString());
 
     }
     
     
-    //aaaaaaaaaaaaaaaaaaaaa
-    
+   
+    /**
+     * Loads the restaurant orders into the controller.
+     * This method is used to pass restaurant order data from a previous screen.
+     *
+     * @param restaurantOrders A RestaurantOrders object to be loaded into the controller.
+     */
     public void loadRestaurantOrders(RestaurantOrders restaurantOrders) 
     {
         this.restaurantOrders = restaurantOrders;
-		System.out.println("TTTTTTTTTTTTTTTTT"+ this.restaurantOrders.toString());
+		System.out.println("loades restaurant's orders: "+ this.restaurantOrders.toString());
 
     }
     
-    //aaaaaaaaaaaaaaaaaaaaaa
+
     
-    
-    
-    //KKKKKKKKKKKKKKKKKKKKKKK
+    /**
+     * Retrieves the current items in the cart.
+     *
+     * @return An ObservableList of CartItem objects representing the items currently in the cart.
+     */
     public ObservableList<CartItem> getCartItems() {
         return cartItems;
     }
-    //KKKKKKKKKKKKKKKKKKKKKKK
     
 
     

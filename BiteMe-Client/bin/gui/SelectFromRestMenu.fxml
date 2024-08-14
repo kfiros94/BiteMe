@@ -12,9 +12,9 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SelectFromRestMenuController">
    <children>
-      <VBox prefHeight="800.0" prefWidth="1000.0">
+      <VBox prefHeight="810.0" prefWidth="1008.0">
          <children>
-            <Label alignment="CENTER" prefHeight="100.0" prefWidth="1000.0" text="Create New Order">
+            <Label alignment="CENTER" prefHeight="86.0" prefWidth="1004.0" text="Create New Order">
                <font>
                   <Font size="36.0" />
                </font>
@@ -44,8 +44,8 @@
                   <TableView fx:id="menuTableView" prefHeight="400.0" prefWidth="492.0">
                     <columns>
                       <TableColumn fx:id="categoryColumn" prefWidth="82.0" text="Category" />
-                      <TableColumn fx:id="nameColumn" prefWidth="71.0" text="Name" />
-                      <TableColumn fx:id="changesColumn" prefWidth="291.0" text="Changes" />
+                      <TableColumn fx:id="nameColumn" prefWidth="91.0" text="Name" />
+                      <TableColumn fx:id="changesColumn" prefWidth="271.0" text="Changes" />
                       <TableColumn fx:id="priceColumn" prefWidth="47.0" text="Price" />
                     </columns>
                      <HBox.margin>

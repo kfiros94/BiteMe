@@ -23,7 +23,20 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import entities.ClientInfo;
-
+/**
+ * Controller class for managing the server port frame GUI.
+ * Handles interactions with the user, manages server connections, 
+ * and updates the client connection table.
+ * 
+ * @author Kfir Amoyal
+ * @author Israel Ohayon
+ * @author Yaniv Shatil
+ * @author Noam Furman
+ * @author Omri Heit
+ * @author Eitan Zerbel
+ * 
+ * @version August 2024
+ */
 public class ServerPortFrameControllerPro implements Initializable {
     //private EchoServerPro ev;
    // private  EchoServerPro sv;
@@ -49,7 +62,13 @@ public class ServerPortFrameControllerPro implements Initializable {
     private ObservableList<ClientInfo> list = FXCollections.observableArrayList();
     
     private EchoServerPro server;
-
+    /**
+     * Initializes the controller class. Sets the IP address fields 
+     * and configures the table view for displaying client information.
+     * 
+     * @param location The location used to resolve relative paths for the root object.
+     * @param resources The resources used to localize the root object.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -69,7 +88,12 @@ public class ServerPortFrameControllerPro implements Initializable {
         statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
         tableView.setItems(list);
     }
-
+    /**
+     * Starts the primary stage for the server GUI.
+     * 
+     * @param primaryStage The primary stage for this application.
+     * @throws Exception if an error occurs while loading the FXML file.
+     */
     public void start(Stage primaryStage) throws Exception {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/guiPro/ServerGui.fxml"));
@@ -83,15 +107,29 @@ public class ServerPortFrameControllerPro implements Initializable {
             System.out.println("Error loading FXML file.");
         }
     }
-
+    /**
+     * Retrieves the port number entered by the user.
+     * 
+     * @return The port number as a String.
+     */
     private String getPort() {
         return PortTxt.getText();
     }
-
+    /**
+     * Retrieves the database password entered by the user.
+     * 
+     * @return The database password as a String.
+     */
     private String getDBPassword() {
         return DBPasswordTxt.getText();
     }
-
+    /**
+     * Handles the action event when the "Start Server" button is pressed.
+     * Initiates the server and connects to the database.
+     * 
+     * @param event The action event triggered by the button press.
+     * @throws Exception if an error occurs during server startup.
+     */
     @FXML
     void serveStartAction(ActionEvent event) throws Exception {
         String port = getPort();
@@ -105,24 +143,22 @@ public class ServerPortFrameControllerPro implements Initializable {
 
         if (runServer(port, dbPassword)) {
             System.out.println("Server connection succeeded");
-//            addClientInfo("192.168.0.3", "Connected1"); // Example usage
-//            addClientInfo("192.168.0.4", "Connected2"); // Example usage
-//            addClientInfo("192.168.0.5", "Connected3"); // Example usage
-            list.clear();
-           // sv.client_info.get(0).getIp();
-          //  sv.client_info.get(0).getHost();
-          //  sv.client_info.get(0).getStatus();
 
-            
-            
-            
+            list.clear();
+
         } else {
             messageLabel.setText("Incorrect DB Password.");
             connection_Succ.setVisible(false);
             messageLabel.setVisible(true);
         }
     }
-
+    /**
+     * Starts the server with the specified port and database password.
+     * 
+     * @param port The port number to run the server on.
+     * @param dbPassword The password for connecting to the database.
+     * @return True if the server starts successfully, false otherwise.
+     */
     public boolean runServer(String port, String dbPassword) {
         int portNumber = 0;
 
@@ -134,7 +170,6 @@ public class ServerPortFrameControllerPro implements Initializable {
         }
 
        server = new EchoServerPro(portNumber, this);
-      //   sv = new EchoServerPro(portNumber, this);
 
         
         if (!server.connectToDataBase(dbPassword)) {
@@ -151,22 +186,37 @@ public class ServerPortFrameControllerPro implements Initializable {
             return false;
         }
     }
-
+    /**
+     * Handles the action event when the "Close" button is pressed.
+     * Exits the application.
+     * 
+     * @param event The action event triggered by the button press.
+     */
     @FXML
     private void closeAction(ActionEvent event) {
         System.out.println("Closing application");
         System.exit(0);
     }
-
+    
+    /**
+     * Adds a new client information entry to the table view.
+     * 
+     * @param ip The IP address of the connected client.
+     * @param status The connection status of the client.
+     */
     public void addClientInfo(String ip, String status) {
         list.add(new ClientInfo("localhost", ip, status)); // Example host as "localhost"
     }
     
-    
+    /**
+     * Adds client information to the table view when a client connects.
+     * 
+     * @param ip The IP address of the connected client.
+     * @param status The connection status of the client.
+     */
     public void clientConnected(String ip, String status) 
     {
     	addClientInfo(ip,status);
     }
-    
-    
+ 
 }

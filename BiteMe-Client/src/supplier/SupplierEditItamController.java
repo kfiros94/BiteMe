@@ -35,7 +35,19 @@ import java.util.regex.Pattern;
 
 import client.ClientUI;
 
+/**
+ * Controller class for managing and editing supplier menu items.
+ * Handles actions such as adding, editing, and removing menu items.
+ * 
+ * @author Kfir Amoyal
+ * @author Noam Furman
+ * @author Israel Ohayon
+ * @author Eitan Zerbel
+ * @author Yaniv Shatil
+ * @author Omri Heit
 
+ * @version August 2024
+ */
 public class SupplierEditItamController {
 
 	@FXML
@@ -73,12 +85,17 @@ public class SupplierEditItamController {
 	private Restaurant restaurant;
 	private User usupplier;
     private Stage newItemFormStage;
-    
+    /**
+     * Returns the static instance of this controller.
+     * @return the static instance of SupplierEditItamController
+     */
 	public static SupplierEditItamController getController() {
 		return instance;
 	}
 
-	
+    /**
+     * Initializes the controller and sets up the table columns.
+     */
 	@FXML
 	public void initialize() {
 		instance = this;
@@ -103,7 +120,13 @@ public class SupplierEditItamController {
 
 		 }
 	
-	
+    /**
+     * Sets the restaurant and supplier user for this controller.
+     * Loads the menu items for the specified restaurant.
+     * 
+     * @param restaurant  the restaurant to set
+     * @param userSupplier the user representing the supplier
+     */
 	public void setUserRestaurant(Restaurant restaurant, User userSupplier) {
 		this.restaurant = restaurant;
 		restaurantlbl.setText(restaurant.getName());
@@ -113,7 +136,9 @@ public class SupplierEditItamController {
 
 	}
 
-	//requset from db to manue 
+	/**
+     * Loads the menu items from the database for the current restaurant.
+     */
 	public void loadMenuItems() {
 		// Create a MenuItem with only the restaurantId set
 		MenuItem menuItemRequest = new MenuItem();
@@ -122,11 +147,20 @@ public class SupplierEditItamController {
 		BiteOptions RequestRestaurantMenu = new BiteOptions(menuItemRequest.toString(),BiteOptions.Option.SHOW_MENU_RESTAURANT);
 		ClientUI.chat.accept(RequestRestaurantMenu);
 	}
-	
+    /**
+     * Handles the message from the server with the menu items.
+     * Parses the menu items and updates the table view.
+     * 
+     * @param msg the message from the server
+     */
 	public static void GetMessageFromServer(String msg) {
 		System.out.println("SupplierEditItamController- Message From Server: "+msg );
 	}
-	
+    /**
+     * Sets the menu items list in the table view with the data received from the server.
+     * 
+     * @param BiteItems the data containing menu items from the server
+     */
 	public static void setMenuItemsList(BiteOptions BiteItems) {
 	    if (instance != null) {
 	        List<String> menuItemStrings = new ArrayList<>();
@@ -157,50 +191,19 @@ public class SupplierEditItamController {
 
 	        System.out.println("menuItemsList: " + menuItemsList);
 
-	        // Output the list of item IDs
-	       // System.out.println("List of all item IDs: " + itemIds);
-	        
-	     // Update existingItemIds list
-	      //  instance.existingItemIds = new ArrayList<>(itemIds); 
-	        //System.out.println("List of existing item IDs: " + instance.existingItemIds);
 	    }
 	    
 	 
 	}
 
 
-/*	
-	public static void setMenuItemsList(BiteOptions BiteItems) {
-	    if (instance != null) {
-	        List<String> menuItemStrings = new ArrayList<>();
-	        Pattern pattern = Pattern.compile("MenuItem\\{[^}]+\\}"); 
-	        Matcher matcher = pattern.matcher(BiteItems.getData().toString());
 
-	        while (matcher.find()) {
-	            menuItemStrings.add(matcher.group());
-	        }
-
-	        List<MenuItem> menuItems = new ArrayList<>();
-	        for (String menuItemString : menuItemStrings) {
-	            try {
-	                MenuItem menuItem = MenuItem.fromString(menuItemString);
-	                menuItems.add(menuItem);
-	            } catch (IllegalArgumentException e) {
-	                System.err.println("Error parsing menu item: " + menuItemString);
-	                e.printStackTrace();
-	            }
-	        }
-
-	        instance.menuItemsList = new ArrayList<>(menuItems); // Save the list in menuItemsList
-	        instance.menuItemsTable.setItems(FXCollections.observableArrayList(instance.menuItemsList));
-
-	        System.out.println("menuItemsList: " + menuItemsList);
-   
-	    }   	 
-	}
-*/
 	
-
+	 /**
+     * Handles the "Back" button action. Navigates back to the main page.
+     * 
+     * @param event the action event triggered by the button click
+     */
 	@FXML
 	private void handleBack(ActionEvent event) {
 		
@@ -229,7 +232,11 @@ public class SupplierEditItamController {
 	}
 
 
-	
+	/**
+     * Handles the "Add Item" button action. Opens the form to add a new item.
+     * 
+     * @param event the action event triggered by the button click
+     */
 	 @FXML
 	    private void handleAddItam(ActionEvent event) {
 		 ItamNotSelectedlbl.setVisible(false);
@@ -256,7 +263,11 @@ public class SupplierEditItamController {
 	    }
 
 
-	// Handle response from ChatClient
+	    /**
+	     * Adds or updates a menu item in the table view based on the data received.
+	     * 
+	     * @param updatedItem the menu item to add or update
+	     */
 	 public void MenuItemAddOrupdatedFromChat(MenuItem updatedItem) {
 		    // Check if the item already exists in the list
 		 ItamNotSelectedlbl.setVisible(false);
@@ -286,8 +297,12 @@ public class SupplierEditItamController {
 		}
 
 
-
-	@FXML // DELETE_ITEM_MENU
+	    /**
+	     * Handles the "Remove Item" button action. Removes the selected item from the list and table view.
+	     * 
+	     * @param event the action event triggered by the button click
+	     */
+	@FXML
 	private void handleRemoveItam(ActionEvent event) {
 		System.out.println("Remove item button clicked");
 
@@ -318,7 +333,11 @@ public class SupplierEditItamController {
 
 	}
 
-
+	/**
+     * Handles the "Edit Item" button action. Opens the form to edit the selected item.
+     * 
+     * @param event the action event triggered by the button click
+     */
 	@FXML
 	private void handleEdit(ActionEvent event) {
 	    // Get the selected item from the table
