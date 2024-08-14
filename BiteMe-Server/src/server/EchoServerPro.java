@@ -61,6 +61,8 @@ public class EchoServerPro extends AbstractServer
 		BiteOptions request = (BiteOptions) msg;
 		BiteOptions answer= new BiteOptions();
 		ArrayList<RestaurantOrders> costumer_all_orders = new ArrayList<RestaurantOrders>();
+		ArrayList<RestaurantOrders> Restaurantall_orders_income = new ArrayList<RestaurantOrders>();
+
 		User user;
 		MenuItems menuItem;
 		Restaurant restaurant;
@@ -430,6 +432,115 @@ public class EchoServerPro extends AbstractServer
                    break;
 
                // Add other cases here as needed...
+                   
+                   
+                   //EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+                   
+               case GET_RESTAURANT_ORDERS:          	   
+            	   RestaurantOrders REstOrd = new RestaurantOrders();
+            	   REstOrd = RestaurantOrders.fromString(request.getData().toString());
+					System.out.println("Eco-Test: We entered GET_RESTAURANT_ORDERS: " + REstOrd );
+					BiteOptions returendOrdersNoam = DBController.getOrdersByRestaurantId(REstOrd);
+					if (returendOrdersNoam.getData()!=null) {
+						System.out.println("Eco-Test: We recived from DB " + returendOrdersNoam );
+						client.sendToClient(returendOrdersNoam);
+
+					}
+		            break;
+		            /////////////noam2
+               case CHANGE_ORDER_STATUS:
+            	   RestaurantOrders ResstatNoam = new RestaurantOrders();
+            	   ResstatNoam = RestaurantOrders.fromString(request.getData().toString());
+					System.out.println("Eco-Test: We entered CHANGE_ORDER_STATUS: " + ResstatNoam );
+					String returensts = DBController.updateOrderStatus(ResstatNoam);
+					System.out.println("Eco-Test: returend from DB: " + returensts );
+			
+					client.sendToClient("88");
+
+		            break;
+		            ////////////////noam1
+               case GET_USER_FOR_NOTIFICATION:
+            	   User getusernoam =new User();
+            	   getusernoam=User.fromString(request.getData().toString());
+            	   int getusernoamid =getusernoam.getUserId();
+					System.out.println("Eco-Test: We entered GET_USER_FOR_NOTIFICATION: " + getusernoamid );
+
+	                User returenusernoam =DBController.getUserById(getusernoamid);
+					System.out.println("Eco-Test: returend from DB: " + returenusernoam );
+					
+					BiteOptions biteusernoam= new BiteOptions(returenusernoam.toString(),BiteOptions.Option.GET_USER_FOR_NOTIFICATION);
+					client.sendToClient(biteusernoam);
+		            break;
+            	   
+            	   //EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+                   
+                   
+                   
+       			
+       			////eitannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+       			
+       			
+       			case FETCH_INCOME_REPORTS:
+                   
+                   //_Restaurantall_orders
+                    System.out.println("Eco-Test: we entered FETCH_INCOME_REPORTS: " + request.getData().toString());
+       				
+       				
+                    Restaurantall_orders_income= DBController.getOrdersByBranch(request.getData().toString());
+			        System.out.println("Eco-Test FETCH_INCOME_REPORTS: Print RRRRRR: "+Restaurantall_orders_income);
+
+				    
+					answer.setData(Restaurantall_orders_income.toString());
+					answer.setOption(BiteOptions.Option.FETCH_INCOME_REPORTS);
+					client.sendToClient(answer);
+                   
+                   
+
+                    break;
+                    
+                    
+                    
+       			case FETCH_ORDER_REPORTS:
+                    System.out.println("Eco-Test: we entered FETCH_ORDER_REPORTS: " + request.getData().toString());
+
+                    
+                    Restaurantall_orders_income= DBController.getOrdersByBranch(request.getData().toString());
+			        System.out.println("Eco-Test FETCH_ORDER_REPORTS: Print KYYYYYYY: "+Restaurantall_orders_income);
+
+				    
+					answer.setData(Restaurantall_orders_income.toString());
+					answer.setOption(BiteOptions.Option.FETCH_ORDER_REPORTS);
+					client.sendToClient(answer);
+                    
+       				
+
+       				
+                    break;
+
+       				
+                    
+       			case FETCH_PERFORMENCE_REPORTS:
+
+                    System.out.println("Eco-Test: we entered FETCH_PERFORMENCE_REPORTS: " + request.getData().toString());
+
+                    
+                    Restaurantall_orders_income= DBController.getOrdersByBranch(request.getData().toString());
+			        System.out.println("Eco-Test FETCH_ORDER_REPORTS: Print tRRRRRR: "+Restaurantall_orders_income);
+
+				    
+					answer.setData(Restaurantall_orders_income.toString());
+					answer.setOption(BiteOptions.Option.FETCH_PERFORMENCE_REPORTS);
+					client.sendToClient(answer);
+                    
+       				
+
+       				
+                    break;
+
+
+                   
+                   
+                   
            }
 
 				   
@@ -439,6 +550,8 @@ public class EchoServerPro extends AbstractServer
 				   //AAAAAAA
 			
 			
+			
+	
 			
 			
 			

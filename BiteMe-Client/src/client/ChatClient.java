@@ -7,6 +7,7 @@ package client;
 import ocsf.client.*;
 import supplier.MainPageSupplierController;
 import supplier.SupplierEditItamController;
+import supplier.Supplier_OrderManagementController;
 import client.*;
 import entities.*;
 import gui.MainPagesClientController;
@@ -66,6 +67,11 @@ public static ArrayList<RestaurantOrders> customer_all_orders1 = new ArrayList<>
 
 //Convert the ArrayList to an ObservableList
 public static ObservableList<RestaurantOrders> observableOrdersList = FXCollections.observableArrayList(customer_all_orders1);
+
+
+public static ArrayList<RestaurantOrders> Restaurantall_orders = new ArrayList<>();
+public static ArrayList<RestaurantOrders> Restaurantall_Type_Food_orders = new ArrayList<>();
+public static ArrayList<RestaurantOrders> Restaurantall_orders_per = new ArrayList<>();
 
   
   //משתנה שעוזר להבין אם חזרה הודעה מהשרת ללקוח
@@ -295,6 +301,83 @@ public static ObservableList<RestaurantOrders> observableOrdersList = FXCollecti
 	                      SupplierEditItamController.getController().MenuItemAddOrupdatedFromChat(receivedMenuItem);
 	                  }
 	                  break;
+	                  
+	                  
+	                  //EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+	                  ///////////////////////////noam 2 down:
+	              case GET_RESTAURANT_ORDERS:  
+                      System.out.println("-->test:in charclient case GET_RESTAURANT_ORDERS ");
+                      if (Supplier_OrderManagementController.instance != null) {
+                          System.out.println("-->test5: Setting orders in Supplier_OrderManagementController");
+                          Supplier_OrderManagementController.instance.loadRestaurantOrders(answer);
+                      } else {
+                          System.out.println("-->test5: Supplier_OrderManagementController instance is null");
+                      }        	   
+			            break;
+			            //////////////////noam1 down:
+	              case GET_USER_FOR_NOTIFICATION:
+                      System.out.println("-->test:in charclient case GET_RESTAURANT_ORDERS ");
+                      if (Supplier_OrderManagementController.instance != null) {
+                          System.out.println("-->test5: Setting orders in Supplier_OrderManagementController");
+                          User sendusernoam =User.fromString(answer.getData().toString());
+                          Supplier_OrderManagementController.instance.settUserDitales(sendusernoam);
+                      } else {
+                          System.out.println("-->test5: Supplier_OrderManagementController instance is null");
+                      }        	   
+			            break;
+
+	                  
+	                  
+	                  
+	                  //EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+	                  
+	                  
+	                  
+	                  
+	                  
+	         			
+	         			////eitannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+	         			
+	         			
+	         			case FETCH_INCOME_REPORTS:
+	                     
+	  	                System.out.println("ChatClient: we entered FETCH_INCOME_REPORTS: ");
+	  	               
+	  	                Restaurantall_orders = RestaurantOrders.fromStringArray(answer.getData().toString());
+	  			        System.out.println("LETS SEE WHAT IS THE ANSWER: " + Restaurantall_orders);
+	                     
+	                     
+
+	                      break;
+	                      
+	                      
+	                      
+	           			case FETCH_ORDER_REPORTS:
+	           				
+		  	                System.out.println("ChatClient: we entered FETCH_ORDER_REPORTS: ");
+		  	              //Restaurantall_Type_Food_orders
+	           				
+		  	              Restaurantall_Type_Food_orders = RestaurantOrders.fromStringArray(answer.getData().toString());
+		  			        System.out.println("LETS SEE WHAT IS THE ANSWER: " + Restaurantall_Type_Food_orders);
+		  	                
+	           				
+		                      break;
+		                      
+		                      
+		                      
+		                      
+	           			case FETCH_PERFORMENCE_REPORTS:
+		                     
+		  	                System.out.println("ChatClient: we entered FETCH_PERFORMENCE_REPORTS: ");
+		  	               
+		  	              Restaurantall_orders_per = RestaurantOrders.fromStringArray(answer.getData().toString());
+		  			        System.out.println("LETS SEE WHAT IS THE ANSWER: " + Restaurantall_orders);
+
+	                      break;
+
+	                  
+	                  
+	                  
 
 				
 			}

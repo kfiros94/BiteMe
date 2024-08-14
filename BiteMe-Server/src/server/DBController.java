@@ -700,5 +700,157 @@ public class DBController
         System.out.println("sending BiteOptions from db: " + restaurantfound);
         return restaurantfound;
     }
+    
+    
+    //aaaaaaaaaaaaaaaaaaaa
+    
+ // Method to retrieve all orders for a specific branch
+    protected static ArrayList<RestaurantOrders> getOrdersByBranch(String branchName)
+    {
+        ArrayList<RestaurantOrders> ordersList = new ArrayList<>();
+
+        String query = "SELECT restaurant, order_number, total_price, order_list, order_address, user_id, restaurant_id, " +
+                       "placing_order_date, status, delivery_type, order_requested_date, full_name, phone_number, branch, " +
+                       "order_received FROM restaurant_orders WHERE branch = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, branchName);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                RestaurantOrders order = new RestaurantOrders();
+                order.setRestaurant(rs.getString("restaurant"));
+                order.setOrder_number(rs.getInt("order_number"));
+                order.setTotal_price(rs.getDouble("total_price"));
+                order.setOrder_list(rs.getString("order_list"));
+                order.setOrder_address(rs.getString("order_address"));
+                order.setUser_id(rs.getInt("user_id"));
+                order.setRestaurant_id(rs.getInt("restaurant_id"));
+                order.setPlacing_order_date(rs.getString("placing_order_date"));
+                order.setStatus(rs.getString("status"));
+                order.setDelivery_type(rs.getString("delivery_type"));
+                order.setOrder_requested_date(rs.getString("order_requested_date"));
+                order.setFull_name(rs.getString("full_name"));
+                order.setPhone_number(rs.getString("phone_number"));
+                order.setBranch(rs.getString("branch"));
+                order.setOrder_received(rs.getString("order_received"));
+
+                ordersList.add(order);
+            }
+
+            rs.close();
+        } catch (SQLException e) {
+            System.out.println("Error retrieving orders by branch: " + e.getMessage());
+        }
+
+        return ordersList;
+    }
+
+    
+    //aaaaaaaaaaaaaaaaaaaa
+    
+    
+    //noammmm
+    
+    /**
+     * Retrieves all restaurant orders for a given restaurant ID.
+     * 
+     * @param restaurantOrder The restaurant order containing the restaurant ID.
+     * @return A BiteOptions object containing an ArrayList of RestaurantOrders.
+     */
+    public static BiteOptions getOrdersByRestaurantId(RestaurantOrders restaurantOrder) {
+        System.out.println("DBController: Entered getOrdersByRestaurantId method.");
+        
+        ArrayList<RestaurantOrders> ordersList = new ArrayList<>();
+        String query = "SELECT * FROM restaurant_orders WHERE restaurant_id = ?";
+        
+        System.out.println("DBController: Preparing to execute query to fetch orders for restaurant ID: " + restaurantOrder.getRestaurant_id());
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, restaurantOrder.getRestaurant_id());
+            System.out.println("DBController: Query prepared: " + stmt.toString());
+
+            ResultSet rs = stmt.executeQuery();
+            System.out.println("DBController: Query executed successfully.");
+
+            while (rs.next()) {
+                RestaurantOrders order = new RestaurantOrders();
+                order.setOrder_number(rs.getInt("order_number"));
+                order.setRestaurant_id(rs.getInt("restaurant_id"));
+                order.setTotal_price(rs.getDouble("total_price"));
+                order.setOrder_list(rs.getString("order_list"));
+                order.setOrder_address(rs.getString("order_address"));
+                order.setUser_id(rs.getInt("user_id"));
+                order.setPlacing_order_date(rs.getString("placing_order_date"));
+                order.setStatus(rs.getString("status"));
+                order.setDelivery_type(rs.getString("delivery_type"));
+                order.setOrder_requested_date(rs.getString("order_requested_date"));
+                order.setFull_name(rs.getString("full_name"));
+                order.setPhone_number(rs.getString("phone_number"));
+                order.setBranch(rs.getString("branch"));
+                order.setOrder_received(rs.getString("order_received"));
+
+                ordersList.add(order);
+                System.out.println("DBController: Added order to list: " + order);
+            }
+            rs.close();
+            System.out.println("DBController: Finished processing ResultSet.");
+            
+            if (ordersList.isEmpty()) {
+                System.out.println("DBController: No orders found for restaurant_id: " + restaurantOrder.getRestaurant_id());
+                return new BiteOptions(null, BiteOptions.Option.GET_RESTAURANT_ORDERS);
+            } else {
+                System.out.println("DBController: Found " + ordersList.size() + " orders for restaurant_id: " + restaurantOrder.getRestaurant_id());
+            }
+
+        } catch (SQLException e) {
+            System.out.println("DBController: Error retrieving restaurant orders: " + e.getMessage());
+        }
+
+        // Create a BiteOptions object to return
+        BiteOptions result = new BiteOptions(ordersList, BiteOptions.Option.GET_RESTAURANT_ORDERS);
+        System.out.println("DBController: Created BiteOptions object with orders list. Returning result.");
+
+        return result;
+    }
+    
+    
+    //noammmm
+    
+    protected static String updateOrderStatus(RestaurantOrders order) {
+        String updateQuery = "UPDATE restaurant_orders SET status = ? WHERE order_number = ?";
+        
+        System.out.println("Debug: Starting updateOrderStatus method.");
+        System.out.println("Debug: Received order object - " + order.toString());
+
+        try (PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
+            // Set the status from the RestaurantOrders object
+            System.out.println("Debug: Setting status in prepared statement to '" + order.getStatus() + "'.");
+            stmt.setString(1, order.getStatus());
+
+            // Set the order_number from the RestaurantOrders object
+            System.out.println("Debug: Setting order_number in prepared statement to '" + order.getOrder_number() + "'.");
+            stmt.setInt(2, order.getOrder_number());
+
+            // Execute the update
+            int affectedRows = stmt.executeUpdate();
+            System.out.println("Debug: Executed update statement, affectedRows = " + affectedRows);
+
+            if (affectedRows > 0) {
+                String successMessage = "Order status updated to '" + order.getStatus() + "' successfully.";
+                System.out.println("Debug: " + successMessage);
+                return successMessage;
+            } else {
+                String noOrderMessage = "No order found with the specified order_number.";
+                System.out.println("Debug: " + noOrderMessage);
+                return noOrderMessage;
+            }
+        } catch (SQLException e) {
+            String errorMessage = "Error updating order status: " + e.getMessage();
+            System.out.println("Debug: " + errorMessage);
+            return "Failed to update order status.";
+        }
+    }
+    
 
 }

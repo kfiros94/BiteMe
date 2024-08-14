@@ -84,7 +84,7 @@ public class MainPageSupplierController {
     
     
 	
-    
+    /*
     //לממש מחדש יניב עשה
 	@FXML
 	public void showOrders(ActionEvent event) {
@@ -107,7 +107,42 @@ public class MainPageSupplierController {
 		        e.printStackTrace();
 		    }
 	}
+	*/
+    
+    
+    //aaaaaaaaaaaaaaaaaa
+    
+    
+    //לממש מחדש יניב עשה
+	@FXML
+	public void showOrders(ActionEvent event) {
+		 System.out.println(Srestaurant.getName() + " enters Supplier_OrderManagementController");
+		    try {
+		        FXMLLoader loader = new FXMLLoader(getClass().getResource("/supplier/Supplier_OrderManagement.fxml"));
+		        Parent root = loader.load();
+
+		        Supplier_OrderManagementController controller = loader.getController();
+		        
+		        // Set User and restaurant to the controller-Supplier_OrderManagementController
+		        controller.setSupplier(UserSupllier);
+		        controller.setRestaurant(Srestaurant); 
+
+
+		        Scene scene = new Scene(root);
+		        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		        stage.setScene(scene);
+		        stage.setTitle("Order Management - BiteMe");
+		        stage.show();
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    }
+	}
 	
+    
+    
+    //aaaaaaaaaaaaaaaaaa
+    
+    
 	
     @FXML
     public void EditItamButton(ActionEvent event) 
