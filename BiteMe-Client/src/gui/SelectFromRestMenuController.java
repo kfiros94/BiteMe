@@ -10,6 +10,7 @@ import client.ChatClient;
 import entities.MenuItems;
 import entities.Restaurant;
 import entities.RestaurantOrders;
+import entities.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -89,6 +90,14 @@ public class SelectFromRestMenuController
     
     private ArrayList<Restaurant> restaurantslocal = new  ArrayList<Restaurant>();
     private RestaurantOrders restaurantOrders = new RestaurantOrders();
+
+    
+    private User UserDitales;  
+    
+    public void loadUserCustomer(User userCustomer) {
+        this.UserDitales = userCustomer;
+        System.out.println("Customer Details set: " + this.UserDitales);
+    }
 
 
 
@@ -266,6 +275,8 @@ public class SelectFromRestMenuController
 	            supplyConfigurationController.initData(cartItems);
 
 	            supplyConfigurationController.loadRestaurantOrders(restaurantOrders);
+	            supplyConfigurationController.seUserDitales(UserDitales); // Pass UserDitales here
+
 
 	            // Debugging print to understand how the cart items array looks like
 	            System.out.println("print cartItemsSSSSSSSSSSS:" + supplyConfigurationController.getcartItems());
@@ -276,6 +287,8 @@ public class SelectFromRestMenuController
 	            Scene scene = new Scene(root);
 	            stage.setScene(scene);
 	            stage.show();
+	            stage.setTitle("User-Portal -> New Order -> Select Restaurant -> Select Menu Items -> Supply Configuration");
+
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	            showAlert("Error", "Could not load the Supply Configuration page.");

@@ -609,6 +609,61 @@ public class EchoServerPro extends AbstractServer
        				
        				
                     break;
+                    
+       			case GET_DISCOUNT_COUNT:
+       				
+                    System.out.println("Eco-Test: we entered GET_DISCOUNT_COUNT: " + request.getData().toString());
+                    User userDiscontCnt;
+
+       				
+                    userDiscontCnt = User.fromString(request.getData().toString());//ממיר את המחרוזת למופע של לקוח                    
+    		        int userdiscountid=userDiscontCnt.getUserId();
+    		        int DiscontCnt=DBController.getDiscountCountByUserId(userdiscountid);
+                    
+    		        System.out.println("Eco-Test: returend count from DB: " + DiscontCnt);
+    		        BiteOptions discountCountResponse= new BiteOptions(String.valueOf(DiscontCnt), BiteOptions.Option.GET_DISCOUNT_COUNT);
+					client.sendToClient(discountCountResponse);
+                    break;
+
+					
+       			case UPDATE_DISCOUNT_COUNT:
+       				
+                    System.out.println("Eco-Test: we entered UPDATE_DISCOUNT_COUNT: " + request.getData().toString());
+                    User userDiscontupdate;
+                    
+                    userDiscontupdate = User.fromString(request.getData().toString());//ממיר את המחרוזת למופע של לקוח                    
+    		        int userdisupid=userDiscontupdate.getUserId();
+    		        int newDiscountCount  =DBController.decrementDiscountCount(userdisupid);
+                    
+    		        System.out.println("Eco-Test: returend count from DB: " + newDiscountCount);
+    		        if (newDiscountCount != -1) {
+    		            // Successfully decremented discount, send back the new count
+    		            client.sendToClient(new BiteOptions(String.valueOf(newDiscountCount), BiteOptions.Option.UPDATE_DISCOUNT_COUNT));
+    		        } else {
+    		            // Failed to decrement discount, send back error indicator
+    		            client.sendToClient(new BiteOptions("-1", BiteOptions.Option.UPDATE_DISCOUNT_COUNT));
+    		        }
+    		    
+
+    		     	
+                    break;
+                    
+       			case INCREMENT_DISCOUNT_COUNT:
+       			    System.out.println("Incrementing discount count for user: " + request.getData().toString());
+       			    int userincrementId = Integer.parseInt(request.getData().toString());
+
+       			    // Call DB method to increment discount count
+       			    int DiscountCount = DBController.incrementDiscountCount(userincrementId);
+
+       			    if (DiscountCount != -1) {
+       			        // Successfully incremented discount, send back the new count
+       			        client.sendToClient(new BiteOptions(String.valueOf(DiscountCount), BiteOptions.Option.INCREMENT_DISCOUNT_COUNT));
+       			    } else {
+       			        // Failed to increment discount, send back error indicator
+       			        client.sendToClient(new BiteOptions("-1", BiteOptions.Option.INCREMENT_DISCOUNT_COUNT));
+       			    }
+       			    break;
+
 
                     
                     

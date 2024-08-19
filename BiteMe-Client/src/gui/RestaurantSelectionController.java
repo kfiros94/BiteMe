@@ -173,11 +173,13 @@ public class RestaurantSelectionController
             primaryStage.setScene(scene);
             primaryStage.show();
 			primaryStage.setTitle("User-Portal -> New Order -> Select Restaurant -> Select Menu Items");
-
-            
+			
+	            
 			SelectFromRestMenuController SelectFromRestMenuController = loader.getController();
 			SelectFromRestMenuController.loadRestaurant(restaurantslocal);
 			SelectFromRestMenuController.loadRestaurantOrders(restaurantOrders); //טוען לדף הבא את המופע של ההזמנה,מדף לדף אני אוסף מידע
+	        SelectFromRestMenuController.loadUserCustomer(UserCustomer);
+
 
             // Uncomment and use if needed
         } 

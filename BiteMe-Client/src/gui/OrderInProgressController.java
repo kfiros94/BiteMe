@@ -16,6 +16,9 @@ import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 import client.ChatClient;
 import client.ClientUI;
@@ -110,6 +113,30 @@ public class OrderInProgressController {
                 System.out.println("The Order number is: " + selectedOrder.getOrder_number());
                 BiteOptions option = new BiteOptions(selectedOrder.getOrder_number(), BiteOptions.Option.UPDATE_ORDER_STATUS_CUSTOMER);
                 ClientUI.chat.accept(option);
+                
+             // Check if the order qualifies for a coupon
+                LocalDateTime placingDateTime = LocalDateTime.parse(selectedOrder.getPlacing_order_date(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                LocalDateTime currentDateTime = LocalDateTime.now();
+
+                long hoursDifference = ChronoUnit.HOURS.between(placingDateTime, currentDateTime);
+                boolean qualifiesForCoupon = false;
+
+                if (hoursDifference >= 1 || currentDateTime.toLocalDate().isAfter(placingDateTime.toLocalDate())) {
+                    qualifiesForCoupon = true;
+                }
+
+                if (qualifiesForCoupon) {
+                    System.out.println("Order qualifies for a coupon.");
+                    // Update the user's discount count in the database
+                    BiteOptions discountOption = new BiteOptions(ChatClient.user1.getUserId(), BiteOptions.Option.INCREMENT_DISCOUNT_COUNT);
+                    ClientUI.chat.accept(discountOption);
+
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Coupon Earned!");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Sorry for the delay! You've earned a coupon for your next order.");
+                    alert.showAndWait();
+                }
             } 
             
             else if (selectedOrder.getStatus().equals("confirmed"))

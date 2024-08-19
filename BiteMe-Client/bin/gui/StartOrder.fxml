@@ -4,96 +4,111 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.effect.DropShadow?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.StartOrderController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="880.0" prefWidth="1010.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.StartOrderController">
    <children>
-      <VBox layoutX="-14.0" layoutY="6.0" prefHeight="500.0" prefWidth="800.0">
+      <VBox alignment="CENTER" layoutX="5.0" layoutY="4.0" prefHeight="880.0" prefWidth="1010.0">
          <children>
-            <Label prefHeight="35.0" prefWidth="209.0" text="Create New Order">
-               <VBox.margin>
-                  <Insets left="320.0" />
-               </VBox.margin>
+            <Label alignment="CENTER" prefHeight="78.0" prefWidth="1010.0" text="Create New Order" textFill="#8160ff">
                <font>
-                  <Font size="24.0" />
+                  <Font name="Segoe UI" size="49.0" />
                </font>
             </Label>
-            <Label prefHeight="27.0" prefWidth="215.0" text="ReEnter Account Details">
-               <VBox.margin>
-                  <Insets left="320.0" top="40.0" />
-               </VBox.margin>
+            <Label alignment="CENTER" prefHeight="97.0" prefWidth="357.0" text="ReEnter Account Details" textFill="#8161ff">
                <font>
-                  <Font size="18.0" />
+                  <Font size="32.0" />
                </font>
+               <VBox.margin>
+                  <Insets top="40.0" />
+               </VBox.margin>
             </Label>
-            <HBox prefHeight="34.0" prefWidth="800.0">
+            <ImageView fitHeight="60.0" fitWidth="88.0" pickOnBounds="true" preserveRatio="true">
+               <VBox.margin>
+                  <Insets left="65.0" right="500.0" top="-80.0" />
+               </VBox.margin>
+               <image>
+                  <Image url="@id.png" />
+               </image>
+            </ImageView>
+            <HBox alignment="CENTER" prefHeight="34.0" prefWidth="800.0">
                <children>
                   <Label text="UserName">
                      <HBox.margin>
-                        <Insets left="280.0" top="5.0" />
+                        <Insets right="20.0" />
                      </HBox.margin>
+                     <font>
+                        <Font size="23.0" />
+                     </font>
                   </Label>
-                  <TextField fx:id="usernameField">
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </TextField>
+                  <TextField fx:id="usernameField" />
                </children>
                <VBox.margin>
                   <Insets top="70.0" />
                </VBox.margin>
             </HBox>
-            <HBox layoutX="10.0" layoutY="182.0" prefHeight="34.0" prefWidth="800.0">
-               <children>
-                  <Label fx:id="incorrectUsernameLabel" prefHeight="21.0" prefWidth="142.0" text="Incorrcet UserName" textFill="RED">
-                     <HBox.margin>
-                        <Insets left="400.0" top="5.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-            </HBox>
-            <HBox layoutX="10.0" layoutY="112.0" prefHeight="34.0" prefWidth="800.0">
+            <Label fx:id="incorrectUsernameLabel" prefHeight="21.0" prefWidth="142.0" text="Incorrect UserName" textFill="RED">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="34.0" prefWidth="800.0">
                <children>
                   <Label text="Password">
                      <HBox.margin>
-                        <Insets left="280.0" top="5.0" />
+                        <Insets right="20.0" />
                      </HBox.margin>
+                     <font>
+                        <Font size="23.0" />
+                     </font>
                   </Label>
-                  <TextField fx:id="passwordField">
-                     <HBox.margin>
-                        <Insets left="26.0" />
-                     </HBox.margin>
-                  </TextField>
+                  <TextField fx:id="passwordField" />
                </children>
                <VBox.margin>
                   <Insets top="40.0" />
                </VBox.margin>
             </HBox>
-            <HBox layoutX="10.0" layoutY="279.0" prefHeight="34.0" prefWidth="800.0">
+            <Label fx:id="incorrectPasswordLabel" text="Incorrect Password" textFill="RED">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Label>
+            <ImageView fitHeight="191.0" fitWidth="231.0" pickOnBounds="true" preserveRatio="true">
+               <VBox.margin>
+                  <Insets bottom="-250.0" left="550.0" />
+               </VBox.margin>
+               <image>
+                  <Image url="@shark.png" />
+               </image>
+            </ImageView>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="700.0">
                <children>
-                  <Label fx:id="incorrectPasswordLabel" text="Incorrcet Password" textFill="RED">
-                     <HBox.margin>
-                        <Insets left="400.0" top="5.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-            </HBox>
-            <HBox prefHeight="147.0" prefWidth="828.0">
-               <children>
-                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleBackButtonAction" prefHeight="50.0" prefWidth="82.0" text="  ⬅ back">
-                     <HBox.margin>
-                        <Insets left="30.0" top="60.0" />
-                     </HBox.margin>
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleBackButtonAction" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #8160ff; -fx-text-fill: white; -fx-background-radius: 5;" text="⬅ Back">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <effect>
+                        <DropShadow color="#00000040" height="5.0" radius="2.0" width="5.0" />
+                     </effect>
                   </Button>
-                  <Button fx:id="nextButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#StartOrderhandleNextButtonAction" prefHeight="50.0" prefWidth="80.0" text="next  ⮕">
-                     <HBox.margin>
-                        <Insets left="600.0" top="60.0" />
-                     </HBox.margin>
+                  <Button fx:id="nextButton" mnemonicParsing="false" onAction="#StartOrderhandleNextButtonAction" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #8160ff; -fx-text-fill: white; -fx-background-radius: 5;" text="Next ⮕">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <effect>
+                        <DropShadow color="#00000040" height="5.0" radius="2.0" width="5.0" />
+                     </effect>
                   </Button>
                </children>
+               <VBox.margin>
+                  <Insets top="300.0" />
+               </VBox.margin>
             </HBox>
          </children>
       </VBox>

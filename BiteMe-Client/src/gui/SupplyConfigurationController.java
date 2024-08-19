@@ -16,7 +16,9 @@ import javafx.scene.Scene;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -60,6 +62,14 @@ public class SupplyConfigurationController {
     @FXML private TableColumn<CartItem, Double> priceColumn;
     @FXML private Label totalPriceLabel;
     @FXML private Label timeNotSpecError;
+    
+    @FXML private Button applyDiscountButton;
+    @FXML private Label discountMessageLabel;
+    @FXML private Label discounLabel;
+    @FXML private Label discountnumLabel;
+    @FXML private Label FinalPriceLabel;
+    @FXML private Label FinalPriceNumLabel;
+    @FXML private Label DiscountApleyLabel;
 
     private ObservableList<CartItem> cartItems;
     private double deliveryFee = 25.0;
@@ -67,6 +77,11 @@ public class SupplyConfigurationController {
     private RestaurantOrders restaurantOrders = new RestaurantOrders();
 
     private double totalPrice;
+    
+    private User UserDitales;  
+    private int discountAmount = 0;
+    private int discountCount = 0;
+    private LocalDate selectedDate;
     
     
     /**
@@ -76,6 +91,12 @@ public class SupplyConfigurationController {
      */
     @FXML
     private void initialize() {
+        applyDiscountButton.setDisable(true);
+        discounLabel.setVisible(false);
+        FinalPriceLabel.setVisible(false);
+        discountnumLabel.setText("");
+        FinalPriceNumLabel.setText("");
+
     	supplyMethodComboBox.setValue("pickup");  // Set initial value
         supplyMethodComboBox.getItems().addAll("pickup", "Delivery");
         supplyMethodComboBox.setOnAction(e -> {
@@ -109,8 +130,45 @@ public class SupplyConfigurationController {
         
     }
     
+
+    /**
+     * Set the CustomerDitales/UserCustomer information passed from RestaurantSelectionController.
+     * 
+     * @param userCustomer The User object containing the customer details.
+     */
+    public void seUserDitales(User userCustomer) {
+        this.UserDitales = userCustomer;
+        System.out.println("Customer Details set: " + this.UserDitales);
+        
+        if (UserDitales.isHasDiscountCode())
+        {
+        	  // Check and load discount count when setting the user
+            	checkAndEnableDiscountButton();
+        }
+    }
     
-    
+    /**
+     * Checks if the user has discount codes available and enables the apply button if they do.
+     */
+    private void checkAndEnableDiscountButton() {
+        // Fetch the number of discount codes from the server or database
+        BiteOptions option = new BiteOptions(UserDitales.toString(), BiteOptions.Option.GET_DISCOUNT_COUNT);
+        ClientUI.chat.accept(option);
+        
+        discountCount = ChatClient.discountCount;
+        System.out.println("SupplyConfigurationController user has discountCount: "+discountCount);
+
+
+        if (discountCount > 0) {
+            applyDiscountButton.setDisable(false);
+            discountMessageLabel.setText("You have "+discountCount+" discounts to redeem");
+
+        } else {
+            applyDiscountButton.setDisable(true);
+        }
+    }
+        
+       
     /**
      * Disables all fields related to delivery information.
      */
@@ -284,6 +342,7 @@ public class SupplyConfigurationController {
 
             SelectFromRestMenuController controller = loader.getController();
             controller.restoreState(previousController);
+            controller.loadUserCustomer(this.UserDitales);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
@@ -340,6 +399,8 @@ public class SupplyConfigurationController {
 
         return "[" + formattedChanges + "]";
     }
+    
+    
     /**
      * Generates a JSON representation of the cart items.
      * 
@@ -371,6 +432,7 @@ public class SupplyConfigurationController {
     {
         this.restaurantOrders = restaurantOrders;
 		System.out.println("OOOOOOOOOOOO"+ this.restaurantOrders.toString());
+		
 
     }
     
@@ -383,7 +445,7 @@ public class SupplyConfigurationController {
      * @return A string in the format 'YYYY-MM-DD HH:MM:SS' representing the selected date and time.
      */
     private String generateDateTimeString() {
-        LocalDate selectedDate = supplyDatePicker.getValue();
+        selectedDate = supplyDatePicker.getValue();
         int selectedHour = (int) supplyHourSpinner.getValue();
         int selectedMinute = (int) supplyMinuteSpinner.getValue();
 
@@ -395,9 +457,81 @@ public class SupplyConfigurationController {
         // Combine date and time components into a single string in the desired format
         String datePart = selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String timePart = String.format("%02d:%02d:00", selectedHour, selectedMinute); // HH:MM:SS
+        
+     // Calculate the difference between the current time and the selected time
+        LocalDate currentDate = LocalDate.now();
+        LocalTime currentTime = LocalTime.now();
+        LocalTime selectedTime = LocalTime.of(selectedHour, selectedMinute);
+
+     // Check if the selected date is in the future
+        if (selectedDate.isAfter(currentDate)) {
+            applyTimeBasedDiscount();
+        } else if (selectedDate.isEqual(currentDate)) {
+            // If the selected date is today, calculate the time difference in minutes
+            long timeDifferenceInMinutes = ChronoUnit.MINUTES.between(currentTime, selectedTime);
+
+            // If the selected time is 2 hours or more in the future, apply the discount
+            if (timeDifferenceInMinutes >= 120) {
+                applyTimeBasedDiscount();
+            }
+        }
+
 
         return datePart + " " + timePart;  // 'YYYY-MM-DD HH:MM:SS'
     }
+    
+    private void applyTimeBasedDiscount() {
+        double orignalPrice = totalPrice;
+        this.totalPrice = totalPrice * 0.9;
+
+        // Update the UI to show the discount applied
+        discounLabel.setVisible(true);
+        discounLabel.setText("10% Time-Based Discount Applied!");
+        FinalPriceLabel.setVisible(true);
+        FinalPriceNumLabel.setText(String.format("%.2f", orignalPrice));
+        discountnumLabel.setText("-" + String.format("%.2f", orignalPrice * 0.1));
+        totalPriceLabel.setText(String.format("%.2f", totalPrice));
+        
+        System.out.println("10% time-based discount applied. New total price: " + totalPrice);
+    }
+
+    
+    
+    @FXML
+    private void handleApplyDiscount(ActionEvent event) {
+    	 //double discountedPrice = totalPrice * 0.5;
+    	 double orignalPrice =totalPrice;
+    	 this.totalPrice=totalPrice * 0.5;
+         // Decrease the discount count by 1 as the discount has been used
+         discountCount--;
+         
+         // Disable the discount button 
+      
+         applyDiscountButton.setDisable(true);
+        
+
+         // Update the user on the discount being applied
+         discountMessageLabel.setText("You have "+discountCount+" discounts to redeem");
+
+         DiscountApleyLabel.setText("A 50% discount has been applied!");
+         
+         discounLabel.setVisible(true);
+         FinalPriceLabel.setVisible(true);
+         discountnumLabel.setText("-"+String.format("%.2f", totalPrice));
+         FinalPriceNumLabel.setText(String.format("%.2f",orignalPrice));
+         totalPriceLabel.setText(String.format("%.2f",totalPrice));
+         
+         System.out.println("Discount applied. New total price: " + totalPrice);
+         
+         BiteOptions option = new BiteOptions(UserDitales.toString(), BiteOptions.Option.UPDATE_DISCOUNT_COUNT);
+
+     
+         // Send the request to the server to update the discount count in the database
+         ClientUI.chat.accept(option);
+
+    
+    }
+
     
 
 }

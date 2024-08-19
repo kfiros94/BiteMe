@@ -1070,6 +1070,104 @@ public class DBController
 
         return "Restaurant inserted, but failed to retrieve the generated ID.";
     }
+    
+    /**
+     * Retrieves the discount count for a given user ID.
+     * If the user ID is not found or there are no discounts, it returns 0.
+     *
+     * @param userId The ID of the user whose discount count is to be retrieved.
+     * @return The discount count as an int, or 0 if the user ID is not found or has no discounts.
+     */
+    public static int getDiscountCountByUserId(int userId) {
+        int discountCount = 0; // Default to 0 if no discount codes are found or if user ID is not found
+
+        String query = "SELECT discount_count FROM User_DiscountCodes WHERE user_id = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                discountCount = rs.getInt("discount_count");
+            }
+
+            rs.close();
+        } catch (SQLException e) {
+            System.out.println("Error retrieving discount count: " + e.getMessage());
+            // Return 0 in case of failure to indicate no discounts or user not found
+            return 0;
+        }
+
+        return discountCount; // Return the discount count or 0 if not found
+    }
+
+    /**
+    * Decrements the discount count for the specified user.
+    * 
+    * @param userId The ID of the user whose discount count should be decremented.
+    * @return The new discount count if successful, otherwise -1.
+    */
+   public static int decrementDiscountCount(int userId) {
+       String querySelect = "SELECT discount_count FROM user_discountcodes WHERE user_id = ?";
+       String queryUpdate = "UPDATE user_discountcodes SET discount_count = ? WHERE user_id = ?";
+       int newDiscountCount = -1;
+
+       try (PreparedStatement selectStmt = conn.prepareStatement(querySelect)) {
+           // Fetch the current discount count
+           selectStmt.setInt(1, userId);
+           ResultSet rs = selectStmt.executeQuery();
+
+           if (rs.next()) {
+               int currentDiscountCount = rs.getInt("discount_count");
+               System.out.println("decrementDiscountCount- discount_count: "+currentDiscountCount);
+
+               if (currentDiscountCount > 0) {
+                   // Decrement the discount count by 1
+                   newDiscountCount = currentDiscountCount - 1;
+
+                   // Update the discount count in the database
+                   try (PreparedStatement updateStmt = conn.prepareStatement(queryUpdate)) {
+                       updateStmt.setInt(1, newDiscountCount);
+                       updateStmt.setInt(2, userId);
+                       updateStmt.executeUpdate();
+                   }
+               }
+           }
+       } catch (SQLException e) {
+           e.printStackTrace();
+           return -1;
+       }
+
+       return newDiscountCount;
+   }
+
+   
+   public static int incrementDiscountCount(int userId) {
+	    String querySelect = "SELECT discount_count FROM user_discountcodes WHERE user_id = ?";
+	    String queryUpdate = "UPDATE user_discountcodes SET discount_count = ? WHERE user_id = ?";
+	    int newDiscountCount = -1;
+
+	    try (PreparedStatement selectStmt = conn.prepareStatement(querySelect)) {
+	        selectStmt.setInt(1, userId);
+	        ResultSet rs = selectStmt.executeQuery();
+
+	        if (rs.next()) {
+	            int currentDiscountCount = rs.getInt("discount_count");
+	            newDiscountCount = currentDiscountCount + 1;
+
+	            try (PreparedStatement updateStmt = conn.prepareStatement(queryUpdate)) {
+	                updateStmt.setInt(1, newDiscountCount);
+	                updateStmt.setInt(2, userId);
+	                updateStmt.executeUpdate();
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return -1;
+	    }
+
+	    return newDiscountCount;
+	}
 
 
     

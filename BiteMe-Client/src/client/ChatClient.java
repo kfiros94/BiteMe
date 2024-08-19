@@ -62,6 +62,8 @@ public class ChatClient extends AbstractClient
   public static ArrayList<MenuItems> menuItems = new  ArrayList<MenuItems>();
   
   public static ArrayList<User> userEmptyArry = new ArrayList<User>();
+  
+  public static int discountCount=0;
 
   
 
@@ -403,6 +405,23 @@ public static int UserIdUpdate = 0;
 	           				
 	           				
 			                  break;
+			              
+	           		  case GET_DISCOUNT_COUNT:
+	                      int discountCountanwser = Integer.parseInt(answer.getData().toString());
+	                      System.out.println("User has " + discountCount + " discount code(s) available.");
+	                      this.discountCount=discountCountanwser;
+	                      
+	                      break;
+	                      
+	           		case UPDATE_DISCOUNT_COUNT:
+	                      int newdiscountCount = Integer.parseInt(answer.getData().toString());
+	                      System.out.println("User has " + discountCount + " discount code(s) available.");
+	                      if (newdiscountCount!=-1) {
+		                      this.discountCount=newdiscountCount;
+
+	                      }
+	                      
+	                      break;
 
 			}
 		}

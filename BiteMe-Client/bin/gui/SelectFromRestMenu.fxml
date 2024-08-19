@@ -5,116 +5,153 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SelectFromRestMenuController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="880.0" prefWidth="1010.0" style="-fx-background-color: linear-gradient(to bottom right, #E6E6FA, #F0F8FF);" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SelectFromRestMenuController">
    <children>
-      <VBox prefHeight="810.0" prefWidth="1008.0">
+      <VBox prefHeight="880.0" prefWidth="1010.0">
          <children>
-            <Label alignment="CENTER" prefHeight="86.0" prefWidth="1004.0" text="Create New Order">
+            <Label alignment="CENTER" prefHeight="86.0" prefWidth="1010.0" text="Create New Order" textFill="#8160ff">
                <font>
-                  <Font size="36.0" />
+                  <Font name="Segoe UI" size="46.0" />
                </font>
+               <effect>
+                  <DropShadow color="#00000040" height="5.0" radius="2.0" width="5.0" />
+               </effect>
             </Label>
-            <HBox prefHeight="50.0" prefWidth="1000.0">
+            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="1010.0" spacing="300.0">
                <children>
-                  <Label prefHeight="50.0" prefWidth="102.0" style="-fx-background-color: rgba(97, 56, 255, 0.8);" text="Menu" textFill="WHITE">
-                     <HBox.margin>
-                        <Insets left="200.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font name="Aharoni Bold" size="36.0" />
-                     </font>
-                  </Label>
-                  <Label prefHeight="53.0" prefWidth="88.0" style="-fx-background-color: rgba(97, 56, 255, 0.8);" text="Cart" textFill="WHITE">
-                     <HBox.margin>
-                        <Insets left="400.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font name="Aharoni Bold" size="36.0" />
-                     </font>
-                  </Label>
+                  <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@restaurant%20(1).png" />
+                           </image>
+                        </ImageView>
+                        <Label prefHeight="50.0" prefWidth="102.0" style="-fx-background-color: rgba(97, 56, 255, 0.8);" text="Menu" textFill="WHITE">
+                           <font>
+                              <Font name="Aharoni Bold" size="36.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@shopping-cart.png" />
+                           </image>
+                        </ImageView>
+                        <Label prefHeight="50.0" prefWidth="88.0" style="-fx-background-color: rgba(97, 56, 255, 0.8);" text="Cart" textFill="WHITE">
+                           <font>
+                              <Font name="Aharoni Bold" size="36.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
             </HBox>
-            <HBox layoutX="10.0" layoutY="103.0" prefHeight="400.0" prefWidth="1000.0">
+            <HBox alignment="CENTER" prefHeight="474.0" prefWidth="1010.0" spacing="20.0">
                <children>
-                  <TableView fx:id="menuTableView" prefHeight="400.0" prefWidth="492.0">
+                  <TableView fx:id="menuTableView" prefHeight="400.0" prefWidth="480.0" style="-fx-background-color: #F0E6FF; -fx-table-cell-border-color: #8160ff;">
                     <columns>
                       <TableColumn fx:id="categoryColumn" prefWidth="82.0" text="Category" />
                       <TableColumn fx:id="nameColumn" prefWidth="91.0" text="Name" />
-                      <TableColumn fx:id="changesColumn" prefWidth="271.0" text="Changes" />
+                      <TableColumn fx:id="changesColumn" prefWidth="259.0" text="Changes" />
                       <TableColumn fx:id="priceColumn" prefWidth="47.0" text="Price" />
                     </columns>
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
+                     <effect>
+                        <DropShadow color="#00000040" height="10.0" radius="4.5" width="10.0" />
+                     </effect>
                   </TableView>
-                  <TableView fx:id="cartTableView" prefHeight="400.0" prefWidth="460.0">
+                  <TableView fx:id="cartTableView" prefHeight="400.0" prefWidth="480.0" style="-fx-background-color: #F0E6FF; -fx-table-cell-border-color: #8160ff;">
                     <columns>
                       <TableColumn fx:id="cartItemNameColumn" prefWidth="100.0" text="Item Name" />
-                      <TableColumn fx:id="cartChangesColumn" prefWidth="300.0" text="Changes" />
+                      <TableColumn fx:id="cartChangesColumn" prefWidth="320.0" text="Changes" />
                       <TableColumn fx:id="cartPriceColumn" prefWidth="60.0" text="Price" />
                     </columns>
-                     <HBox.margin>
-                        <Insets left="30.0" />
-                     </HBox.margin>
+                     <effect>
+                        <DropShadow color="#00000040" height="10.0" radius="4.5" width="10.0" />
+                     </effect>
                   </TableView>
                </children>
-               <HBox.margin>
-                  <Insets left="40.0" />
-               </HBox.margin>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
             </HBox>
-            <HBox prefHeight="23.0" prefWidth="1000.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="1010.0">
                <children>
-                  <Label prefHeight="17.0" prefWidth="100.0" text="Total Price:">
-                     <HBox.margin>
-                        <Insets left="550.0" />
-                     </HBox.margin>
+                  <Label prefHeight="17.0" prefWidth="100.0" text="Total Price:" textFill="#8160ff">
                      <font>
-                        <Font name="System Bold" size="15.0" />
+                        <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="totalPriceLabel" prefHeight="21.0" prefWidth="49.0" text="0.00">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
+                  <Label fx:id="totalPriceLabel" prefHeight="21.0" prefWidth="49.0" text="0.00" textFill="#8160ff">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
                   </Label>
-                  <Label text="💲" />
+                  <Label text="💲" textFill="#8160ff">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
                </children>
+               <padding>
+                  <Insets right="50.0" />
+               </padding>
             </HBox>
-            <HBox layoutX="10.0" layoutY="318.0" prefHeight="50.0" prefWidth="1000.0">
+            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="1010.0" spacing="300.0">
                <children>
-                  <Button fx:id="addItemButton" mnemonicParsing="false" onAction="#handleAddItem" prefHeight="40.0" prefWidth="150.0" text="Add item">
-                     <HBox.margin>
-                        <Insets left="160.0" />
-                     </HBox.margin>
+                  <Button fx:id="addItemButton" mnemonicParsing="false" onAction="#handleAddItem" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #8160ff; -fx-text-fill: white; -fx-background-radius: 5;" text="Add item">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <effect>
+                        <DropShadow color="#00000040" height="5.0" radius="2.0" width="5.0" />
+                     </effect>
                   </Button>
-                  <Button fx:id="removeItemButton" mnemonicParsing="false" onAction="#handleRemoveItem" prefHeight="40.0" prefWidth="150.0" text="Remove item">
-                     <HBox.margin>
-                        <Insets left="380.0" />
-                     </HBox.margin>
+                  <Button fx:id="removeItemButton" mnemonicParsing="false" onAction="#handleRemoveItem" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #8160ff; -fx-text-fill: white; -fx-background-radius: 5;" text="Remove item">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <effect>
+                        <DropShadow color="#00000040" height="5.0" radius="2.0" width="5.0" />
+                     </effect>
                   </Button>
                </children>
                <VBox.margin>
-                  <Insets top="10.0" />
+                  <Insets top="20.0" />
                </VBox.margin>
             </HBox>
-            <HBox layoutX="10.0" layoutY="345.0" prefHeight="100.0" prefWidth="1000.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="1010.0" spacing="700.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#handleBack" prefHeight="40.0" prefWidth="100.0" text="⬅ Back">
-                     <HBox.margin>
-                        <Insets left="100.0" top="60.0" />
-                     </HBox.margin>
+                  <Button mnemonicParsing="false" onAction="#handleBack" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #8160ff; -fx-text-fill: white; -fx-background-radius: 5;" text="⬅ Back">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <effect>
+                        <DropShadow color="#00000040" height="5.0" radius="2.0" width="5.0" />
+                     </effect>
                   </Button>
-                  <Button layoutX="25.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleNext" prefHeight="40.0" prefWidth="100.0" text="Next ⮕">
-                     <HBox.margin>
-                        <Insets left="600.0" top="60.0" />
-                     </HBox.margin>
+                  <Button mnemonicParsing="false" onAction="#handleNext" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #8160ff; -fx-text-fill: white; -fx-background-radius: 5;" text="Next ⮕">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <effect>
+                        <DropShadow color="#00000040" height="5.0" radius="2.0" width="5.0" />
+                     </effect>
                   </Button>
                </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
             </HBox>
          </children>
       </VBox>

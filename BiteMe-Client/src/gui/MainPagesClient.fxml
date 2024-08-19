@@ -3,110 +3,107 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: rgba(223, 255, 255, 0.5);" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainPagesClientController">
     <children>
-      <VBox layoutX="3.0" prefHeight="633.0" prefWidth="943.0">
+      <Pane layoutX="2.0" prefHeight="880.0" prefWidth="1010.0">
          <children>
-            <HBox prefHeight="72.0" prefWidth="946.0">
-               <children>
-                  <Label id="Welcome " prefHeight="31.0" prefWidth="127.0" text="Welcome " textFill="#893cbf">
-                     <HBox.margin>
-                        <Insets left="470.0" top="40.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font name="Berlin Sans FB Demi Bold" size="27.0" />
-                     </font>
-                  </Label>
-                  <Label id="UserName" fx:id="lbUserName" prefHeight="25.0" prefWidth="116.0" text="UserName">
-                     <HBox.margin>
-                        <Insets top="45.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font name="Berlin Sans FB" size="21.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-            <Label id="UserPortal" alignment="CENTER" prefHeight="48.0" prefWidth="946.0" text="User Portal">
+            <ImageView fitHeight="119.0" fitWidth="251.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@BiteMeSmall.png" />
+               </image>
+            </ImageView>
+            <Label id="UserPortal" alignment="CENTER" layoutX="-1.0" layoutY="134.0" prefHeight="88.0" prefWidth="1012.0" text="User Portal" textFill="#8160ff">
                <font>
-                  <Font name="Aharoni Bold" size="36.0" />
+                  <Font name="Segoe UI Bold" size="57.0" />
                </font>
             </Label>
-            <HBox layoutX="10.0" layoutY="98.0" prefHeight="26.0" prefWidth="800.0">
-               <children>
-                  <Label id="AccountStatus" prefHeight="27.0" prefWidth="131.0" text="Account Status:">
-                     <HBox.margin>
-                        <Insets left="370.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label id="MyStatus" fx:id="lbMyStatus" prefHeight="21.0" prefWidth="86.0" text="MyStatus">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-               </children>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox layoutX="10.0" layoutY="124.0" prefHeight="26.0" prefWidth="800.0">
-               <children>
-                  <Label id="Yourhomebranch" prefHeight="27.0" prefWidth="152.0" text="Your home branch:">
-                     <HBox.margin>
-                        <Insets left="370.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label id="Mybranch" fx:id="lbMybranch" prefHeight="27.0" prefWidth="87.0" text="Mybranch">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-               </children>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </HBox>
-            <Button id="StartOrder" mnemonicParsing="false" onAction="#StartOrder" prefHeight="63.0" prefWidth="165.0" text="Start Order">
-               <VBox.margin>
-                  <Insets left="390.0" top="20.0" />
-               </VBox.margin>
-            </Button>
-                  <Button id="OrderInProgress" mnemonicParsing="false" onAction="#OrderInProgress" prefHeight="70.0" prefWidth="165.0" text="Order In Progress">
-               <VBox.margin>
-                  <Insets left="390.0" top="20.0" />
-               </VBox.margin>
-                  </Button>
-                  <Button id="ViewOrderHistory" mnemonicParsing="false" onAction="#ViewOrderHistory" prefHeight="74.0" prefWidth="168.0" text="View Order History">
-               <VBox.margin>
-                  <Insets left="390.0" top="20.0" />
-               </VBox.margin>
-                  </Button>
-            <Button id="LogOut" mnemonicParsing="false" onAction="#CloseButton" prefHeight="31.0" prefWidth="80.0" style="-fx-background-color: rgba(97, 56, 255, 0.8);" text="LogOut" textFill="WHITE">
+            <Label id="Welcome " layoutX="614.0" layoutY="51.0" prefHeight="37.0" prefWidth="142.0" text="Welcome " textFill="#8160ff">
                <font>
-                  <Font name="Agency FB Bold" size="18.0" />
+                  <Font name="Segoe UI" size="30.0" />
                </font>
-               <VBox.margin>
-                  <Insets bottom="20.0" left="420.0" top="100.0" />
-               </VBox.margin>
+            </Label>
+            <Label id="UserName" fx:id="lbUserName" layoutX="756.0" layoutY="51.0" prefHeight="37.0" prefWidth="163.0" text="UserName" textFill="#1c0968">
+               <font>
+                  <Font name="Berlin Sans FB" size="30.0" />
+               </font>
+            </Label>
+            <Label id="AccountStatus" layoutX="317.0" layoutY="328.0" prefHeight="29.0" prefWidth="182.0" text="Account Status:">
+               <font>
+                  <Font name="Segoe UI Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label id="MyStatus" fx:id="lbMyStatus" layoutX="560.0" layoutY="328.0" prefHeight="29.0" prefWidth="134.0" text="My Status">
+               <font>
+                  <Font name="Segoe UI Bold" size="24.0" />
+               </font>
+            </Label>
+            <Button id="StartOrder" layoutX="361.0" layoutY="459.0" mnemonicParsing="false" onAction="#StartOrder" prefHeight="53.0" prefWidth="290.0" style="-fx-background-color: rgba(129, 96, 255, 1);" text="Start Order" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Bold" size="24.0" />
+               </font>
+               <effect>
+                  <DropShadow color="#00ff40cc" height="32.0" radius="15.5" spread="0.59" width="32.0" />
+               </effect>
+               <padding>
+                  <Insets left="15.0" />
+               </padding>
             </Button>
+                  <Button id="OrderInProgress" layoutX="361.0" layoutY="541.0" mnemonicParsing="false" onAction="#OrderInProgress" prefHeight="53.0" prefWidth="297.0" style="-fx-background-color: rgba(129, 96, 255, 1);" text="Order In Progress" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Bold" size="24.0" />
+               </font>
+               <padding>
+                  <Insets right="-20.0" />
+               </padding>
+                  </Button>
+                  <Button id="ViewOrderHistory" layoutX="361.0" layoutY="625.0" mnemonicParsing="false" onAction="#ViewOrderHistory" prefHeight="53.0" prefWidth="297.0" style="-fx-background-color: rgba(129, 96, 255, 1);" text="View Order History" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Bold" size="24.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="36.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@clock.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+                  </Button>
+            <Button id="LogOut" layoutX="461.0" layoutY="820.0" mnemonicParsing="false" onAction="#CloseButton" prefHeight="35.0" prefWidth="90.0" style="-fx-background-color: rgba(129, 96, 255, 1);" text="LogOut" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Bold" size="18.0" />
+               </font>
+               <effect>
+                  <DropShadow color="#ff0000cc" height="35.83" radius="17.415" spread="0.3" width="35.83" />
+               </effect>
+            </Button>
+            <Label id="Mybranch" fx:id="lbMybranch" layoutX="560.0" layoutY="389.0" prefHeight="29.0" prefWidth="134.0" text="Mybranch">
+               <font>
+                  <Font name="Segoe UI Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label id="Yourhomebranch" layoutX="317.0" layoutY="389.0" prefHeight="32.0" prefWidth="220.0" text="Your Home Branch:">
+               <font>
+                  <Font name="Segoe UI Bold" size="24.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="39.0" fitWidth="57.0" layoutX="375.0" layoutY="466.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@order.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="37.0" fitWidth="45.0" layoutX="375.0" layoutY="549.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@shark.png" />
+               </image>
+            </ImageView>
          </children>
-      </VBox>
+      </Pane>
     </children>
 </AnchorPane>
