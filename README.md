@@ -1,4 +1,4 @@
-![Logo](BiteMe-Client/resources/BiteMe-removebg-preview.png)
+![Logo]("C:\Users\kfira\Desktop\BiteMe\BiteMe-Client\src\gui\BiteMeSmall.png")
 
 The "BiteMe" system is our project in the course "Engineering Methods For Software Systems Development" of "Braude" College of Engineering. 
 The systems serves as a food ordering and delivering application.
